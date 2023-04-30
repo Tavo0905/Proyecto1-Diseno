@@ -1,0 +1,22 @@
+* {
+    margin: 0%;
+    position: fixed;
+}
+
+body {
+    background-color: azure;
+}
+
+.bg {
+    display: block;
+    background-image: url("LoginFondo.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-color: azure;
+}
+
+.correo {
+    position: center;
+    height: ;
+}
