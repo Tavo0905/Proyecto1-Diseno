@@ -1,22 +1,65 @@
-* {
-    margin: 0%;
-    position: fixed;
-}
-
 body {
-    background-color: azure;
-}
-
-.bg {
     display: block;
     background-image: url("LoginFondo.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
     background-color: azure;
+    margin-top: 50px;
 }
 
-.correo {
+form {
+    display: block;
     position: center;
-    height: ;
+    background-color: rgb(219, 239, 255);
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #999;
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    color: #464646;
+}
+
+label {
+    display: block;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"], input[type="password"] {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #999;
+    height: 25px;
+    margin-bottom: 20px;
+    padding: 5px;
+    width: 100%;
+}
+
+input[type="submit"] {
+    background-color: #4b96b0;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #999;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    height: 40px;
+    margin-top: 20px;
+    transition: background-color 0.5s ease;
+    width: 100%;
+}
+
+input[type="submit"]:hover {
+    background-color: #005A7F;
 }
