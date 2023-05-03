@@ -1,8 +1,8 @@
 {
   "name": "proyecto2",
-  "main": "prueba.js",
+  "main": "cliente.js",
   "scripts": {
-    "start": "nodemon prueba.js"
+    "start": "nodemon Vista\\cliente.js"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
