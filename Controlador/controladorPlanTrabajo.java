@@ -1,17 +1,39 @@
 package Controlador;
 
+import java.util.Collection;
 import java.util.Date;
 
 public class controladorPlanTrabajo {
-    
+    Modelo.PlanTrabajo planDeTrabajo;
+    Collection<Modelo.Actividad> plan;
+    Collection<Modelo.Profesor> organizadores;
+    Modelo.Actividad actividad;
+
+
     public boolean addActividad(Modelo.Actividad actividad) {
-        //lógica para agregar una nueva actividad al plan de trabajo
+    
+        if (actividad == null) {
+            return false; // no se permite agregar actividades nulas
+        }
+        if (plan.contains(actividad)) {  
+            return false; // la actividad ya existe, no se permite duplicados
+        }
+        plan.add(actividad);
+        planDeTrabajo.setPlan(plan);
+
         return true;
     }
     
     public boolean addOrganizador(Modelo.Profesor organizador) {
-        //lógica para agregar un nuevo organizador a una actividad del plan de trabajo
-        return true;
+        for (Modelo.Actividad a : plan){
+            if (a.equals(actividad)){
+                organizadores.add(organizador);
+                a.setOrganizadores(organizadores);
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     public boolean addFechaRecordatorio(Date fecha) {
@@ -33,4 +55,6 @@ public class controladorPlanTrabajo {
         //lógica para editar el estado de una actividad del plan de trabajo
         return true;
     }
+
+    
 }
