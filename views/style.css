@@ -1,5 +1,4 @@
 body {
-    display: block;
     background-image: url("LoginFondo.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -8,7 +7,7 @@ body {
     margin-top: 50px;
 }
 
-form {
+.formLogin {
     display: block;
     position: center;
     background-color: rgb(219, 239, 255);
@@ -62,4 +61,63 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: #005A7F;
+}
+
+.tituloSelMod {
+    background-color: azure;
+    font-size: xx-large;
+    font-style: italic;
+    margin-left: 40%;
+    margin-right: 40%;
+    margin-top: 100px;
+}
+
+.botonesMod {
+    position: absolute;
+    background-color: #4b96b0;
+    height: 75px;
+    width: 250px;
+    border-radius: 10px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 5px #999;
+    margin-top: 100px;
+}
+
+.botonesMod:hover {
+    background-color: #005A7F;
+}
+
+#gestionEst {
+    margin-left: 25%;
+}
+
+#gestionProf {
+    margin-left: 60%;
+}
+
+.botonConfGrGuia {
+    background-color: #4b96b0;
+    height: 30px;
+    width: 250px;
+    border-radius: 10px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 5px #999;
+    margin-top: 500px;
+    position: absolute;
+    left: 80%;
+    top: 40%
+}
+
+.botonConfGrGuia:hover {
+    background-color: #005A7F;
+}
+
+.tituloGestion {
+    font-size: xx-large;
+    font: bold;
+    font-family: Arial;
 }

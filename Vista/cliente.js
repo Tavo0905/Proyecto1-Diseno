@@ -1,21 +1,32 @@
-var express = require('express');
-var app = express();
+var express = require('express')
+var bodyParser = require('body-parser')
+var app = express()
+var urlParser = bodyParser.urlencoded({extended: false})
+var usuario = {user: "", password: ""}
 
-app.use(express.static('views'));
+app.use(express.static('views'))
 
 app.get('/', (req, res) => {
-   res.render('prueba.ejs');
+   res.render('login.ejs')
 })
 
-app.post('/validarDatos', (req, res) => { // Validar datos del login
+app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
    usuario = {
-      user : req.body.username,
+      user : req.body.user,
       password : req.body.password
   }
-  console.log(usuario["user"], usuario["password"])
   //validarUsuario(usuario, res)
-  res.redirect('prueba.ejs')
+  res.render('selModulo.ejs')
 })
+
+app.post('/gestionarEst', urlParser, (req, res) => {
+   res.render("gestion.ejs", {clave: 1})
+})
+
+app.post('/gestionarProf', urlParser, (req, res) => {
+   res.render("gestion.ejs", {clave: 2})
+})
+
 
 var server = app.listen(3000, function () {
    var host = server.address().address
