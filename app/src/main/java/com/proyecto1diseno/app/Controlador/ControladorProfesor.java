@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyecto1diseno.app.Modelo.Profesor;
-import com.proyecto1diseno.app.Servicios.ProfesorService;
+import com.proyecto1diseno.app.Servicio.ProfesorService;
 
 @Controller
 @RequestMapping("/profesor")

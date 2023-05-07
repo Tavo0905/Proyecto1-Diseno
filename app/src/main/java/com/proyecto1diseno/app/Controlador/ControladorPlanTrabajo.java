@@ -1,10 +1,12 @@
-package com.proyecto1diseno.app.controlador;
+package com.proyecto1diseno.app.Controlador;
 
 import java.util.Collection;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.proyecto1diseno.app.Modelo.Actividad;
 import com.proyecto1diseno.app.Modelo.Comentario;
 import com.proyecto1diseno.app.Modelo.Estados;
 import com.proyecto1diseno.app.Servicio.PlanTrabajoService;
@@ -60,3 +62,6 @@ public class ControladorPlanTrabajo {
     public boolean editarEstado(long idActividad, Estados estado) {
         // lógica para editar el estado de una actividad del plan de trabajo
         return planTrabajoService.editarEstado(idActividad, estado);
+
+    }
+}
