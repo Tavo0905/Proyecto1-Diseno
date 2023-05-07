@@ -20,11 +20,11 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
 })
 
 app.post('/gestionarEst', urlParser, (req, res) => {
-   res.render("gestion.ejs", {clave: 1})
+   res.render("gestion.ejs", {clave: 1, arreglo: []})
 })
 
 app.post('/gestionarProf', urlParser, (req, res) => {
-   res.render("gestion.ejs", {clave: 2})
+   res.render("gestion.ejs", {clave: 2, arreglo: []})
 })
 
 
