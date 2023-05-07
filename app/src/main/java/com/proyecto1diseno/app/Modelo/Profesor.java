@@ -1,4 +1,4 @@
-package Modelo;
+package com.proyecto1diseno.app.Modelo;
 
 public class Profesor {
     private String codigo;

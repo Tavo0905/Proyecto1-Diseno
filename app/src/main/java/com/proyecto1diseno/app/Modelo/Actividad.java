@@ -1,4 +1,4 @@
-package Modelo;
+package com.proyecto1diseno.app.Modelo;
 
 import java.util.Collection;
 import java.util.Date;

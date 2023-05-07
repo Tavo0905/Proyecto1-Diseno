@@ -1,24 +1,24 @@
-package Modelo;
+package com.proyecto1diseno.app.Modelo;
 
-public class Estudiante {
-    private int carnet;
+public class AsistenteAdmin {
+    private String codigo;
     private String nombre;
     private String correo;
     private int celular;
 
-    public Estudiante(int carnet, String nombre, String correo, int celular) {
-        this.carnet = carnet;
+    public AsistenteAdmin(String codigo, String nombre, String correo, int celular) {
+        this.codigo = codigo;
         this.nombre = nombre;
         this.correo = correo;
         this.celular = celular;
     }
 
-    public int getCarnet() {
-        return carnet;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setCarnet(int carnet) {
-        this.carnet = carnet;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
