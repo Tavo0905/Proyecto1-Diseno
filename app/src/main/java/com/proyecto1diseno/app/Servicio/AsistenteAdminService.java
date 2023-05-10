@@ -1,12 +1,16 @@
 package com.proyecto1diseno.app.Servicio;
 
 import java.util.Collection;
+import java.util.Optional;
 
+import org.springframework.stereotype.Service;
 import com.proyecto1diseno.app.Modelo.Actividad;
+import com.proyecto1diseno.app.Modelo.AsistenteAdmin;
 import com.proyecto1diseno.app.Modelo.EquipoGuia;
 import com.proyecto1diseno.app.Modelo.PlanTrabajo;
 import com.proyecto1diseno.app.Modelo.Profesor;
 
+@Service
 public class AsistenteAdminService {
 
     EquipoGuia equipoGuia;
@@ -72,5 +76,14 @@ public class AsistenteAdminService {
 
     public Actividad verDetalleProxAct(){
         return actividad;
+    }
+
+    public Optional<AsistenteAdmin> validarCredenciales(String correo, String contrasena) {
+        // Lógica para validar las credenciales de asistente en la base de datos
+        // ...
+        AsistenteAdmin asistenteEncontrada = null;
+        // Si se encontró la asistente con las credenciales correctas, retornar el objeto ASistenteAdmin
+        // Si no se encontró el profesor, retornar Optional vacío
+        return Optional.ofNullable(asistenteEncontrada);
     }
 }
