@@ -2,11 +2,13 @@ package com.proyecto1diseno.app.Servicio;
 import java.util.Collection;
 import java.util.Date;
 
+import org.springframework.stereotype.Service;
 import com.proyecto1diseno.app.Modelo.Actividad;
 import com.proyecto1diseno.app.Modelo.Comentario;
 import com.proyecto1diseno.app.Modelo.Estados;
 import com.proyecto1diseno.app.Modelo.PlanTrabajo;
 
+@Service
 public class PlanTrabajoService {
 
     Collection<Actividad> actividades;

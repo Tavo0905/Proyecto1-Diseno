@@ -4,12 +4,14 @@ public class AsistenteAdmin {
     private String codigo;
     private String nombre;
     private String correo;
+    private String contraseña;
     private int celular;
 
-    public AsistenteAdmin(String codigo, String nombre, String correo, int celular) {
+    public AsistenteAdmin(String codigo, String nombre, String correo, String contraseña, int celular) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.correo = correo;
+        this.contraseña = contraseña;
         this.celular = celular;
     }
 
@@ -43,5 +45,13 @@ public class AsistenteAdmin {
 
     public void setCelular(int celular) {
         this.celular = celular;
+    }
+
+    public String getContraseña()  {   
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 }

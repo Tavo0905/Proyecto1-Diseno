@@ -3,15 +3,19 @@ package com.proyecto1diseno.app.Modelo;
 public class Profesor {
     private String codigo;
     private String nombre;
+    private String correo;
+    private String contraseña;
     private int telOficina;
     private int celular;
     private String fotografia;
     private boolean guia;
     private boolean coordinador;
 
-    public Profesor(String codigo, String nombre, int telOficina, int celular, String fotografia, boolean guia, boolean coordinador) {
+    public Profesor(String codigo, String nombre, String correo, String contraseña, int telOficina, int celular, String fotografia, boolean guia, boolean coordinador) {
         this.codigo = codigo;
         this.nombre = nombre;
+        this.correo = correo;
+        this.contraseña = contraseña;
         this.telOficina = telOficina;
         this.celular = celular;
         this.fotografia = fotografia;
@@ -74,4 +78,20 @@ public class Profesor {
     public void setCoordinador(boolean coordinador) {
         this.coordinador = coordinador;
     }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }      
+
+    public void setContraseña(String contraseña) {
+            this.contraseña = contraseña;
+        }
 }

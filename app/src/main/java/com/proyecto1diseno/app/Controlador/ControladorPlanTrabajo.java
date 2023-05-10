@@ -48,19 +48,16 @@ public class ControladorPlanTrabajo {
     
     @RequestMapping("/addcomentario")
     public boolean addComentario(long idActividad, Comentario comentario) {
-        // lógica para agregar un nuevo comentario a una actividad del plan de trabajo
         return planTrabajoService.addComentario(idActividad, comentario);
     }
     
     @RequestMapping("/addreplica")
     public boolean addReplica(long idActividad, Comentario comentario) {
-        // lógica para agregar una nueva réplica a un comentario de una actividad del plan de trabajo
         return planTrabajoService.addReplica(idActividad, comentario);
     }
     
     @RequestMapping("/editarestado")
     public boolean editarEstado(long idActividad, Estados estado) {
-        // lógica para editar el estado de una actividad del plan de trabajo
         return planTrabajoService.editarEstado(idActividad, estado);
 
     }
