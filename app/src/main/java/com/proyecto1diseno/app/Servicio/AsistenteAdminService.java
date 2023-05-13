@@ -1,9 +1,13 @@
 package com.proyecto1diseno.app.Servicio;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+
+import com.proyecto1diseno.app.DAO.AsistenteAdminDAO;
+import com.proyecto1diseno.app.DAO.DBManager;
 import com.proyecto1diseno.app.Modelo.Actividad;
 import com.proyecto1diseno.app.Modelo.AsistenteAdmin;
 import com.proyecto1diseno.app.Modelo.EquipoGuia;
@@ -78,12 +82,8 @@ public class AsistenteAdminService {
         return actividad;
     }
 
-    public Optional<AsistenteAdmin> validarCredenciales(String correo, String contrasena) {
-        // Lógica para validar las credenciales de asistente en la base de datos
-        // ...
-        AsistenteAdmin asistenteEncontrada = null;
-        // Si se encontró la asistente con las credenciales correctas, retornar el objeto ASistenteAdmin
-        // Si no se encontró el profesor, retornar Optional vacío
-        return Optional.ofNullable(asistenteEncontrada);
+    public Optional<AsistenteAdmin> validarCredenciales(String correo, String contrasena) throws SQLException {
+        AsistenteAdminDAO asistenteAdminDAO = DBManager.getAsistenteAdminDAO();
+        return asistenteAdminDAO.validarCredenciales(correo, contrasena);
     }
 }

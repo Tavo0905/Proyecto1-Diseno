@@ -1,10 +1,10 @@
 package com.proyecto1diseno.app.Controlador;
 
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,14 +23,15 @@ public class ControladorLogin {
     private final ProfesorService servicioProfesor;
     private final AsistenteAdminService servicioAsistenteAdmin;
 
+    @Autowired
     public ControladorLogin(ProfesorService servicioProfesor, AsistenteAdminService servicioAsistenteAdmin) {
         this.servicioProfesor = servicioProfesor;
         this.servicioAsistenteAdmin = servicioAsistenteAdmin;
     }
  
     @PostMapping
-    public ResponseEntity<String> validarDatos(@RequestBody Map<String, String> usuario) {
-        if (usuario == null) {
+    public ResponseEntity<String> validarDatos(@RequestBody Map<String, String> usuario) throws SQLException {
+        if (usuario == null|| !usuario.containsKey("user") || !usuario.containsKey("password")) {
             return ResponseEntity.badRequest().body("Usuario no puede estar vacío");
         }
 

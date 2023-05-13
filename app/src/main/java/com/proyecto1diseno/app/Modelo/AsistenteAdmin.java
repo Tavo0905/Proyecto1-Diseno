@@ -15,6 +15,11 @@ public class AsistenteAdmin {
         this.celular = celular;
     }
 
+    public AsistenteAdmin(String correo, String contraseña) {
+        this.correo = correo;
+        this.contraseña = contraseña;
+    }
+
     public String getCodigo() {
         return codigo;
     }

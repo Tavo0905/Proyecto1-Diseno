@@ -23,6 +23,11 @@ public class Profesor {
         this.coordinador = coordinador;
     }
 
+    public Profesor(String correo, String contraseña) {
+        this.correo = correo;
+        this.contraseña = contraseña;
+    }
+
     public String getCodigo() {
         return codigo;
     }

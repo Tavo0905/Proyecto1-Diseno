@@ -1,3 +1,4 @@
+const http = require('http');
 var express = require('express')
 var bodyParser = require('body-parser')
 var app = express()
@@ -15,8 +16,41 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
       user : req.body.user,
       password : req.body.password
   }
-  //validarUsuario(usuario, res)
-  res.render('selModulo.ejs')
+   const data = JSON.stringify(usuario);
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/validarDatos',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': data.length
+      }
+   };
+
+   const request = http.request(options, response => {
+   console.log(`statusCode: ${response.statusCode}`);
+    
+      response.on('data', d => {
+        process.stdout.write(d);
+      });
+    
+      response.on('end', () => {
+        if (response.statusCode === 200) {
+          res.render('selModulo.ejs');
+        }
+      });
+    });
+    
+   request.on('error', error => {
+      console.error(error);
+   });
+
+   request.write(data);
+   request.end();
+
+   res.render('selModulo.ejs');
 })
 
 app.post('/gestionarEst', urlParser, (req, res) => {
