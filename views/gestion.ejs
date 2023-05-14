@@ -2,53 +2,96 @@
 <html>
 <head>
     <link rel = "stylesheet" href = "style.css">
+    <script>
+        function confBajaProf() {
+            if (confirm("¿Estás seguro que quieres dar de baja a este profesor?")) {
+                document.getElementById("btnBajaProfGuia").setAttribute("value", "1")
+            } else {
+                document.getElementById("btnBajaProfGuia").setAttribute("value", "2")
+            }
+        }
+
+        function confProfGuia() {
+            if (confirm("¿Estás seguro que quieres establecer este profesor como guía?")) {
+                document.getElementById("btnDefProfGuia").setAttribute("value", "1")
+            } else {
+                document.getElementById("btnDefProfGuia").setAttribute("value", "2")
+            }
+        }
+    </script>
 </head>
-<body>
-    <div>
-        <% if (clave == 1) {%>
-            <label class = "tituloGestion">INFORMACION ESTUDIANTES DEL CAMPUS</label>
-        <% } if (clave == 2) { %>
-            <label class = "tituloGestion">GESTION DE INFORMACION DE PROFESORES GUIA</label>
-        <% } %>
-        <!-- AQUI VA UN BOTON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-    </div>
-    <div class = "columna1">
-        <select class = "estudLB" id = "estudiantesLB" name = "estudiantesLB" size = "2">
-            <% for (elemento of arreglo) { %>
-                <option value = <%= elemento["carne"] %>>
-                    <%= elemento["carne"] %>
-                </option>
-            <% } %>
-        </select>
-        <div class = "columna2">
-            <% if (clave == 1) { %>
-                <button class = "botonesEst" id = "botonOrdenEst" name = "botonOrdenEst">
-                    Orden
-                </button>
-                <label class = "sedeTxt" id = "sedeTxt" name = "sedeTxt">
-                    Sede:
-                </label>
-                <select class = "sedesLB" id = "sedesLB" name = "sedesLB">
-                    <option value = "0">Seleccionar</option>
-                    <option value = "1">Central de Cartago</option>
-                    <option value = "2">San Jose</option>
-                    <option value = "3">San Carlos</option>
-                    <option value = "4">Alajuela</option>
-                    <option value = "5">Limon</option>
-                </select>
-                <button class = "botonesEst" id = "btnGenExcel" name = "btnGenExcel">
-                    Generar Excel
-                </button>
-                <label class = "excelTxt" name = "excelTxt" id = "excelTxt">
-                    Cargar Excel:
-                </label>
-                <button class = "botonesEst" id = "btnImpExcel" name = "btnImpExcel">
-                    Añadir archivo...
-                </button>
+<body class = "gestionBd">
+    <form class = "formGestion" method = "post">
+        <div>
+            <% if (clave == 1) {%>
+                <label class = "tituloGestion">INFORMACIÓN ESTUDIANTES DEL CAMPUS</label>
             <% } if (clave == 2) { %>
-                
+                <label class = "tituloGestion">GESTIÓN DE INFORMACIÓN DE PROFESORES GUÍA</label>
+            <% } if (clave == 3) { %>
+                <label class = "tituloGestion">CONFORMACIÓN DEL EQUIPO GUÍA</label>
             <% } %>
+            <button class = "btnSalir1" id = "btnSalir1" name = "btnSalir1" formaction = "salirGestion">
+                Salir
+            </button>
         </div>
-    </div>
+        <div class = "columna1">
+            <select class = "estudLB" id = "estudiantesLB" name = "estudiantesLB" size = "2">
+                <% for (elemento of arreglo) { %>
+                    <option value = <%= elemento["carne"] %>>
+                        <%= elemento["carne"] %>
+                    </option>
+                <% } %>
+            </select>
+            <div class = "columna2">
+                <% if (clave == 1) { %>
+                    <button class = "botonesEst" id = "botonOrdenEst" name = "botonOrdenEst">
+                        Orden
+                    </button>
+                    <label class = "sedeTxt" id = "sedeTxt" name = "sedeTxt">
+                        Sede:
+                    </label>
+                    <select class = "sedesLB" id = "sedesLB" name = "sedesLB">
+                        <option value = "0">Seleccionar</option>
+                        <option value = "1">Central de Cartago</option>
+                        <option value = "2">San Jose</option>
+                        <option value = "3">San Carlos</option>
+                        <option value = "4">Alajuela</option>
+                        <option value = "5">Limon</option>
+                    </select>
+                    <button class = "botonesEst" id = "btnGenExcel" name = "btnGenExcel">
+                        Generar Excel
+                    </button>
+                    <label class = "excelTxt" name = "excelTxt" id = "excelTxt">
+                        Cargar Excel:
+                    </label>
+                    <button class = "botonesEst" id = "btnImpExcel" name = "btnImpExcel">
+                        Añadir archivo...
+                    </button>
+                    <button class = "botonesEst" id = "btnModEst" name = "btnModEst">
+                        Modificar información de estudiante
+                    </button>
+                <% } if (clave == 2) { %>
+                    <button class = "botonesProf" id = "btnNuevoProfGuia" name = "btnNuevoProfGuia" formaction = "agregarProf">
+                        Registrar nuevo profesor guía
+                    </button>
+                    <button class = "botonesProf" id = "btnModProfGuia" name = "btnModProfGuia" formaction = "modProf">
+                        Modificar profesor guía
+                    </button>
+                    <button class = "botonesProf" id = "btnBajaProfGuia" name = "btnBajaProfGuia" onclick = "confBajaProf()"
+                    formaction = "bajaProf">
+                        Dar de baja a profesor guía
+                    </button>
+                    <button class = "botonesProf" id = "btnDefProfGuia" name = "btnDefProfGuia" onclick = "confProfGuia()"
+                    formaction = "defGuia">
+                        Definir profesor guía
+                    </button>
+                <% } if (clave == 3) { %>
+                    <button class = "botonesGuia" id = "btnDefProfCoord" name = "btnDefProfCoord" formaction = "defCoord">
+                        Definir profesor coordinador
+                    </button>
+                <% } %>
+            </div>
+        </div>
+    </form>
 </body>
 </html>

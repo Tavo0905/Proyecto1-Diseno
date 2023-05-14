@@ -15,7 +15,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
    usuario = {
       user : req.body.user,
       password : req.body.password
-  }
+   }
    const data = JSON.stringify(usuario);
 
    const options = {
@@ -41,7 +41,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
           res.render('selModulo.ejs');
         }
       });
-    });
+   });
     
    request.on('error', error => {
       console.error(error);
@@ -61,6 +61,50 @@ app.post('/gestionarProf', urlParser, (req, res) => {
    res.render("gestion.ejs", {clave: 2, arreglo: []})
 })
 
+app.post('/gestionarGuias', urlParser, (req, res) => {
+   res.render("gestion.ejs", {clave: 3, arreglo: []})
+})
+
+app.post('/salirGestion', urlParser, (req, res) => {
+   res.render("selModulo.ejs")
+})
+
+app.post("/agregarProf", urlParser, (req, res) => {
+   res.render("datosProfes.ejs", {profe: {id: "", nombre: "", correo: "", pass: "", tel: "", cel: ""}})
+})
+
+app.post("/modProf", urlParser, (req, res) => {
+   //Obtiene los datos del profesor
+   res.render("datosProfes.ejs", {profe: {id: "123", nombre: "Tavo", correo: "g@p.com", pass: "jajas", tel: "1", cel: "2"}})
+})
+
+app.post("/datosProfesRes", urlParser, (req, res) => {
+   profe = {id: req.body.entryId,
+      nombre: req.body.entryName,
+      correo: req.body.entryCE,
+      pass: req.body.entryPass,
+      tel: req.body.entryTel,
+      cel: req.body.entryCel
+   }
+   console.log(profe)
+   res.render("gestion.ejs", {clave: 2, arreglo: []})
+})
+
+app.post("/bajaProf", urlParser, (req, res) => {
+   if (req.body.btnBajaProfGuia == "1") {
+      //Codigo que elimina al profe guia
+      console.log("a")
+   }
+   res.render("gestion.ejs", {clave: 2, arreglo: []})
+})
+
+app.post("/defGuia", urlParser, (req, res) => {
+   if (req.body.btnDefProfGuia == "1") {
+      //Codigo que define al profe guia
+      console.log("a")
+   }
+   res.render("gestion.ejs", {clave: 2, arreglo: []})
+})
 
 var server = app.listen(3000, function () {
    var host = server.address().address
