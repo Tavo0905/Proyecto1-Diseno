@@ -46,29 +46,32 @@ public class ProfesorDAO {
         ResultSet resultSet1 = statement1.executeQuery();
         if (resultSet1.next()) {
             String profesorSede = resultSet1.getString("idSede");
+    
+            // Verificar si profesorSede existe y no es vacío
+            if (profesorSede != null && !profesorSede.isEmpty()) {
+                String query2 = "SELECT * FROM Profesores WHERE idSede = ?";
+                PreparedStatement statement2 = connection.prepareStatement(query2);
+                statement2.setString(1, profesorSede);
+                ResultSet resultSet2 = statement2.executeQuery();
+                
+                while (resultSet2.next()) {
+                    int codigo = resultSet2.getInt("codigo");
+                    String nombre = resultSet2.getString("nombre");
+                    String idSede = resultSet2.getString("idSede");
+                    String correo = resultSet2.getString("correo");
+                    String contraseña = resultSet2.getString("contraseña");
+                    int telOficina = resultSet2.getInt("telOficina");
+                    int celular = resultSet2.getInt("celular");
+                    String fotografia = resultSet2.getString("fotografia");
+                    boolean guia = resultSet2.getBoolean("guia");
+                    boolean coordinador = resultSet2.getBoolean("coordinador");
+                    
+                    Profesor profesor = new Profesor(codigo, nombre, idSede, correo, contraseña, telOficina, celular, fotografia, guia, coordinador);
+                    profesores.add(profesor);
+                }
+            }
         }
-
-        String query2 = "SELECT * FROM Profesores";
-        PreparedStatement statement2 = connection.prepareStatement(query2);
-        
-        ResultSet resultSet2 = statement2.executeQuery();
-        
-        while (resultSet2.next()) {
-            int codigo = resultSet2.getInt("codigo");
-            String nombre = resultSet2.getString("nombre");
-            String idSede = resultSet2.getString("idSede");
-            String correo = resultSet2.getString("correo");
-            String contraseña = resultSet2.getString("contraseña");
-            int telOficina = resultSet2.getInt("telOficina");
-            int celular = resultSet2.getInt("celular");
-            String fotografia = resultSet2.getString("fotografia");
-            boolean guia = resultSet2.getBoolean("guia");
-            boolean coordinador = resultSet2.getBoolean("coordinador");
-            
-            Profesor profesor = new Profesor(codigo, nombre, idSede, correo, contraseña, telOficina, celular, fotografia, guia, coordinador);
-            profesores.add(profesor);
-        };
-
+    
         return profesores;
     }
 
