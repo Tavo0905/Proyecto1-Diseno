@@ -58,7 +58,42 @@ app.post('/gestionarEst', urlParser, (req, res) => {
 })
 
 app.post('/gestionarProf', urlParser, (req, res) => {
-   res.render("gestion.ejs", {clave: 2, arreglo: []})
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/gestionarProf',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+
+    
+   const data = JSON.stringify({ clave: 2, arreglo: [], user: usuario.user});
+   options.headers['Content-Length'] = data.length;
+
+      const request = http.request(options, (response) => {
+         let responseBody = '';
+
+         response.on('data', (chunk) => {
+            responseBody += chunk;
+         });
+
+         response.on('end', () => {
+            const profesores = JSON.parse(responseBody);
+            res.render("gestion.ejs", { clave: 2, profesores });
+         });
+      });
+
+      request.on('error', (error) => {
+         console.error('Error al realizar la solicitud:', error);
+         res.status(500).send('Error interno del servidor');
+      });
+
+      request.write(data);
+      request.end();
+  
+      res.render("gestion.ejs", {clave: 2, arreglo: []})
 })
 
 app.post('/gestionarGuias', urlParser, (req, res) => {

@@ -2,6 +2,7 @@ package com.proyecto1diseno.app.Servicio;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -35,4 +36,14 @@ public class ProfesorService {
         ProfesorDAO profesorDAO = DBManager.getProfesorDAO();
         return profesorDAO.validarCredenciales(correo, contrasena);
     }
+
+    public List<Profesor> obtenerProfesores(int clave, List<Object> arreglo, String user) throws SQLException {
+        ProfesorDAO profesorDAO = DBManager.getProfesorDAO();
+        List<Profesor> profesores = profesorDAO.obtenerProfesores(clave, arreglo, user);
+        return profesores;
+    }
+
+
+
+    
 }
