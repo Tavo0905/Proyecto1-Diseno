@@ -114,7 +114,7 @@ app.post('/gestionarProf', urlParser, (req, res) => {
 
          response.on('end', () => {
             const profesores = JSON.parse(responseBody);
-            res.render("gestion.ejs", { clave: 2, profesores });
+            res.render("gestion.ejs", { clave: 2, arreglo : profesores });
          });
       });
 
