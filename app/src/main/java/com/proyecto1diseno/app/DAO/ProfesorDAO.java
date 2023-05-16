@@ -16,7 +16,7 @@ public class ProfesorDAO {
     }
 
     public Optional<Profesor> validarCredenciales(String correo, String contrasena) throws SQLException {
-        String sql = "SELECT * FROM profesores WHERE correo = ? AND contrasena = ?";
+        String sql = "SELECT * FROM Profesores WHERE correo = ? AND contraseña = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, correo);
             statement.setString(2, contrasena);

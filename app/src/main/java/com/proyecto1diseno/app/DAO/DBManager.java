@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 public class DBManager {
 
-    private static final String URL = "jdbc:mysql://db-diseno.cwnromljo7ts.us-east-2.rds.amazonaws.com:1433/EquipoGuia";
+    private static final String URL = "jdbc:sqlserver://db-diseno.cwnromljo7ts.us-east-2.rds.amazonaws.com:1433;databaseName=EquipoGuia";
     private static final String USER = "admin";
     private static final String PASSWORD = "password";
 

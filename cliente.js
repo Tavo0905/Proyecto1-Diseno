@@ -50,7 +50,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
    request.write(data);
    request.end();
 
-   res.render('selModulo.ejs');
+   //res.render('selModulo.ejs');
 })
 
 app.post('/gestionarEst', urlParser, (req, res) => {

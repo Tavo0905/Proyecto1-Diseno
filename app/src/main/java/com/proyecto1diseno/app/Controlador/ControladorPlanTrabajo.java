@@ -3,15 +3,15 @@ package com.proyecto1diseno.app.Controlador;
 import java.util.Collection;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto1diseno.app.Modelo.Actividad;
 import com.proyecto1diseno.app.Modelo.Comentario;
 import com.proyecto1diseno.app.Modelo.Estados;
 import com.proyecto1diseno.app.Servicio.PlanTrabajoService;
 
-@Controller
+@RestController
 @RequestMapping("/plantrabajo")
 public class ControladorPlanTrabajo {
     

@@ -1,13 +1,13 @@
 package com.proyecto1diseno.app.Controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto1diseno.app.Modelo.Profesor;
 import com.proyecto1diseno.app.Servicio.ProfesorService;
 
-@Controller
+@RestController
 @RequestMapping("/profesor")
 public class ControladorProfesor {
     
