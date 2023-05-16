@@ -3,6 +3,7 @@ package com.proyecto1diseno.app.Servicio;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -42,6 +43,18 @@ public class ProfesorService {
         List<Profesor> profesores = profesorDAO.obtenerProfesores(clave, arreglo, user);
         return profesores;
     }
+
+    public Profesor getProfesor(Profesor profesor) {
+        ProfesorDAO profesorDAO = DBManager.getProfesorDAO();
+        Profesor profesorEncontrado = profesorDAO.getProfesor(profesor.getCodigo());
+
+        if (profesorEncontrado == null) {
+            throw new NoSuchElementException("Profesor no encontrado");
+        }
+
+        return profesorEncontrado;
+    }
+
 
 
 

@@ -71,4 +71,10 @@ public class ControladorProfesor {
         
         return profesores;
     }
+
+    @PostMapping("/modProf")
+    public Profesor getProfesor(@RequestBody Profesor profesor) {
+        Profesor profesorModificado = profesorService.getProfesor(profesor);
+        return profesorModificado;
+    }
 }

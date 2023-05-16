@@ -60,8 +60,8 @@ public class ProfesorDAO {
                     String idSede = resultSet2.getString("idSede");
                     String correo = resultSet2.getString("correo");
                     String contraseña = resultSet2.getString("contraseña");
-                    int telOficina = resultSet2.getInt("telOficina");
-                    int celular = resultSet2.getInt("celular");
+                    int telOficina = resultSet2.getInt("numeroOficina");
+                    int celular = resultSet2.getInt("numeroCelular");
                     String fotografia = resultSet2.getString("fotografia");
                     boolean guia = resultSet2.getBoolean("guia");
                     boolean coordinador = resultSet2.getBoolean("coordinador");
@@ -75,6 +75,50 @@ public class ProfesorDAO {
         return profesores;
     }
 
+    public Profesor getProfesor(int codigo) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Profesor profesorEncontrado = null;
+        
+        try {
+
+            String query = "SELECT * FROM Profesores WHERE codigo = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, codigo);
+            resultSet = statement.executeQuery();
+            
+            // Verificar si se encontró un profesor con el código dado
+            if (resultSet.next()) {
+                // Crear un objeto Profesor con los datos obtenidos de la consulta
+                profesorEncontrado = new Profesor();
+                profesorEncontrado.setCodigo(resultSet.getInt("codigo"));
+                profesorEncontrado.setNombre(resultSet.getString("nombre"));
+                profesorEncontrado.setIdSede(resultSet.getString("idSede"));
+                profesorEncontrado.setCorreo(resultSet.getString("correo"));
+                profesorEncontrado.setContraseña(resultSet.getString("contraseña"));
+                profesorEncontrado.setTelOficina(resultSet.getInt("numeroOficina"));
+                profesorEncontrado.setCelular(resultSet.getInt("numeroCelular"));
+                profesorEncontrado.setFotografia(resultSet.getString("fotografia"));
+                profesorEncontrado.setGuia(resultSet.getBoolean("guia"));
+                profesorEncontrado.setCoordinador(resultSet.getBoolean("coordinador"));
+                
+            }
+            
+        } finally {
+            // Cerrar los recursos utilizados
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+        }
+        
+        return profesorEncontrado;
+    }
+
+    
 
 
 
