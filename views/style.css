@@ -4,7 +4,6 @@ body {
     background-attachment: fixed;
     background-position: center;
     background-color: azure;
-    margin-top: 50px;
 }
 
 .formLogin {
@@ -24,7 +23,7 @@ h1 {
     color: #464646;
 }
 
-label {
+.loginTxt {
     display: block;
     font-family: 'Arial', sans-serif;
     font-size: 14px;
@@ -66,7 +65,6 @@ input[type="submit"]:hover {
 .tituloSelMod {
     background-color: azure;
     font-size: xx-large;
-    font-style: italic;
     margin-left: 40%;
     margin-right: 40%;
     margin-top: 100px;
@@ -109,29 +107,51 @@ input[type="submit"]:hover {
     margin-top: 500px;
     position: absolute;
     left: 80%;
-    top: 40%
+    top: 25%;
 }
 
 .botonConfGrGuia:hover {
     background-color: #005A7F;
 }
 
+.gestionBd {
+    margin-top: 1%;
+}
+
 .tituloGestion {
     font-size: xx-large;
     font: bold;
     font-family: Arial;
+    flex-shrink: 0;
+}
+
+.btnSalir1 {
+    width: 75px;
+    background-color: #4b96b0;
+    border-radius: 10px;
+    height: 40px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    float: right;
+}
+
+.btnSalir1:hover {
+    background-color: #005A7F;
 }
 
 .columna1 {
-    display: block;
+    position: fixed;
     float: left;
     width: 100%;
     height: 575px;
 }
 
 .columna2 {
-    float: right;
+    position: fixed;
     width: 38%;
+    margin-left: 61%;
+    top: 60px;
 }
 
 .estudLB {
@@ -141,6 +161,7 @@ input[type="submit"]:hover {
     margin-top: 4%;
     width: 60%;
     height: 100%;
+    box-shadow: 0px 0px 10px #999;
 }
 
 .botonesEst {
@@ -151,6 +172,7 @@ input[type="submit"]:hover {
     transition: background-color 0.5s ease;
     font-size: large;
     color: white;
+    box-shadow: 0px 0px 10px #999;
 }
 
 .botonesEst:hover {
@@ -165,29 +187,162 @@ input[type="submit"]:hover {
     position: absolute;
     width: 200px;
     margin-top: 225px;
-    margin-left: 20px;
+    margin-left: 150px;
 }
 
 #btnImpExcel {
     position: absolute;
-    margin-top: 225px;
-    margin-left: 20px;
+    margin-top: 350px;
+    margin-left: 200px;
 }
 
-.sedeTxt {
+#btnModEst {
     position: absolute;
-    margin-top: 75px;
+    margin-top: 500px;
+    margin-left: 25px;
+}
+
+.sedeTxt, .sedesLB {
+    position: absolute;
+    margin-top: 170px;
     font-family: Arial;
     font-size: x-large;
     margin-left: 75px;
 }
 
 .sedesLB {
-    position: absolute;
-    margin-top: 170px;
-    margin-left: 55px;
-    font-size: x-large;
-    font-family: Arial;
     border-radius: 5px;
+    margin-left: 150px;
     width: 250px;
+    box-shadow: 0px 0px 10px #999;
+}
+
+.excelTxt {
+    position: absolute;
+    margin-top: 358px;
+    font-family: Arial;
+    font-size: x-large;
+}
+
+.botonesProf {
+    margin-top: 10%;
+    background-color: #4b96b0;
+    border-radius: 10px;
+    height: 40px;
+    width: 300px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 10px #999;
+}
+
+.botonesProf:hover {
+    background-color: #005A7F;
+}
+
+#btnNuevoProfGuia {
+    margin-top: 20%;
+    margin-left: 30%;
+}
+
+#btnModProfGuia {
+    margin-top: 4%;
+    margin-left: 30%;
+}
+
+#btnBajaProfGuia {
+    margin-top: 4%;
+    margin-left: 30%;
+}
+
+#btnDefProfGuia {
+    margin-top: 4%;
+    margin-left: 30%;
+}
+
+.containerDatos {
+    display: block;
+    position: center;
+    background-color: rgb(219, 239, 255);
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #999;
+    padding: 20px;
+    width: 600px;
+    height: 500px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.textoDatos {
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: x-large;
+    margin-top: 13px;
+    width: 225px;
+    text-align: right;
+}
+
+.entryDatos[type="text"] {
+    font-family: Arial;
+    font-size: x-large;
+    margin-top: 10px;
+    margin-left: 240px;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.botonDatos {
+    background-color: #4b96b0;
+    border-radius: 10px;
+    height: 40px;
+    width: 100px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 10px #999;
+    position: absolute;
+    margin-left: 240px;
+    margin-top: 7px;
+}
+
+.botonDatos:hover {
+    background-color: #005A7F;
+}
+
+#guardar {
+    background-color: #4b96b0;
+    border-radius: 10px;
+    height: 40px;
+    width: 100px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 10px #999;
+    position: absolute;
+    margin-left: 450px;
+    margin-top: 50px;
+}
+
+#guardar:hover {
+    background-color: #005A7F;
+}
+
+#btnDefProfCoord {
+    background-color: #4b96b0;
+    border-radius: 10px;
+    height: 40px;
+    width: 250px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 10px #999;
+    position: absolute;
+    margin-left: 150px;
+    margin-top: 100px;
+}
+
+#btnDefProfCoord:hover {
+    background-color: #005A7F;
 }

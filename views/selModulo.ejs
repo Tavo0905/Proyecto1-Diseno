@@ -7,6 +7,7 @@
     <div>
         <label class = "tituloSelMod">Seleccione el módulo</label>
     </div>
+    <form class = "formGest" method = "post"></form>
     <div>
         <form class = "formGest" method = "post">
             <button class = "botonesMod" id = "gestionEst" formaction = "gestionarEst">Gestion de estudiantes</button>
@@ -14,7 +15,11 @@
         </form>
     </div>
     <div>
-        <button class = "botonConfGrGuia" id = "confGrGuia">Conformacion de grupo guia</button>
+        <form class = "formGest" method = "post">
+            <button class = "botonConfGrGuia" id = "confGrGuia" name = "confGrGuia" formaction = "gestionarGuias">
+                Conformacion de grupo guia
+            </button>
+        </form>
     </div>
 </body>
 </html>
