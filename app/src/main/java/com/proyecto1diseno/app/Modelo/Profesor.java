@@ -110,6 +110,4 @@ public class Profesor {
         this.idSede = idSede;
     }
 
-
-
 }

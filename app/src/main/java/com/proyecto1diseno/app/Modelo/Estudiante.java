@@ -5,12 +5,14 @@ public class Estudiante {
     private String nombre;
     private String correo;
     private int celular;
+    private String contrasena;
 
-    public Estudiante(int carnet, String nombre, String correo, int celular) {
+    public Estudiante(int carnet, String nombre, String correo, int celular, String contrasena) {
         this.carnet = carnet;
         this.nombre = nombre;
         this.correo = correo;
         this.celular = celular;
+        this.contrasena = contrasena;
     }
 
     public int getCarnet() {
@@ -44,4 +46,13 @@ public class Estudiante {
     public void setCelular(int celular) {
         this.celular = celular;
     }
+
+    public String getContrasena(){
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
 }

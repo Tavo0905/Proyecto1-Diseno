@@ -19,4 +19,8 @@ public class DBManager {
     public static ProfesorDAO getProfesorDAO() throws SQLException {
         return new ProfesorDAO(getConnection());
     }
+
+    public static EstudianteDAO getEstudianteDAO() throws SQLException {
+        return new EstudianteDAO(getConnection());
+    }
 }
