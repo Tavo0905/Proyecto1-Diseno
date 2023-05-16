@@ -15,17 +15,17 @@ public class AsistenteAdminDAO {
         this.connection = connection;
     }
 
-    public Optional<AsistenteAdmin> validarCredenciales(String correo, String contrasena) throws SQLException {
-        String sql = "SELECT * FROM asistentes_admin WHERE correo = ? AND contrasena = ?";
+    public Optional<AsistenteAdmin> validarCredenciales(String correo, String contraseña) throws SQLException {
+        String sql = "SELECT * FROM Asistentes WHERE correo = ? AND contraseña = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, correo);
-            statement.setString(2, contrasena);
+            statement.setString(2, contraseña);
 
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
                     AsistenteAdmin asistenteAdmin = new AsistenteAdmin(
                         result.getString("correo"),
-                        result.getString("contrasena")
+                        result.getString("contraseña")
                     );
                     return Optional.of(asistenteAdmin);
                 } else {
