@@ -30,6 +30,9 @@ public class Profesor {
         this.contraseña = contraseña;
     }
 
+    public Profesor() {
+    }
+
     public int getCodigo() {
         return codigo;
     }
@@ -109,5 +112,7 @@ public class Profesor {
     public void setIdSede(String idSede) {
         this.idSede = idSede;
     }
+
+
 
 }

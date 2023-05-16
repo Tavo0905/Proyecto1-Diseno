@@ -73,7 +73,7 @@ public class ControladorProfesor {
     }
 
     @PostMapping("/modProf")
-    public Profesor getProfesor(@RequestBody Profesor profesor) {
+    public Profesor getProfesor(@RequestBody Profesor profesor) throws SQLException {
         Profesor profesorModificado = profesorService.getProfesor(profesor);
         return profesorModificado;
     }

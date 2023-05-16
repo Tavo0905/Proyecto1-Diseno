@@ -54,7 +54,6 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
 })
 
 app.post('/gestionarEst', urlParser, (req, res) => {
-   const http = require('http');
 
 
    const options = {
@@ -86,9 +85,7 @@ req.on('error', (error) => {
 });
 
 req.write(data);
-req.end();
-
-})
+req.end();})
 
 app.post('/gestionarProf', urlParser, (req, res) => {
    const options = {
@@ -142,9 +139,49 @@ app.post("/agregarProf", urlParser, (req, res) => {
 })
 
 app.post("/modProf", urlParser, (req, res) => {
-   //Obtiene los datos del profesor
-   res.render("datosProfes.ejs", {profe: {id: "123", nombre: "Tavo", correo: "g@p.com", pass: "jajas", tel: "1", cel: "2"}})
-})
+   const profesor = {
+      id: "",
+      nombre: "",
+      correo: "",
+      pass: "",
+      tel: "",
+      cel: ""
+   };
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/modProf',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+      }
+   };
+
+   const data = JSON.stringify(profesor);
+   options.headers['Content-Length'] = data.length;
+
+   const request = http.request(options, (response) => {
+      let responseBody = '';
+
+      response.on('data', (chunk) => {
+         responseBody += chunk;
+      });
+
+      response.on('end', () => {
+         const profesor = JSON.parse(responseBody);
+         res.render("datosProfes.ejs", { profe: profesor });
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error('Error al realizar la solicitud:', error);
+      res.status(500).send('Error interno del servidor');
+   });
+
+   request.write(data);
+   request.end();
+});
 
 app.post("/datosProfesRes", urlParser, (req, res) => {
    profe = {id: req.body.entryId,

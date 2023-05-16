@@ -44,7 +44,7 @@ public class ProfesorService {
         return profesores;
     }
 
-    public Profesor getProfesor(Profesor profesor) {
+    public Profesor getProfesor(Profesor profesor) throws SQLException {
         ProfesorDAO profesorDAO = DBManager.getProfesorDAO();
         Profesor profesorEncontrado = profesorDAO.getProfesor(profesor.getCodigo());
 
