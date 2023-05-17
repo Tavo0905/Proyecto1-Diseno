@@ -204,25 +204,57 @@ app.post('/gestionarEst', urlParser, (req, res) => {
    const request = http.request(options, (res) => {
    let responseData = '';
 
-   request.on('data', (chunk) => {
-      responseData += chunk;
-      });
+      request.on('data', (chunk) => {
+         responseData += chunk;
+         });
 
-   request.on('end', () => {
-      const estudiantes = JSON.parse(responseBody);
-      res.render("gestion.ejs", {clave: 1,arreglo : estudiantes });
+      request.on('end', () => {
+         const estudiantes = JSON.parse(responseBody);
+         res.render("gestion.ejs", {clave: 1,arreglo : estudiantes });
+         });
       });
-   });
 
    request.on('error', (error) => {
-   console.error(error);
+      console.error(error);
+   });
+
+   request.write(data);
+   request.end()
 });
 
-req.write(data);
-req.end();})
+
 
 app.post('/gestionarProf', urlParser, (req, res) => {
-   res.render("gestion.ejs", {clave: 2, arreglo: profes})
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/gestionarProf',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': data.length
+      }
+      };
+   
+   const request = http.request(options, (res) => {
+      let responseData = '';
+   
+      request.on('data', (chunk) => {
+         responseData += chunk;
+         });
+      
+      request.on('end', () => {
+         const profesores = JSON.parse(responseBody);
+         res.render("gestion.ejs", {clave: 1,arreglo : profesores });
+         });
+      });
+      
+   request.on('error', (error) => {
+      console.error(error);
+   });
+   
+   request.write(data);
+   request.end()
 })
 
 app.post('/gestionarGuias', urlParser, (req, res) => {
