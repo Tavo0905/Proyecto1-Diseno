@@ -28,8 +28,9 @@ public class ControladorEstudiante {
     public List<Estudiante> gestionarEst(@RequestBody Map<String, Object> requestBody) throws SQLException {
         int clave = (int) requestBody.get("clave");
         List<Object> arreglo = (List<Object>) requestBody.get("arreglo");
+        String user = (String) requestBody.get("user");
         
-        List<Estudiante> estudiantes = estudianteService.obtenerEstudiantes(clave, arreglo);
+        List<Estudiante> estudiantes = estudianteService.obtenerEstudiantes(clave, arreglo, user);
 
         return estudiantes;
     }

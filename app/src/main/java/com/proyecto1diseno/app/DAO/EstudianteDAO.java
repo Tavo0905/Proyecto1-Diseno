@@ -16,7 +16,7 @@ public class EstudianteDAO {
         this.connection = connection;
     }
 
-    public List<Estudiante> obtenerEstudiantes(int clave, List<Object> arreglo) throws SQLException {
+    public List<Estudiante> obtenerEstudiantes(int clave, List<Object> arreglo, String user) throws SQLException {
         List<Estudiante> estudiantes = new ArrayList<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;

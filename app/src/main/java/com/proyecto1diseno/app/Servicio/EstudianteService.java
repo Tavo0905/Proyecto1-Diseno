@@ -10,9 +10,9 @@ import com.proyecto1diseno.app.Modelo.Estudiante;
 @Service
 public class EstudianteService {
 
-    public List<Estudiante> obtenerEstudiantes(int clave, List<Object> arreglo) throws SQLException {
+    public List<Estudiante> obtenerEstudiantes(int clave, List<Object> arreglo, String user) throws SQLException {
         EstudianteDAO estudianteDAO = DBManager.getEstudianteDAO();
-        List<Estudiante> estudiantes = estudianteDAO.obtenerEstudiantes(clave, arreglo);
+        List<Estudiante> estudiantes = estudianteDAO.obtenerEstudiantes(clave, arreglo, user);
         return estudiantes;
     }
     
