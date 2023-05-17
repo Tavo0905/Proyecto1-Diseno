@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel = "stylesheet" href = "style.css">
+    <script>
+        function confCancelarAct() {
+            if (confirm("¿Estás seguro que quieres cancelar esta actividad?")) {
+                document.getElementById("btnBajaProfGuia").setAttribute("value", "1")
+            } else {
+                document.getElementById("btnBajaProfGuia").setAttribute("value", "2")
+            }
+        }
+    </script>
+</head>
+<body class = "gestionBd">
+    <form class = "formGestionPT" method = "post">
+        <div>
+            <label class = "tituloGestion">CONFORMACIÓN DEL EQUIPO GUÍA</label>
+            <button class = "btnSalir1" id = "btnSalir1" name = "btnSalir1" formaction = "salirGestionPT">
+                Salir
+            </button>
+        </div>
+        <div class = "columna1">
+            <select class = "actLB" id = "actividadLB" name = "actividadLB" size = "2">
+                <% for (elemento of arreglo) { %>
+                    <option value = <%= elemento["id"] %>>
+                        <%= elemento["id"] %>
+                    </option>
+                <% } %>
+            </select>
+            <div class = "columna2">
+                <button class = "botonesAct" id = "btnNuevaAct" name = "btnNuevoProfGuia" formaction = "agrActividad">
+                    Agregar actividad
+                </button>
+                <button class = "botonesAct" id = "btnMarcarRealizada" name = "btnMarcarRealizada" formaction = ""
+                onclick = "confirm('Se ha marcada con éxito!')">
+                    Marcar como REALIZADA
+                </button>
+                <button class = "botonesAct" id = "btnCancelarAct" name = "btnCancelarAct" onclick = "confCancelarAct()"
+                formaction = "">
+                    CANCELAR actividad
+                </button>
+                <button class = "botonesAct" id = "btnPublicAct" name = "btnPublicAct" onclick = "confirm('Se ha activado la publicación con éxito!')"
+                formaction = "">
+                    Activar publicación
+                </button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

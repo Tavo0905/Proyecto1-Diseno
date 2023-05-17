@@ -5,30 +5,30 @@
 </head>
 <body class = "datosProfBd">
     <div class = "containerDatos">
-        <form action = "datosProfesRes" method = "post">
+        <form action = "datosEstRes" method = "post">
             <div>
                 <label class = "textoDatos" id = "textoId" name = "textoId" for = "entryId">
                     Carnet:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryId" name = "entryId" value = <%= profe.id %>>
+                <input class = "entryDatos" type = "text" id = "entryId" name = "entryId" value = <%= est.id %>>
             </div>
             <div>
                 <label class = "textoDatos" id = "textoName" name = "textoName" for = "entryName">
                     Nombre:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryName" name = "entryName" value = <%= profe.nombre %>>
+                <input class = "entryDatos" type = "text" id = "entryName" name = "entryName" value = <%= est.nombre %>>
             </div>
             <div>
                 <label class = "textoDatos" id = "textoCE" name = "textoCE" for = "entryCE">
                     Correo Electronico:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryCE" name = "entryCE" value = <%= profe.correo %>>
+                <input class = "entryDatos" type = "text" id = "entryCE" name = "entryCE" value = <%= est.correo %>>
             </div>
             <div>
                 <label class = "textoDatos" id = "textoCel" name = "textoCel" for = "entryCel">
                     Numero Celular:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryCel" name = "entryCel" value = <%= profe.cel %>>    
+                <input class = "entryDatos" type = "text" id = "entryCel" name = "entryCel" value = <%= est.cel %>>    
             </div>
             <div>
                 <button type = "submit" id = "guardar" name = "guardar" onclick = "alert('Guardado con éxito!')">Guardar</button>
