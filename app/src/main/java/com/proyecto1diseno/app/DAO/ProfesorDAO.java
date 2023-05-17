@@ -85,7 +85,7 @@ public class ProfesorDAO {
 
             String query = "SELECT * FROM Profesores WHERE codigo = ?";
             statement = connection.prepareStatement(query);
-            statement.setString(1, codigo);
+            statement.setInt(1, codigo);
             resultSet = statement.executeQuery();
             
             // Verificar si se encontró un profesor con el código dado

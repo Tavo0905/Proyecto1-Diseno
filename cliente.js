@@ -54,8 +54,6 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
 })
 
 app.post('/gestionarEst', urlParser, (req, res) => {
-
-
    const options = {
    hostname: 'localhost',
    port: 8080,
@@ -67,21 +65,21 @@ app.post('/gestionarEst', urlParser, (req, res) => {
    }
    };
 
-   const req = http.request(options, (res) => {
+   const request = http.request(options, (res) => {
    let responseData = '';
 
-  res.on('data', (chunk) => {
-    responseData += chunk;
-  });
+   request.on('data', (chunk) => {
+      responseData += chunk;
+      });
 
-  res.on('end', () => {
-   const estudiantes = JSON.parse(responseBody);
-   res.render("gestion.ejs", {clave: 1,arreglo : estudiantes });
-  });
-});
+   request.on('end', () => {
+      const estudiantes = JSON.parse(responseBody);
+      res.render("gestion.ejs", {clave: 1,arreglo : estudiantes });
+      });
+   });
 
-req.on('error', (error) => {
-  console.error(error);
+   request.on('error', (error) => {
+   console.error(error);
 });
 
 req.write(data);
