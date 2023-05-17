@@ -4,16 +4,24 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyecto1diseno.app.Modelo.Profesor;
 import com.proyecto1diseno.app.Servicio.ProfesorService;
 
+
 @RestController
+@Slf4j
 @RequestMapping("/profesor")
 public class ControladorProfesor {
     
@@ -62,14 +70,13 @@ public class ControladorProfesor {
     }
 
     @PostMapping("/gestionarProf")
-    public List<Profesor> gestionarProf(@RequestBody Map<String, Object> requestBody) throws SQLException {
-         int clave = (int) requestBody.get("clave");
-         List<Object> arreglo = (List<Object>) requestBody.get("arreglo");
-         String user = (String) requestBody.get("user");
+    public ResponseEntity<List<Map<String,Object>>> gestionarProf(@RequestBody Map<String, Object> requestBody) throws SQLException, JsonProcessingException {
+        String user = (String) requestBody.get("user");
+        log.info("USER: " + user);
          
-         List<Profesor> profesores = profesorService.obtenerProfesores(clave, arreglo, user);
-        
-        return profesores;
+        List<Map<String, Object>> profesores = profesorService.obtenerProfesores(user);
+        log.info("PROFESORES: " + profesores);
+        return ResponseEntity.ok().body(profesores);
     }
 
     @PostMapping("/modProf")

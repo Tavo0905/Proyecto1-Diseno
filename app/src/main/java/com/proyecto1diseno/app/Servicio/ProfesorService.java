@@ -3,6 +3,7 @@ package com.proyecto1diseno.app.Servicio;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -38,9 +39,9 @@ public class ProfesorService {
         return profesorDAO.validarCredenciales(correo, contrasena);
     }
 
-    public List<Profesor> obtenerProfesores(int clave, List<Object> arreglo, String user) throws SQLException {
+    public List<Map<String, Object>> obtenerProfesores(String user) throws SQLException {
         ProfesorDAO profesorDAO = DBManager.getProfesorDAO();
-        List<Profesor> profesores = profesorDAO.obtenerProfesores(clave, arreglo, user);
+        List<Map<String, Object>> profesores = profesorDAO.obtenerProfesores(user);
         return profesores;
     }
 

@@ -184,9 +184,6 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
 
    request.write(data);
    request.end();
-
-   res.render('selModulo.ejs');
-   //res.render('gestionPlanTrabajo.ejs', {arreglo: []})
 })
 
 app.post('/gestionarEst', urlParser, (req, res) => {
@@ -197,19 +194,18 @@ app.post('/gestionarEst', urlParser, (req, res) => {
    method: 'POST',
    headers: {
       'Content-Type': 'application/json',
-      'Content-Length': data.length
    }
    };
 
-   const request = http.request(options, (res) => {
+   const request = http.request(options, (response) => {
    let responseData = '';
 
-      request.on('data', (chunk) => {
+      response.on('data', (chunk) => {
          responseData += chunk;
          });
 
-      request.on('end', () => {
-         const estudiantes = JSON.parse(responseBody);
+      response.on('end', () => {
+         const estudiantes = JSON.parse(responseData);
          res.render("gestion.ejs", {clave: 1,arreglo : estudiantes });
          });
       });
@@ -218,42 +214,46 @@ app.post('/gestionarEst', urlParser, (req, res) => {
       console.error(error);
    });
 
-   request.write(data);
    request.end()
 });
 
 
 
 app.post('/gestionarProf', urlParser, (req, res) => {
+   const user = { user: usuario.user };
+   postUser = JSON.stringify(user);
+
    const options = {
       hostname: 'localhost',
       port: 8080,
-      path: '/gestionarProf',
+      path: '/profesor/gestionarProf',
       method: 'POST',
       headers: {
          'Content-Type': 'application/json',
-         'Content-Length': data.length
+         'Content-Length': Buffer.byteLength(postUser),
       }
-      };
+   };
    
-   const request = http.request(options, (res) => {
+   const request = http.request(options, (response) => {
       let responseData = '';
    
-      request.on('data', (chunk) => {
+      response.on('data', (chunk) => {
          responseData += chunk;
          });
       
-      request.on('end', () => {
-         const profesores = JSON.parse(responseBody);
-         res.render("gestion.ejs", {clave: 1,arreglo : profesores });
+      response.on('end', () => {
+         const profesores = JSON.parse(responseData);
+         console.log(profesores);
+         res.render("gestion.ejs", {clave: 1, arreglo : profesores});
          });
       });
       
    request.on('error', (error) => {
       console.error(error);
    });
+
+   request.write(postUser);
    
-   request.write(data);
    request.end()
 })
 

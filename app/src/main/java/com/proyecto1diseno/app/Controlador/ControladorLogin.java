@@ -47,7 +47,7 @@ public class ControladorLogin {
         // Validar credenciales del Asistente Administrativo
         Optional<AsistenteAdmin> asistente = servicioAsistenteAdmin.validarCredenciales(correo, contrasena);
         if (asistente.isPresent()) {
-            return ResponseEntity.ok("Asistente Administrativo");
+            return ResponseEntity.ok("Asistente");
         }
  
         // Si no se encontró un usuario válido, devolver un error
