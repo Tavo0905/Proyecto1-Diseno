@@ -18,6 +18,7 @@
                 document.getElementById("btnDefProfGuia").setAttribute("value", "2")
             }
         }
+
     </script>
 </head>
 <body class = "gestionBd">
@@ -35,13 +36,35 @@
             </button>
         </div>
         <div class = "columna1">
-            <select class = "estudLB" id = "estudiantesLB" name = "estudiantesLB" size = "2">
-                <% for (elemento of arreglo) { %>
-                    <option value = <%= elemento["carne"] %>>
-                        <%= elemento["carne"] %>
-                    </option>
-                <% } %>
-            </select>
+            <div class = "estudLB" id = "estudiantesLB" name = "estudiantesLB">
+                <table class = "tablaHeader">
+                    <tr>
+                        <% if (clave == 1) { %>
+                            <th>Carné</th>
+                        <% } if (clave == 2) { %>
+                            <th>ID</th>
+                        <% } %>
+                        <th>Nombre</th>
+                        <th>Correo Electronico</th>
+                        <th>Numero Telefono</th>
+                    </tr>
+                </table>
+                <div class = "divInfo">
+                    <table>
+                        <% for (elemento of arreglo) { %>
+                        <tr>
+                            <td><%= elemento["id"] %></td>
+                            <td><%= elemento["nombre"] %></td>
+                            <td><%= elemento["correo"] %></td>
+                            <td><%= elemento["tel"] %></td>
+                            <td>
+                                <input type = "radio" id = "elementosTabla" name = "elementosTabla" value="<%= elemento['id'] %>">
+                            </td>
+                        </tr>
+                        <% } %>
+                    </table>
+                </div>
+            </div>
             <div class = "columna2">
                 <% if (clave == 1) { %>
                     <button class = "botonesEst" id = "botonOrdenEst" name = "botonOrdenEst">
@@ -67,7 +90,7 @@
                     <button class = "botonesEst" id = "btnImpExcel" name = "btnImpExcel">
                         Añadir archivo...
                     </button>
-                    <button class = "botonesEst" id = "btnModEst" name = "btnModEst">
+                    <button class = "botonesEst" id = "btnModEst" name = "btnModEst" formaction = "modEst">
                         Modificar información de estudiante
                     </button>
                 <% } if (clave == 2) { %>
