@@ -156,12 +156,44 @@ input[type="submit"]:hover {
 
 .estudLB {
     background-color: rgb(186, 225, 222);
-    border-radius: 10px;
-    border-width: 0px;
+    border-radius: 0px;
     margin-top: 4%;
     width: 60%;
     height: 100%;
+    border: 1px solid;
+    border-collapse: collapse;
     box-shadow: 0px 0px 10px #999;
+}
+
+.estudLB table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tablaHeader{
+    font-family: Arial;
+    font-size: medium;
+}
+
+th {
+    border: 1px solid;
+    width: 25%
+}
+
+tr {
+    height: 0px;
+}
+
+.divInfo {
+    height: 550px;
+    font-family: Arial;
+    font-size: medium;
+    overflow-y: scroll;
+}
+
+.divInfo td {
+    width: 26%;
+    cursor: pointer;
 }
 
 .botonesEst {
@@ -345,4 +377,112 @@ input[type="submit"]:hover {
 
 #btnDefProfCoord:hover {
     background-color: #005A7F;
+}
+
+.actLB {
+    background-color: rgb(186, 225, 222);
+    border-radius: 10px;
+    border-width: 0px;
+    margin-top: 4%;
+    width: 60%;
+    height: 100%;
+    box-shadow: 0px 0px 10px #999;
+}
+
+.botonesAct {
+    margin-top: 10%;
+    background-color: #4b96b0;
+    border-radius: 10px;
+    height: 40px;
+    width: 300px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 10px #999;
+}
+
+.botonesAct:hover {
+    background-color: #005A7F;
+}
+
+#btnNuevaAct {
+    margin-top: 20%;
+    margin-left: 30%;
+}
+
+#btnMarcarRealizada {
+    margin-top: 4%;
+    margin-left: 30%;
+}
+
+#btnCancelarAct {
+    margin-top: 4%;
+    margin-left: 30%;
+}
+
+#btnPublicAct {
+    margin-top: 4%;
+    margin-left: 30%;
+}
+
+.containerAgregarActividad {
+    display: block;
+    position: center;
+    background-color: rgb(219, 239, 255);
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #999;
+    padding: 20px;
+    width: 1000px;
+    height: 600px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.textoAct {
+    display: block;
+    position: absolute;
+    font-family: Arial;
+    font-size: x-large;
+    margin-top: 4px;
+    text-align: left;
+}
+
+.entryAct[type="text"] {
+    font-family: Arial;
+    font-size: x-large;
+    margin-top: 1px;
+    margin-left: 240px;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 500px;
+}
+
+#guardarAct {
+    background-color: #4b96b0;
+    border-radius: 10px;
+    height: 40px;
+    width: 100px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 10px #999;
+    position: absolute;
+    margin-left: 100px;
+}
+
+#elementosTabla {
+    appearance: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    border: 2px solid black;
+    transition: 0.2s all linear;
+    margin-right: 5px;
+
+    position: relative;
+    top: 4px;
+}
+
+#elementosTabla:checked {
+    border: 6px solid black;
 }
