@@ -140,8 +140,6 @@ var estudiantes = [
 ]
 
 
-
-
 app.get('/', (req, res) => {
    res.render('login.ejs')
 })
@@ -187,36 +185,42 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
 })
 
 app.post('/gestionarEst', urlParser, (req, res) => {
+   const user = { user: usuario.user };
+   postUser = JSON.stringify(user);
+
    const options = {
-   hostname: 'localhost',
-   port: 8080,
-   path: '/gestionarEst',
-   method: 'POST',
-   headers: {
-      'Content-Type': 'application/json',
-   }
+      hostname: 'localhost',
+      port: 8080,
+      path: '/estudiante/gestionarEst',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(postUser),
+      }
    };
-
+   
    const request = http.request(options, (response) => {
-   let responseData = '';
-
+      let responseData = '';
+   
       response.on('data', (chunk) => {
          responseData += chunk;
          });
-
+      
       response.on('end', () => {
          const estudiantes = JSON.parse(responseData);
-         res.render("gestion.ejs", {clave: 1,arreglo : estudiantes });
+         console.log(estudiantes);
+         res.render("gestion.ejs", {clave: 1, arreglo : estudiantes});
          });
       });
-
+      
    request.on('error', (error) => {
       console.error(error);
    });
 
+   request.write(postUser);
+   
    request.end()
 });
-
 
 
 app.post('/gestionarProf', urlParser, (req, res) => {

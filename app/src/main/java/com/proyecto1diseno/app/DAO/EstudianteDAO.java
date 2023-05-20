@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EstudianteDAO {
 
@@ -16,43 +18,31 @@ public class EstudianteDAO {
         this.connection = connection;
     }
 
-    public List<Estudiante> obtenerEstudiantes(int clave, List<Object> arreglo, String user) throws SQLException {
-        List<Estudiante> estudiantes = new ArrayList<>();
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<Map<String, Object>> obtenerEstudiantes(String user) throws SQLException {
+        List<Map<String, Object>> estudiantes = new ArrayList<>();
 
-        try {
+        String query1 = "SELECT * FROM Estudiantes WHERE correo = ?"; 
+        PreparedStatement statement1 = connection.prepareStatement(query1);
+        statement1.setString(1, user);
+        ResultSet resultSet1 = statement1.executeQuery();
+        if (resultSet1.next()) {
+            String estudianteSede = resultSet1.getString("idSede");
             
-            String sql = "SELECT * FROM Estudiantes";
+            if (estudianteSede != null && !estudianteSede.isEmpty()) {
+                String query2 = "SELECT * FROM Estudiante WHERE idSede = ?";
+                PreparedStatement statement2 = connection.prepareStatement(query2);
+                statement2.setString(1, estudianteSede);
+                ResultSet resultSet2 = statement2.executeQuery();
+                
+                while (resultSet2.next()) {
+                    Map<String, Object> estudiante = new HashMap<>();
+                    estudiante.put("id", estudianteSede + "-" + resultSet2.getInt("idEstudiante"));
+                    estudiante.put("nombre", resultSet2.getString("nombre"));
+                    estudiante.put("correo", resultSet2.getString("correo"));
+                    estudiante.put("celular", resultSet2.getString("numeroCelular"));
+                    estudiantes.add(estudiante);
+                }
 
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, clave);
-
-            // Configura los valores de la lista 'arreglo' en el PreparedStatement
-            for (int i = 0; i < arreglo.size(); i++) {
-                statement.setObject(i + 2, arreglo.get(i));
-            }
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                // Aquí se extraen los datos del ResultSet y se crea un objeto Estudiante
-                int carnet = resultSet.getInt("carnet");
-                String nombre = resultSet.getString("nombre");
-                String correo = resultSet.getString("correo");
-                int celular = resultSet.getInt("celular");
-                String contrasena = resultSet.getString("contrasena");
-
-                Estudiante estudiante = new Estudiante(carnet, nombre, correo, celular, contrasena);
-                estudiantes.add(estudiante);
-            }
-        } finally {
-            // Cierra los recursos en caso de excepción o al finalizar la consulta
-            if (resultSet != null) {
-                resultSet.close();
-            }
-            if (statement != null) {
-                statement.close();
             }
         }
 
