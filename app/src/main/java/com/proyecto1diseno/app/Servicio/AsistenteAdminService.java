@@ -67,7 +67,7 @@ public class AsistenteAdminService {
         }
         for (Profesor prof : profesores){
             if (prof.getCodigo() == profesor.getCodigo()){
-                prof.setCoordinador(true);
+                //prof.setCoordinador(true);
                 return true;
             }
         }

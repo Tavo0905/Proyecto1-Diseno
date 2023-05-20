@@ -1,43 +1,29 @@
 package com.proyecto1diseno.app.Modelo;
 
 public class Profesor {
-    private int codigo;
+    private int idProfesor;
+    private String codigo;
     private String nombre;
     private String idSede;
     private String correo;
-    private String contraseña;
+    private String contrasena;
     private int telOficina;
     private int celular;
     private String fotografia;
-    private boolean guia;
-    private boolean coordinador;
 
-    public Profesor(int codigo, String nombre, String idSede, String correo, String contraseña, int telOficina, int celular, String fotografia, boolean guia, boolean coordinador) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.idSede = idSede;
+    public Profesor(String correo, String contrasena) {
         this.correo = correo;
-        this.contraseña = contraseña;
-        this.telOficina = telOficina;
-        this.celular = celular;
-        this.fotografia = fotografia;
-        this.guia = guia;
-        this.coordinador = coordinador;
-    }
-
-    public Profesor(String correo, String contraseña) {
-        this.correo = correo;
-        this.contraseña = contraseña;
+        this.contrasena = contrasena;
     }
 
     public Profesor() {
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
@@ -73,22 +59,6 @@ public class Profesor {
         this.fotografia = fotografia;
     }
 
-    public boolean isGuia() {
-        return guia;
-    }
-
-    public void setGuia(boolean guia) {
-        this.guia = guia;
-    }
-
-    public boolean isCoordinador() {
-        return coordinador;
-    }
-
-    public void setCoordinador(boolean coordinador) {
-        this.coordinador = coordinador;
-    }
-
     public String getCorreo() {
         return correo;
     }
@@ -97,12 +67,12 @@ public class Profesor {
         this.correo = correo;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasena() {
+        return contrasena;
     }      
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getIdSede() {
