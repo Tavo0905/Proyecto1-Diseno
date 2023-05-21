@@ -83,6 +83,13 @@ public class Profesor {
         this.idSede = idSede;
     }
 
+    public int getidProfesor() {       
+        return idProfesor;
+    }
+
+    public void setIdProfesor(int idProfesor) { 
+        this.idProfesor = idProfesor;  
+    }
 
 
 }
