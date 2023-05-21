@@ -92,9 +92,6 @@ public class ControladorProfesor {
         profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
         profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
         profesorService.modificarProfesor(profesor);
-
-
-        // Realiza la lógica para actualizar la base de datos con los datos del profesor
         return ResponseEntity.ok().body("Profesor Modificado");
     }
 
@@ -104,5 +101,13 @@ public class ControladorProfesor {
         int codigoProf = Integer.parseInt(codigoProfString);
         profesorService.darDeBajaProfesor(codigoProf);
         return ResponseEntity.ok().body("Profesor dado de baja");
+    }
+
+    @PostMapping("/defGuia")
+    public ResponseEntity<String> defGuiaProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        String codigoProfString = (String) requestBody.get("codigo");
+        int codigoProf = Integer.parseInt(codigoProfString);
+        profesorService.defGuiaProfesor(codigoProf);
+        return ResponseEntity.ok().body("Profesor añadido como guia.");
     }
 }

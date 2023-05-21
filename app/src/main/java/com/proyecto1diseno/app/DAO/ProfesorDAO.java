@@ -155,6 +155,59 @@ public class ProfesorDAO {
         }
     }
 
+    public void defGuiaProfesor(int idProfesor) throws SQLException {
+        String selectProfesorSql = "SELECT idSede FROM Profesores WHERE idProfesor = ?";
+        String idSede;
+
+        try (PreparedStatement selectProfesorStatement = connection.prepareStatement(selectProfesorSql)) {
+            selectProfesorStatement.setInt(1, idProfesor);
+
+            try (ResultSet resultSet = selectProfesorStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    idSede = resultSet.getString("idSede");
+                } else {
+                    return;
+                }
+            }
+        }
+
+        String selectIdProfesorSql = "SELECT idProfesor FROM ProfesoresGuias WHERE idProfesor = ?";
+        
+        try (PreparedStatement selectIdProfesorStatement = connection.prepareStatement(selectIdProfesorSql)) {
+            selectIdProfesorStatement.setInt(1, idProfesor);
+            try (ResultSet resultSet = selectIdProfesorStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // idProfesor ya existe en ProfesoresGuias, no hacer nada
+                    return;
+                }
+            }
+        }
+
+        String selectMaxCodigoSql = "SELECT MAX(CAST(RIGHT(codigo, 2) AS INT)) AS max_numero FROM ProfesoresGuias WHERE LEFT(codigo, CHARINDEX('-', codigo) - 1) = ?";
+        String insertProfesorGuiaSql = "INSERT INTO ProfesoresGuias (idProfesor, codigo, coordinador) VALUES (?, ?, 0)";
+        int maxNumero;
+
+        try (PreparedStatement statement = connection.prepareStatement(selectMaxCodigoSql)) {
+            statement.setString(1, idSede);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    maxNumero = resultSet.getInt("max_numero");
+                } else {
+                    maxNumero = 0;
+                }
+            }
+        }
+        
+        int nuevoNumero = maxNumero + 1;
+        String nuevoCodigo = idSede + "-" + String.format("%02d", nuevoNumero);
+        
+        try (PreparedStatement statement = connection.prepareStatement(insertProfesorGuiaSql)) {
+            statement.setInt(1, idProfesor);
+            statement.setString(2, nuevoCodigo);
+            statement.executeUpdate();
+        }
+    }
+
     
 
 

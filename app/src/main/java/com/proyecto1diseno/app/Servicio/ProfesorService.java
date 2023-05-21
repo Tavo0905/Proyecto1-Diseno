@@ -53,6 +53,10 @@ public class ProfesorService {
         profesorDAO.darDeBajaProfesor(codigoProf);
     }
 
+    public void defGuiaProfesor(int codigoProf) throws SQLException {
+        profesorDAO.defGuiaProfesor(codigoProf);
+    }
+
 
 
 
