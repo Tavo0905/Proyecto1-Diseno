@@ -133,11 +133,11 @@ GO
 -- ProfesoresGuias
 /*
 INSERT INTO dbo.ProfesoresGuias (idProfesor, fechaInicio, fechaFinal, codigo, coordinador)
-VALUES (1, CONVERT(date, GETDATE()), NULL, 'CA-1', 1),
-(6, CONVERT(date, GETDATE()), NULL, 'SJ-1', 0),
-(11, CONVERT(date, GETDATE()), NULL, 'LI-1', 0),
-(16, CONVERT(date, GETDATE()), NULL, 'AL-1', 0),
-(21, CONVERT(date, GETDATE()), NULL, 'SC-1', 0)
+VALUES (1, 'CA-1', 1),
+(6, 'SJ-1', 0),
+(11, 'LI-1', 0),
+(16, 'AL-1', 0),
+(21, 'SC-1', 0)
 
 select * from dbo.ProfesoresGuias
 inner join Profesores on ProfesoresGuias.idProfesor = Profesores.idProfesor
@@ -145,21 +145,21 @@ inner join Profesores on ProfesoresGuias.idProfesor = Profesores.idProfesor
 GO
 
 
--- Modificaciones
+-- TiposModificaciones
 /*
-INSERT INTO dbo.Modificaciones (descripcion)
+INSERT INTO dbo.TiposModificaciones (descripcion)
 VALUES ('Registro de nuevo ingreso de profesor(a)'),
 ('Dar de baja a profesor(a)'),
 ('Alteracion de informacion de profesor(a)')
 
-select * from dbo.Modificaciones
+select * from dbo.TiposModificaciones
 */
 GO
 
 
 -- ModificacionesProfesoresGuias
 /*
-INSERT INTO dbo.ModificacionesProfesoresGuias (idProfesor, idAsistente, idModificacion, fecha)
+INSERT INTO dbo.ModificacionesProfesoresGuias (idProfesor, idAsistente, idTipoModificacion, fecha)
 VALUES (1, 1, 1, CONVERT(date, GETDATE())),
 (6, 4, 1, CONVERT(date, GETDATE())),
 (11, 7, 1, CONVERT(date, GETDATE())),
