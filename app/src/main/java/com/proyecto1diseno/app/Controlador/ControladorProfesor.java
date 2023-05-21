@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.proyecto1diseno.app.Modelo.Profesor;
 import com.proyecto1diseno.app.Servicio.ProfesorService;
 
@@ -72,16 +73,18 @@ public class ControladorProfesor {
     @PostMapping("/gestionarProf")
     public ResponseEntity<List<Map<String,Object>>> gestionarProf(@RequestBody Map<String, Object> requestBody) throws SQLException, JsonProcessingException {
         String user = (String) requestBody.get("user");
-        log.info("USER: " + user);
-         
         List<Map<String, Object>> profesores = profesorService.obtenerProfesores(user);
-        log.info("PROFESORES: " + profesores);
         return ResponseEntity.ok().body(profesores);
     }
 
     @PostMapping("/modProf")
-    public Profesor getProfesor(@RequestBody Profesor profesor) throws SQLException {
-        Profesor profesorModificado = profesorService.getProfesor(profesor);
-        return profesorModificado;
+    public ResponseEntity<String> getProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        String codigoProf = (String) requestBody.get("codigo");
+        log.info("SE RECIBIO CODIGO: " + codigoProf);
+        Profesor profesorAMostrar = profesorService.getProfesor(codigoProf);
+        Gson gson = new Gson();
+        String jsonProfesor = gson.toJson(profesorAMostrar);
+        log.info(jsonProfesor);
+        return ResponseEntity.ok().body(jsonProfesor);
     }
 }

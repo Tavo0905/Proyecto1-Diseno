@@ -246,11 +246,14 @@ app.post('/gestionarProf', urlParser, (req, res) => {
          });
       
       response.on('end', () => {
-         const profesores = JSON.parse(responseData);
-         console.log(profesores);
-         res.render("gestion.ejs", {clave: 1, arreglo : profesores});
-         });
+         if (response.statusCode === 200) {
+            const profesores = JSON.parse(responseData);
+            res.render("gestion.ejs", {clave: 2, arreglo : profesores});
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);   
+            }
       });
+   });
       
    request.on('error', (error) => {
       console.error(error);
@@ -280,27 +283,21 @@ app.post("/agregarProf", urlParser, (req, res) => {
 })
 
 app.post("/modProf", urlParser, (req, res) => {
-   const profesor = {
-      id: "",
-      nombre: "",
-      correo: "",
-      pass: "",
-      tel: "",
-      cel: ""
-   };
+   const codigo = JSON.stringify({
+      codigo: req.body.elementosTabla
+    });
 
    const options = {
       hostname: 'localhost',
       port: 8080,
-      path: '/modProf',
+      path: '/profesor/modProf',
       method: 'POST',
       headers: {
          'Content-Type': 'application/json',
       }
    };
 
-   const data = JSON.stringify(profesor);
-   options.headers['Content-Length'] = data.length;
+   options.headers['Content-Length'] = codigo.length;
 
    const request = http.request(options, (response) => {
       let responseBody = '';
@@ -310,8 +307,13 @@ app.post("/modProf", urlParser, (req, res) => {
       });
 
       response.on('end', () => {
-         const profesor = JSON.parse(responseBody);
-         res.render("datosProfes.ejs", { profe: profesor });
+         if (response.statusCode === 200) {
+            const profesor = JSON.parse(responseBody);
+            res.render("datosProfes.ejs", { profe: profesor });
+         }else{
+            console.log("ERROR: " + responseBody);
+         }
+
       });
    });
 
@@ -320,7 +322,7 @@ app.post("/modProf", urlParser, (req, res) => {
       res.status(500).send('Error interno del servidor');
    });
 
-   request.write(data);
+   request.write(codigo);
    request.end();
 });
 

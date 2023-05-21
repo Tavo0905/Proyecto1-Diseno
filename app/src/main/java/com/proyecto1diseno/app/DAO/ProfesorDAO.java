@@ -39,65 +39,86 @@ public class ProfesorDAO {
         }
     }
 
-    public List<Map<String, Object>> obtenerProfesores(String user) throws SQLException { 
+    public List<Map<String, Object>> obtenerProfesores(String user) throws SQLException {
         List<Map<String, Object>> profes = new ArrayList<>();
-        
         String query1 = "SELECT * FROM Profesores WHERE correo = ?";
-        PreparedStatement statement1 = connection.prepareStatement(query1);
-        statement1.setString(1, user);
-        ResultSet resultSet1 = statement1.executeQuery();
-        if (resultSet1.next()) {
-            String profesorSede = resultSet1.getString("idSede");
-            
-            if (profesorSede != null && !profesorSede.isEmpty()) {
-                String query2 = "SELECT * FROM Profesores WHERE idSede = ?";
-                PreparedStatement statement2 = connection.prepareStatement(query2);
-                statement2.setString(1, profesorSede);
-                ResultSet resultSet2 = statement2.executeQuery();
-                
-                while (resultSet2.next()) {
-                    Map<String, Object> profesor = new HashMap<>();
-                    profesor.put("id", profesorSede + "-" + resultSet2.getInt("idProfesor"));
-                    profesor.put("nombre", resultSet2.getString("nombre"));
-                    profesor.put("correo", resultSet2.getString("correo"));
-                    profesor.put("tel", resultSet2.getString("numeroOficina"));
-                    profes.add(profesor);
+        PreparedStatement statement1 = null;
+        ResultSet resultSet1 = null;
+        PreparedStatement statement2 = null;
+        ResultSet resultSet2 = null;
+    
+        try {
+            statement1 = connection.prepareStatement(query1);
+            statement1.setString(1, user);
+            resultSet1 = statement1.executeQuery();
+    
+            if (resultSet1.next()) {
+                String profesorSede = resultSet1.getString("idSede");
+    
+                if (profesorSede != null && !profesorSede.isEmpty()) {
+                    String query2 = "SELECT * FROM Profesores WHERE idSede = ?";
+                    statement2 = connection.prepareStatement(query2);
+                    statement2.setString(1, profesorSede);
+                    resultSet2 = statement2.executeQuery();
+    
+                    while (resultSet2.next()) {
+                        Map<String, Object> profesor = new HashMap<>();
+                        profesor.put("id", profesorSede + "-" + resultSet2.getInt("idProfesor"));
+                        profesor.put("nombre", resultSet2.getString("nombre"));
+                        profesor.put("correo", resultSet2.getString("correo"));
+                        profesor.put("tel", resultSet2.getString("numeroOficina"));
+                        profes.add(profesor);
+                    }
                 }
-
+            }
+    
+            return profes;
+        } finally {
+            // Cerrar los recursos en el bloque finally
+            if (resultSet2 != null) {
+                resultSet2.close();
+            }
+    
+            if (statement2 != null) {
+                statement2.close();
+            }
+    
+            if (resultSet1 != null) {
+                resultSet1.close();
+            }
+    
+            if (statement1 != null) {
+                statement1.close();
             }
         }
-
-        return profes;
     }
 
-    public Profesor getProfesor(int codigo) throws SQLException {
-        Connection connection = null;
+    public Profesor getProfesor(String codigo) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Profesor profesorEncontrado = null;
         
+        String numero = codigo.substring(codigo.indexOf("-") + 1);
+        int codigoNum = Integer.parseInt(numero);
+        
         try {
 
-            String query = "SELECT * FROM Profesores WHERE codigo = ?";
+            String query = "SELECT * FROM Profesores WHERE idProfesor = ?";
             statement = connection.prepareStatement(query);
-            statement.setInt(1, codigo);
+            statement.setInt(1, codigoNum);
             resultSet = statement.executeQuery();
             
             // Verificar si se encontró un profesor con el código dado
             if (resultSet.next()) {
                 // Crear un objeto Profesor con los datos obtenidos de la consulta
                 profesorEncontrado = new Profesor();
-                profesorEncontrado.setCodigo(resultSet.getInt("codigo"));
+                profesorEncontrado.setCodigo(resultSet.getString("idSede") + "-" + resultSet.getInt("idProfesor"));
                 profesorEncontrado.setNombre(resultSet.getString("nombre"));
-                profesorEncontrado.setIdSede(resultSet.getString("idSede"));
                 profesorEncontrado.setCorreo(resultSet.getString("correo"));
-                profesorEncontrado.setContraseña(resultSet.getString("contraseña"));
+                profesorEncontrado.setContrasena(resultSet.getString("contraseña"));
                 profesorEncontrado.setTelOficina(resultSet.getInt("numeroOficina"));
                 profesorEncontrado.setCelular(resultSet.getInt("numeroCelular"));
-                profesorEncontrado.setFotografia(resultSet.getString("fotografia"));
-                profesorEncontrado.setGuia(resultSet.getBoolean("guia"));
-                profesorEncontrado.setCoordinador(resultSet.getBoolean("coordinador"));
-                
+                profesorEncontrado.setFotografia(resultSet.getString("foto"));   
             }
             
         } finally {
