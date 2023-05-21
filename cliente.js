@@ -334,11 +334,58 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
       tel: req.body.entryTel,
       cel: req.body.entryCel
    }
-   //Obtiene los datos del profesor
-   //
-   console.log(profe)
-   res.render("gestion.ejs", {clave: 2, arreglo: []})
-})
+   
+
+   const profeJson = JSON.stringify(profe);
+
+   const options1 = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/validarDatos',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': data.length
+      }
+   };
+
+   const request1 = http.request(options1, (response1) => {
+      let responseData = '';
+
+      response1.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response1.on('end', () => {
+         
+         const options2 = {
+            // Opciones para la segunda solicitud
+         };
+
+         const request2 = http.request(options2, (response2) => {
+            // Maneja la respuesta de la segunda solicitud si es necesario
+            res.render("gestion.ejs", { clave: 2, arreglo: [] });
+         });
+
+         // Manejo de errores de la segunda solicitud
+         request2.on('error', (error) => {
+            console.error(error);
+            // Maneja el error de la segunda solicitud si es necesario
+         });
+
+         // Envía la segunda solicitud
+         request2.end();
+      });
+   });
+
+   request1.on('error', (error) => {
+      console.error(error);
+      // Maneja el error de la primera solicitud si es necesario
+   });
+
+   request1.write(data);
+   request1.end();
+});
 
 app.post("/bajaProf", urlParser, (req, res) => {
    if (req.body.btnBajaProfGuia == "1") {

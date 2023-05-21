@@ -63,7 +63,7 @@ public class ProfesorDAO {
     
                     while (resultSet2.next()) {
                         Map<String, Object> profesor = new HashMap<>();
-                        profesor.put("id", profesorSede + "-" + resultSet2.getInt("idProfesor"));
+                        profesor.put("id", resultSet2.getInt("idProfesor"));
                         profesor.put("nombre", resultSet2.getString("nombre"));
                         profesor.put("correo", resultSet2.getString("correo"));
                         profesor.put("tel", resultSet2.getString("numeroOficina"));
@@ -98,8 +98,7 @@ public class ProfesorDAO {
         ResultSet resultSet = null;
         Profesor profesorEncontrado = null;
         
-        String numero = codigo.substring(codigo.indexOf("-") + 1);
-        int codigoNum = Integer.parseInt(numero);
+        int codigoNum = Integer.parseInt(codigo);
         
         try {
 
@@ -112,7 +111,7 @@ public class ProfesorDAO {
             if (resultSet.next()) {
                 // Crear un objeto Profesor con los datos obtenidos de la consulta
                 profesorEncontrado = new Profesor();
-                profesorEncontrado.setCodigo(resultSet.getString("idSede") + "-" + resultSet.getInt("idProfesor"));
+                profesorEncontrado.setIdProfesor(resultSet.getInt("idProfesor"));
                 profesorEncontrado.setNombre(resultSet.getString("nombre"));
                 profesorEncontrado.setCorreo(resultSet.getString("correo"));
                 profesorEncontrado.setContrasena(resultSet.getString("contraseña"));
