@@ -56,7 +56,7 @@ public class ProfesorDAO {
                 String profesorSede = resultSet1.getString("idSede");
     
                 if (profesorSede != null && !profesorSede.isEmpty()) {
-                    String query2 = "SELECT * FROM Profesores WHERE idSede = ?";
+                    String query2 = "SELECT * FROM Profesores WHERE idSede = ? AND darDeBaja = 0";
                     statement2 = connection.prepareStatement(query2);
                     statement2.setString(1, profesorSede);
                     resultSet2 = statement2.executeQuery();
@@ -143,6 +143,14 @@ public class ProfesorDAO {
             statement.setInt(5, profesor.getCelular());
             statement.setInt(6, profesor.getIdProfesor());
 
+            statement.executeUpdate();
+        }
+    }
+
+    public void darDeBajaProfesor(int codigoProf) throws SQLException {
+        String sql = "UPDATE Profesores SET darDeBaja = 1 WHERE idProfesor = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, codigoProf);
             statement.executeUpdate();
         }
     }

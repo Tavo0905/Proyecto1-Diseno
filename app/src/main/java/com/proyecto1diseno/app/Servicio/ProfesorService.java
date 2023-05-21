@@ -49,6 +49,10 @@ public class ProfesorService {
         profesorDAO.modificarProfesor(profesor);
     }
 
+    public void darDeBajaProfesor(int codigoProf) throws SQLException {
+        profesorDAO.darDeBajaProfesor(codigoProf);
+    }
+
 
 
 

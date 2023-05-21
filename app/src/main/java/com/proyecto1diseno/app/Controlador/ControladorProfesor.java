@@ -76,11 +76,9 @@ public class ControladorProfesor {
     @PostMapping("/modProf")
     public ResponseEntity<String> getProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {
         String codigoProf = (String) requestBody.get("codigo");
-        log.info("SE RECIBIO CODIGO: " + codigoProf);
         Profesor profesorAMostrar = profesorService.getProfesor(codigoProf);
         Gson gson = new Gson();
         String jsonProfesor = gson.toJson(profesorAMostrar);
-        log.info(jsonProfesor);
         return ResponseEntity.ok().body(jsonProfesor);
     }
 
@@ -98,5 +96,13 @@ public class ControladorProfesor {
 
         // Realiza la lógica para actualizar la base de datos con los datos del profesor
         return ResponseEntity.ok().body("Profesor Modificado");
+    }
+
+    @PostMapping("/bajaProf")
+    public ResponseEntity<String> darDeBajaProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        String codigoProfString = (String) requestBody.get("codigo");
+        int codigoProf = Integer.parseInt(codigoProfString);
+        profesorService.darDeBajaProfesor(codigoProf);
+        return ResponseEntity.ok().body("Profesor dado de baja");
     }
 }

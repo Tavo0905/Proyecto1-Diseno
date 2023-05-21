@@ -426,10 +426,82 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
 
 app.post("/bajaProf", urlParser, (req, res) => {
    if (req.body.btnBajaProfGuia == "1") {
-      //Codigo que elimina al profe guia
-      console.log(req.body.elementosTabla)
+      const codigo = JSON.stringify({
+         codigo: req.body.elementosTabla
+      });
+   
+      const options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/bajaProf',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(codigo),
+         }
+      };
+   
+      const request = http.request(options, (response) => {
+         let responseData = '';
+
+         response.on('data', (chunk) => {
+            responseData += chunk;
+         });
+
+         response.on('end', () => {
+            if (response.statusCode === 200) {
+
+               // Realizar el segundo request HTTP anidado
+               const user = { user: usuario.user };
+               postUser = JSON.stringify(user);
+
+               const innerOptions = {
+                  hostname: 'localhost',
+                  port: 8080,
+                  path: '/profesor/gestionarProf',
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                     'Content-Length': Buffer.byteLength(postUser),
+                  }
+               };
+
+               const innerRequest = http.request(innerOptions, (innerResponse) => {
+                  let innerResponseData = '';
+
+                  innerResponse.on('data', (innerChunk) => {
+                     innerResponseData += innerChunk;
+                  });
+
+                  innerResponse.on('end', () => {
+                     if (innerResponse.statusCode === 200) {
+                        const innerProfesores = JSON.parse(innerResponseData);
+                        res.render("gestion.ejs", { clave: 2, arreglo: innerProfesores });
+                     } else {
+                        console.log("ERROR: Inner ResponseData - " + innerResponseData);
+                     }
+                  });
+               });
+
+               innerRequest.on('error', (innerError) => {
+                  console.error(innerError);
+               });
+
+               innerRequest.write(postUser);
+               innerRequest.end();
+            } else {
+               console.log("ERROR: ResponseData - " + responseData);
+            }
+         });
+      });
+
+      request.on('error', (error) => {
+      console.error(error);
+      });
+
+      request.write(codigo);
+      request.end();
    }
-   res.render("gestion.ejs", {clave: 2, arreglo: []})
 })
 
 app.post("/defGuia", urlParser, (req, res) => {
