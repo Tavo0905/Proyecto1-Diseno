@@ -21,7 +21,7 @@ public class EstudianteDAO {
     public List<Map<String, Object>> obtenerEstudiantes(String user) throws SQLException {
         List<Map<String, Object>> estudiantes = new ArrayList<>();
 
-        String query1 = "SELECT * FROM Estudiantes WHERE correo = ?"; 
+        String query1 = "SELECT * FROM Profesores WHERE correo = ?"; 
         PreparedStatement statement1 = connection.prepareStatement(query1);
         statement1.setString(1, user);
         ResultSet resultSet1 = statement1.executeQuery();
@@ -29,17 +29,17 @@ public class EstudianteDAO {
             String estudianteSede = resultSet1.getString("idSede");
             
             if (estudianteSede != null && !estudianteSede.isEmpty()) {
-                String query2 = "SELECT * FROM Estudiante WHERE idSede = ?";
+                String query2 = "SELECT * FROM Estudiantes WHERE idSede = ?";
                 PreparedStatement statement2 = connection.prepareStatement(query2);
                 statement2.setString(1, estudianteSede);
                 ResultSet resultSet2 = statement2.executeQuery();
                 
                 while (resultSet2.next()) {
                     Map<String, Object> estudiante = new HashMap<>();
-                    estudiante.put("id", estudianteSede + "-" + resultSet2.getInt("idEstudiante"));
-                    estudiante.put("nombre", resultSet2.getString("nombre"));
+                    estudiante.put("id", resultSet2.getInt("carne"));
+                    estudiante.put("nombre", resultSet2.getString("nombre")+" "+resultSet2.getString("apellido1")+" "+resultSet2.getString("apellido2"));
                     estudiante.put("correo", resultSet2.getString("correo"));
-                    estudiante.put("celular", resultSet2.getString("numeroCelular"));
+                    estudiante.put("tel", resultSet2.getString("numeroCelular"));
                     estudiantes.add(estudiante);
                 }
 
