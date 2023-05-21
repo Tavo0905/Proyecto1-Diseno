@@ -83,4 +83,20 @@ public class ControladorProfesor {
         log.info(jsonProfesor);
         return ResponseEntity.ok().body(jsonProfesor);
     }
+
+    @PostMapping("/datosProfesRes")
+    public ResponseEntity<String> modificarProfesor(@RequestBody Map<String, Object> profesorData) throws SQLException {
+        Profesor profesor = new Profesor();
+        profesor.setIdProfesor(Integer.parseInt(profesorData.get("id").toString()));
+        profesor.setNombre((String) profesorData.get("nombre"));
+        profesor.setCorreo((String) profesorData.get("correo"));
+        profesor.setContrasena((String) profesorData.get("pass"));
+        profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
+        profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
+        profesorService.modificarProfesor(profesor);
+
+
+        // Realiza la lógica para actualizar la base de datos con los datos del profesor
+        return ResponseEntity.ok().body("Profesor Modificado");
+    }
 }

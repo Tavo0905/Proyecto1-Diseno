@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.proyecto1diseno.app.DAO.DBManager;
@@ -15,38 +16,26 @@ import com.proyecto1diseno.app.Modelo.Profesor;
 
 @Service
 public class ProfesorService {
-    Collection<Profesor> profesores;
+    private ProfesorDAO profesorDAO;
+
+    @Autowired
+    public ProfesorService() throws SQLException {
+        profesorDAO = DBManager.getProfesorDAO();
+    }
 
     public boolean editarInfo(Profesor profesor){
-        if(profesor == null){
-            return false;
-        }
-        for (Profesor prof : profesores){
-            if (prof.getCodigo() == profesor.getCodigo()){
-                prof.setCelular(profesor.getCelular());
-                prof.setFotografia(profesor.getFotografia());
-                prof.setNombre(profesor.getNombre());
-                prof.setTelOficina(profesor.getTelOficina());
-                return true;
-            }
-            
-        }
         return false;
     }
 
     public Optional<Profesor> validarCredenciales(String correo, String contrasena) throws SQLException {
-        ProfesorDAO profesorDAO = DBManager.getProfesorDAO();
         return profesorDAO.validarCredenciales(correo, contrasena);
     }
 
     public List<Map<String, Object>> obtenerProfesores(String user) throws SQLException {
-        ProfesorDAO profesorDAO = DBManager.getProfesorDAO();
-        List<Map<String, Object>> profesores = profesorDAO.obtenerProfesores(user);
-        return profesores;
+        return profesorDAO.obtenerProfesores(user);
     }
 
     public Profesor getProfesor(String codigoProf) throws SQLException {
-        ProfesorDAO profesorDAO = DBManager.getProfesorDAO();
         Profesor profesorEncontrado = profesorDAO.getProfesor(codigoProf);
 
         if (profesorEncontrado == null) {
@@ -54,6 +43,10 @@ public class ProfesorService {
         }
 
         return profesorEncontrado;
+    }
+
+    public void modificarProfesor(Profesor profesor) throws SQLException {
+        profesorDAO.modificarProfesor(profesor);
     }
 
 

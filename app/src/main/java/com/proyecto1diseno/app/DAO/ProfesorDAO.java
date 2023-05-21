@@ -133,6 +133,20 @@ public class ProfesorDAO {
         return profesorEncontrado;
     }
 
+    public void modificarProfesor(Profesor profesor) throws SQLException {
+        String sql = "UPDATE Profesores SET nombre = ?, correo = ?, contraseña = ?, numeroOficina = ?, numeroCelular = ? WHERE idProfesor = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, profesor.getNombre());
+            statement.setString(2, profesor.getCorreo());
+            statement.setString(3, profesor.getContrasena());
+            statement.setInt(4, profesor.getTelOficina());
+            statement.setInt(5, profesor.getCelular());
+            statement.setInt(6, profesor.getIdProfesor());
+
+            statement.executeUpdate();
+        }
+    }
+
     
 
 

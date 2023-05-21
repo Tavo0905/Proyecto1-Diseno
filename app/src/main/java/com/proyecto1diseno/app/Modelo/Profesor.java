@@ -83,7 +83,7 @@ public class Profesor {
         this.idSede = idSede;
     }
 
-    public int getidProfesor() {       
+    public int getIdProfesor() {       
         return idProfesor;
     }
 
