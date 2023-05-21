@@ -262,7 +262,7 @@ app.post('/gestionarProf', urlParser, (req, res) => {
    request.write(postUser);
    
    request.end()
-})
+   });
 
 app.post('/gestionarGuias', urlParser, (req, res) => {
    let guias = []
@@ -309,7 +309,6 @@ app.post("/modProf", urlParser, (req, res) => {
       response.on('end', () => {
          if (response.statusCode === 200) {
             const profesor = JSON.parse(responseBody);
-            console.log(profesor);
             res.render("datosProfes.ejs", { profe: profesor });
          }else{
             console.log("ERROR: " + responseBody);
