@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
+import com.proyecto1diseno.app.Modelo.Estudiante;
 import com.proyecto1diseno.app.Modelo.Profesor;
+import com.proyecto1diseno.app.Servicio.EstudianteService;
 import com.proyecto1diseno.app.Servicio.ProfesorService;
 
 
@@ -24,10 +26,13 @@ import com.proyecto1diseno.app.Servicio.ProfesorService;
 public class ControladorProfesor {
     
     private final ProfesorService profesorService;
+    private final EstudianteService estudianteService;
     
-    public ControladorProfesor(ProfesorService profesorService) {
+    public ControladorProfesor(ProfesorService profesorService, EstudianteService estudianteService) {
         this.profesorService = profesorService;
+        this.estudianteService = estudianteService;
     }
+    
 
     @RequestMapping("/editarInfo")
     public boolean editarInfo(Profesor profesor) {
@@ -39,11 +44,17 @@ public class ControladorProfesor {
         // TBD
     }
 
-    @RequestMapping("/modificarEstudiante")
-    public boolean modificarEstudiante(com.proyecto1diseno.app.Modelo.Estudiante estudiante) {
-        return false;
-    }
-
+   /* @PostMapping("/modificarEstudiante")
+    public ResponseEntity<String> getEstudiante(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        String codigoEst = (String) requestBody.get("carnet");
+        log.info("AQUI");
+        log.info(codigoEst);
+        Estudiante estudianteAMostrar = estudianteService.getEstudiante(codigoEst);
+        Gson gson = new Gson();
+        String jsonEstudiante = gson.toJson(estudianteAMostrar);
+        return ResponseEntity.ok().body(jsonEstudiante);
+        }*/
+       
     @RequestMapping("/generarExcel")
     public void generarExcel(String campus) {
         // TBD
@@ -123,4 +134,5 @@ public class ControladorProfesor {
         profesorService.defGuiaProfesor(codigoProf);
         return ResponseEntity.ok().body("Profesor añadido como guia.");
     }
+
 }
