@@ -41,7 +41,7 @@ public class ProfesorDAO {
 
     public List<Map<String, Object>> obtenerProfesores(String user) throws SQLException {
         List<Map<String, Object>> profes = new ArrayList<>();
-        String query1 = "SELECT * FROM Profesores WHERE correo = ?";
+        String query1 = "SELECT * FROM Asistentes WHERE correo = ?";
         PreparedStatement statement1 = null;
         ResultSet resultSet1 = null;
         PreparedStatement statement2 = null;
@@ -133,6 +133,47 @@ public class ProfesorDAO {
         return profesorEncontrado;
     }
 
+    public String agregarProfesor(Profesor profesor, String user) throws SQLException {
+
+        String selectProfesorSql = "SELECT idSede FROM Asistentes WHERE correo = ?";
+        String idSede;
+
+        try (PreparedStatement selectProfesorStatement = connection.prepareStatement(selectProfesorSql)) {
+            selectProfesorStatement.setString(1, user);
+
+            try (ResultSet resultSet = selectProfesorStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    idSede = resultSet.getString("idSede");
+                } else {
+                    return "No se encontro el profesor a hacer guia.";
+                }
+            }
+        }
+
+        String sqlCheckEmail = "SELECT idProfesor FROM Profesores WHERE correo = ?";
+        String sqlInsert = "INSERT INTO Profesores (nombre, correo, idSede, contraseña, numeroOficina, numeroCelular, darDeBaja) VALUES (?, ?, ?, ?, ?, ?, 0)";
+    
+        try (PreparedStatement checkEmailStatement = connection.prepareStatement(sqlCheckEmail);
+             PreparedStatement insertStatement = connection.prepareStatement(sqlInsert)) {
+    
+            checkEmailStatement.setString(1, profesor.getCorreo());
+            ResultSet resultSet = checkEmailStatement.executeQuery();
+    
+            if (resultSet.next()) {
+                return "El correo ya está en uso por otro profesor.";
+            } else {
+                insertStatement.setString(1, profesor.getNombre());
+                insertStatement.setString(2, profesor.getCorreo());
+                insertStatement.setString(3, idSede);
+                insertStatement.setString(4, profesor.getContrasena());
+                insertStatement.setInt(5, profesor.getTelOficina());
+                insertStatement.setInt(6, profesor.getCelular());
+                insertStatement.executeUpdate();
+                return "Profesor agregado exitosamente.";
+            }
+        }
+    }
+
     public String modificarProfesor(Profesor profesor) throws SQLException {
         String sqlCheckEmail = "SELECT idProfesor FROM Profesores WHERE correo = ?";
         String sqlUpdate = "UPDATE Profesores SET nombre = ?, correo = ?, contraseña = ?, numeroOficina = ?, numeroCelular = ? WHERE idProfesor = ?";
@@ -140,15 +181,12 @@ public class ProfesorDAO {
         try (PreparedStatement checkEmailStatement = connection.prepareStatement(sqlCheckEmail);
              PreparedStatement updateStatement = connection.prepareStatement(sqlUpdate)) {
             
-            // Verificar si ya existe el mismo correo
             checkEmailStatement.setString(1, profesor.getCorreo());
             ResultSet resultSet = checkEmailStatement.executeQuery();
             
             if (resultSet.next()) {
-                // El correo ya existe en la tabla Profesores
                 return "El correo ya está en uso por otro profesor.";
             } else {
-                // Realizar la actualización
                 updateStatement.setString(1, profesor.getNombre());
                 updateStatement.setString(2, profesor.getCorreo());
                 updateStatement.setString(3, profesor.getContrasena());
@@ -161,15 +199,31 @@ public class ProfesorDAO {
         }
     }
 
-    public void darDeBajaProfesor(int codigoProf) throws SQLException {
-        String sql = "UPDATE Profesores SET darDeBaja = 1 WHERE idProfesor = ?";
+    public String darDeBajaProfesor(int codigoProf) throws SQLException {
+        String sql = "SELECT darDeBaja FROM Profesores WHERE idProfesor = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, codigoProf);
-            statement.executeUpdate();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int darDeBaja = resultSet.getInt("darDeBaja");
+                    if (darDeBaja == 0) {
+                        String updateSql = "UPDATE Profesores SET darDeBaja = 1 WHERE idProfesor = ?";
+                        try (PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
+                            updateStatement.setInt(1, codigoProf);
+                            updateStatement.executeUpdate();
+                        }
+                        return "Profesor dado de baja.";
+                    } else {
+                        return "El profesor ya está de baja.";
+                    }
+                } else {
+                    return "No se encontró el profesor con el código especificado.";
+                }
+            }
         }
     }
 
-    public void defGuiaProfesor(int idProfesor) throws SQLException {
+    public String defGuiaProfesor(int idProfesor) throws SQLException {
         String selectProfesorSql = "SELECT idSede FROM Profesores WHERE idProfesor = ?";
         String idSede;
 
@@ -180,7 +234,7 @@ public class ProfesorDAO {
                 if (resultSet.next()) {
                     idSede = resultSet.getString("idSede");
                 } else {
-                    return;
+                    return "No se encontro el profesor a hacer guia.";
                 }
             }
         }
@@ -191,8 +245,7 @@ public class ProfesorDAO {
             selectIdProfesorStatement.setInt(1, idProfesor);
             try (ResultSet resultSet = selectIdProfesorStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    // idProfesor ya existe en ProfesoresGuias, no hacer nada
-                    return;
+                    return "Este profesor ya es profesor guia.";
                 }
             }
         }
@@ -219,6 +272,7 @@ public class ProfesorDAO {
             statement.setInt(1, idProfesor);
             statement.setString(2, nuevoCodigo);
             statement.executeUpdate();
+            return "Profesor agregado a grupo guia.";
         }
     }
 

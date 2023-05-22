@@ -32,28 +32,11 @@ public class ControladorProfesor {
         this.profesorService = profesorService;
         this.estudianteService = estudianteService;
     }
-    
-
-    @RequestMapping("/editarInfo")
-    public boolean editarInfo(Profesor profesor) {
-        return profesorService.editarInfo(profesor);
-    }
 
     @RequestMapping("/accesarListaEstudiantes")
     public void accesarListaEstudiantes(String campus) {
         // TBD
     }
-
-   /* @PostMapping("/modificarEstudiante")
-    public ResponseEntity<String> getEstudiante(@RequestBody Map<String, Object> requestBody) throws SQLException {
-        String codigoEst = (String) requestBody.get("carnet");
-        log.info("AQUI");
-        log.info(codigoEst);
-        Estudiante estudianteAMostrar = estudianteService.getEstudiante(codigoEst);
-        Gson gson = new Gson();
-        String jsonEstudiante = gson.toJson(estudianteAMostrar);
-        return ResponseEntity.ok().body(jsonEstudiante);
-        }*/
        
     @RequestMapping("/generarExcel")
     public void generarExcel(String campus) {
@@ -79,15 +62,15 @@ public class ControladorProfesor {
 
     @PostMapping("/agregarProfes")
     public ResponseEntity<String> agregarProfesor(@RequestBody Map<String, Object> profesorData) throws SQLException {
+        String user = (String) profesorData.get("user");
         Profesor profesor = new Profesor();
-        profesor.setIdProfesor(Integer.parseInt(profesorData.get("id").toString()));
         profesor.setNombre((String) profesorData.get("nombre"));
         profesor.setCorreo((String) profesorData.get("correo"));
         profesor.setContrasena((String) profesorData.get("pass"));
         profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
         profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
-        //String respuestaAgregar = profesorService.agregarProfesor(profesor);
-        return ResponseEntity.ok().body("Profesor Agregado");
+        String respuestaAgregar = profesorService.agregarProfesor(profesor, user);
+        return ResponseEntity.ok().body(respuestaAgregar);
     }
 
     @PostMapping("/gestionarProf")
@@ -116,14 +99,14 @@ public class ControladorProfesor {
         profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
         profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
         String respuestaModificar = profesorService.modificarProfesor(profesor);
-        return ResponseEntity.ok().body("Profesor Modificado");
+        return ResponseEntity.ok().body("respuestaModificar");
     }
 
     @PostMapping("/bajaProf")
     public ResponseEntity<String> darDeBajaProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {
         String codigoProfString = (String) requestBody.get("codigo");
         int codigoProf = Integer.parseInt(codigoProfString);
-        profesorService.darDeBajaProfesor(codigoProf);
+        String respuestaBaja = profesorService.darDeBajaProfesor(codigoProf);
         return ResponseEntity.ok().body("Profesor dado de baja");
     }
 
@@ -131,7 +114,7 @@ public class ControladorProfesor {
     public ResponseEntity<String> defGuiaProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {
         String codigoProfString = (String) requestBody.get("codigo");
         int codigoProf = Integer.parseInt(codigoProfString);
-        profesorService.defGuiaProfesor(codigoProf);
+        String respuestaGuia = profesorService.defGuiaProfesor(codigoProf);
         return ResponseEntity.ok().body("Profesor añadido como guia.");
     }
 

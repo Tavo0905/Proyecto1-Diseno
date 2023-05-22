@@ -23,10 +23,6 @@ public class ProfesorService {
         profesorDAO = DBManager.getProfesorDAO();
     }
 
-    public boolean editarInfo(Profesor profesor){
-        return false;
-    }
-
     public Optional<Profesor> validarCredenciales(String correo, String contrasena) throws SQLException {
         return profesorDAO.validarCredenciales(correo, contrasena);
     }
@@ -45,16 +41,20 @@ public class ProfesorService {
         return profesorEncontrado;
     }
 
+    public String agregarProfesor(Profesor profesor, String user) throws SQLException {
+        return profesorDAO.agregarProfesor(profesor, user);
+    }
+
     public String modificarProfesor(Profesor profesor) throws SQLException {
         return profesorDAO.modificarProfesor(profesor);
     }
 
-    public void darDeBajaProfesor(int codigoProf) throws SQLException {
-        profesorDAO.darDeBajaProfesor(codigoProf);
+    public String darDeBajaProfesor(int codigoProf) throws SQLException {
+        return profesorDAO.darDeBajaProfesor(codigoProf);
     }
 
-    public void defGuiaProfesor(int codigoProf) throws SQLException {
-        profesorDAO.defGuiaProfesor(codigoProf);
+    public String defGuiaProfesor(int codigoProf) throws SQLException {
+        return profesorDAO.defGuiaProfesor(codigoProf);
     }
 
 

@@ -436,7 +436,8 @@ app.post("/datosProfesRes2", urlParser, (req, res) => {
          correo: entryCE,
          pass: entryPass,
          tel: entryTel,
-         cel: entryCel
+         cel: entryCel,
+         user: usuario.user
       };
 
       const profeJson = JSON.stringify(profe);
