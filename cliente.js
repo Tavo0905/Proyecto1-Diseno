@@ -594,6 +594,8 @@ app.post("/modEst", urlParser, (req, res) => {
 app.post("/datosEstRes", urlParser, (req, res) => {
    estudiante = {id: req.body.entryId,
       nombre: req.body.entryName,
+      apellido1: req.body.entryApellido1,
+      apellido2: req.body.entryApellido2,
       correo: req.body.entryCE,
       cel: req.body.entryCel
    }

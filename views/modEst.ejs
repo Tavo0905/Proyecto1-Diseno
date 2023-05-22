@@ -10,37 +10,37 @@
                 <label class = "textoDatos" id = "textoId" name = "textoId" for = "entryId">
                     Carnet:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryId" name = "entryId" value = <%= est.id %>>
+                <input class = "entryDatos" type = "text" id = "entryId" name = "entryId" value = "<%= est.id %>" disabled>
             </div>
             <div>
                 <label class = "textoDatos" id = "textoName" name = "textoName" for = "entryName">
                     Nombre:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryName" name = "entryName" value = <%= est.nombre %>>
+                <input class = "entryDatos" type = "text" id = "entryName" name = "entryName" value = "<%= est.nombre %>">
             </div>
             <div>
                 <label class = "textoDatos" id = "textoApellido1" name = "textoApellido1" for = "entryApellido1">
                     Primer apellido:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryApellido1" name = "entryApellido1" value = <%= est.apellido1 %>>
+                <input class = "entryDatos" type = "text" id = "entryApellido1" name = "entryApellido1" value = "<%= est.apellido1 %>">
             </div>
             <div>
                 <label class = "textoDatos" id = "textoApellido2" name = "textoApellido2" for = "entryApellido2">
                     Segundo apellido:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryApellido2" name = "entryApellido2" value = <%= est.apellido2 %>>
+                <input class = "entryDatos" type = "text" id = "entryApellido2" name = "entryApellido2" value = "<%= est.apellido2 %>">
             </div>
             <div>
                 <label class = "textoDatos" id = "textoCE" name = "textoCE" for = "entryCE">
                     Correo Electronico:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryCE" name = "entryCE" value = <%= est.correo %>>
+                <input class = "entryDatos" type = "text" id = "entryCE" name = "entryCE" value = "<%= est.correo %>">
             </div>
             <div>
                 <label class = "textoDatos" id = "textoCel" name = "textoCel" for = "entryCel">
                     Numero Celular:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryCel" name = "entryCel" value = <%= est.cel %>>    
+                <input class = "entryDatos" type = "text" id = "entryCel" name = "entryCel" value = "<%= est.cel %>">    
             </div>
             <div>
                 <button type = "submit" id = "guardar" name = "guardar" onclick = "alert('Guardado con éxito!')">Guardar</button>
