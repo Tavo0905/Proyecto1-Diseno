@@ -122,14 +122,4 @@ public class ControladorProfesor {
         return ResponseEntity.ok().body("Profesor añadido como guia.");
     }
 
-    @PostMapping("/modEst")
-    public ResponseEntity<String> getEstudiante(@RequestBody Map<String, Object> requestBody) throws SQLException {
-        String codigoEst = (String) requestBody.get("carnet");
-        log.info("AQUI");
-        log.info(codigoEst);
-        Estudiante estudianteAMostrar = estudianteService.getEstudiante(codigoEst);
-        Gson gson = new Gson();
-        String jsonEstudiante = gson.toJson(estudianteAMostrar);
-        return ResponseEntity.ok().body(jsonEstudiante);
-        }
 }

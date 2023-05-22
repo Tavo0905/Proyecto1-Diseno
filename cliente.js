@@ -590,7 +590,7 @@ app.post("/modEst", urlParser, (req, res) => {
    const options = {
       hostname: 'localhost',
       port: 8080,
-      path: '/profesor/modEst',
+      path: '/estudiante/modEst',
       method: 'POST',
       headers: {
          'Content-Type': 'application/json',

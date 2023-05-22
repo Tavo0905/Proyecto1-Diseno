@@ -73,8 +73,10 @@ public class EstudianteDAO {
                 estudianteEncontrado = new Estudiante();
                 estudianteEncontrado.setCarnet(resultSet.getInt("carne"));
                 estudianteEncontrado.setNombre(resultSet.getString("nombre"));
+                estudianteEncontrado.setApellido1(resultSet.getString("apellido1"));
+                estudianteEncontrado.setApellido2(resultSet.getString("apellido2"));
                 estudianteEncontrado.setCorreo(resultSet.getString("correo"));
-                estudianteEncontrado.setContrasena(resultSet.getString("contrasena"));
+                estudianteEncontrado.setContrasena(resultSet.getString("contraseña"));
                 estudianteEncontrado.setCelular(resultSet.getInt("numeroCelular"));  
             }
             

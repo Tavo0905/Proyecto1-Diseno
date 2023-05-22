@@ -10,7 +10,7 @@
                 <label class = "textoDatos" id = "textoId" name = "textoId" for = "entryId">
                     Carnet:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryId" name = "entryId" value = "<%= est.id %>" disabled>
+                <input class = "entryDatos" type = "text" id = "entryId" name = "entryId" value = "<%= est.carnet %>" disabled>
             </div>
             <div>
                 <label class = "textoDatos" id = "textoName" name = "textoName" for = "entryName">
@@ -40,7 +40,7 @@
                 <label class = "textoDatos" id = "textoCel" name = "textoCel" for = "entryCel">
                     Numero Celular:
                 </label>
-                <input class = "entryDatos" type = "text" id = "entryCel" name = "entryCel" value = "<%= est.cel %>">    
+                <input class = "entryDatos" type = "text" id = "entryCel" name = "entryCel" value = "<%= est.celular %>">    
             </div>
             <div>
                 <button type = "submit" id = "guardar" name = "guardar" onclick = "alert('Guardado con éxito!')">Guardar</button>

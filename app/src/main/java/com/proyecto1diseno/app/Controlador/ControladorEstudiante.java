@@ -41,7 +41,7 @@ public class ControladorEstudiante {
         return ResponseEntity.ok().body(estudiantes);
     }
 
-    @PostMapping("/modificarEstudiante")
+    /*@PostMapping("/modificarEstudiante")
     public ResponseEntity<String> getEstudiante(@RequestBody Map<String, Object> requestBody) throws SQLException {
         String codigoEst = (String) requestBody.get("carnet");
         log.info("AQUI");
@@ -50,6 +50,17 @@ public class ControladorEstudiante {
         Gson gson = new Gson();
         String jsonEstudiante = gson.toJson(estudianteAMostrar);
         return ResponseEntity.ok().body(jsonEstudiante);
-        }
+        }*/
+
+        @PostMapping("/modEst")
+        public ResponseEntity<String> getEstudiante(@RequestBody Map<String, Object> requestBody) throws SQLException {
+            String codigoEst = (String) requestBody.get("codigo");
+            log.info("AQUI");
+            log.info(codigoEst);
+            Estudiante estudianteAMostrar = estudianteService.getEstudiante(codigoEst);
+            Gson gson = new Gson();
+            String jsonEstudiante = gson.toJson(estudianteAMostrar);
+            return ResponseEntity.ok().body(jsonEstudiante);
+            }
 
 }
