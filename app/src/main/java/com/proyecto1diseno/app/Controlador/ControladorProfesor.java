@@ -66,6 +66,19 @@ public class ControladorProfesor {
         return null;
     }
 
+    @PostMapping("/agregarProfes")
+    public ResponseEntity<String> agregarProfesor(@RequestBody Map<String, Object> profesorData) throws SQLException {
+        Profesor profesor = new Profesor();
+        profesor.setIdProfesor(Integer.parseInt(profesorData.get("id").toString()));
+        profesor.setNombre((String) profesorData.get("nombre"));
+        profesor.setCorreo((String) profesorData.get("correo"));
+        profesor.setContrasena((String) profesorData.get("pass"));
+        profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
+        profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
+        //String respuestaAgregar = profesorService.agregarProfesor(profesor);
+        return ResponseEntity.ok().body("Profesor Agregado");
+    }
+
     @PostMapping("/gestionarProf")
     public ResponseEntity<List<Map<String,Object>>> gestionarProf(@RequestBody Map<String, Object> requestBody) throws SQLException, JsonProcessingException {
         String user = (String) requestBody.get("user");
@@ -91,7 +104,7 @@ public class ControladorProfesor {
         profesor.setContrasena((String) profesorData.get("pass"));
         profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
         profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
-        profesorService.modificarProfesor(profesor);
+        String respuestaModificar = profesorService.modificarProfesor(profesor);
         return ResponseEntity.ok().body("Profesor Modificado");
     }
 

@@ -133,17 +133,31 @@ public class ProfesorDAO {
         return profesorEncontrado;
     }
 
-    public void modificarProfesor(Profesor profesor) throws SQLException {
-        String sql = "UPDATE Profesores SET nombre = ?, correo = ?, contraseña = ?, numeroOficina = ?, numeroCelular = ? WHERE idProfesor = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, profesor.getNombre());
-            statement.setString(2, profesor.getCorreo());
-            statement.setString(3, profesor.getContrasena());
-            statement.setInt(4, profesor.getTelOficina());
-            statement.setInt(5, profesor.getCelular());
-            statement.setInt(6, profesor.getIdProfesor());
-
-            statement.executeUpdate();
+    public String modificarProfesor(Profesor profesor) throws SQLException {
+        String sqlCheckEmail = "SELECT idProfesor FROM Profesores WHERE correo = ?";
+        String sqlUpdate = "UPDATE Profesores SET nombre = ?, correo = ?, contraseña = ?, numeroOficina = ?, numeroCelular = ? WHERE idProfesor = ?";
+        
+        try (PreparedStatement checkEmailStatement = connection.prepareStatement(sqlCheckEmail);
+             PreparedStatement updateStatement = connection.prepareStatement(sqlUpdate)) {
+            
+            // Verificar si ya existe el mismo correo
+            checkEmailStatement.setString(1, profesor.getCorreo());
+            ResultSet resultSet = checkEmailStatement.executeQuery();
+            
+            if (resultSet.next()) {
+                // El correo ya existe en la tabla Profesores
+                return "El correo ya está en uso por otro profesor.";
+            } else {
+                // Realizar la actualización
+                updateStatement.setString(1, profesor.getNombre());
+                updateStatement.setString(2, profesor.getCorreo());
+                updateStatement.setString(3, profesor.getContrasena());
+                updateStatement.setInt(4, profesor.getTelOficina());
+                updateStatement.setInt(5, profesor.getCelular());
+                updateStatement.setInt(6, profesor.getIdProfesor());
+                updateStatement.executeUpdate();
+                return "Modificación exitosa.";
+            }
         }
     }
 

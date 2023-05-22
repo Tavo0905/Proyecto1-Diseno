@@ -45,8 +45,8 @@ public class ProfesorService {
         return profesorEncontrado;
     }
 
-    public void modificarProfesor(Profesor profesor) throws SQLException {
-        profesorDAO.modificarProfesor(profesor);
+    public String modificarProfesor(Profesor profesor) throws SQLException {
+        return profesorDAO.modificarProfesor(profesor);
     }
 
     public void darDeBajaProfesor(int codigoProf) throws SQLException {
