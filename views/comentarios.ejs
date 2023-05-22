@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Comentarios</title>
+</head>
+<body>
+  <h1>Comentarios</h1>
+
+  <form action="/comentarios" method="POST">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required><br><br>
+
+    <label for="mensaje">Mensaje:</label><br>
+    <textarea id="mensaje" name="mensaje" rows="4" cols="50" required></textarea><br><br>
+
+    <input type="submit" value="Enviar">
+  </form>
+
+  <h2>Comentarios anteriores:</h2>
+
+  <% if (comentarios.length === 0) { %>
+    <p>No hay comentarios aún.</p>
+  <% } else { %>
+    <% comentarios.forEach(function(comentario) { %>
+      <p><strong><%= comentario.nombre %></strong>: <%= comentario.mensaje %></p>
+    <% }); %>
+  <% } %>
+
+</body>
+</html>
