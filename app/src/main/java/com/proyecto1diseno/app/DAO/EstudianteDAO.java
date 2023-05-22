@@ -50,5 +50,45 @@ public class EstudianteDAO {
 
         return estudiantes;
     }
+
+    public Estudiante getEstudiante(String carnet) throws SQLException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Estudiante estudianteEncontrado = null;
+        
+        int carnetNum = Integer.parseInt(carnet);
+        
+        //int carnetNum = 2020087412;
+        
+        try {
+
+            String query = "SELECT * FROM Estudiantes WHERE carne = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, carnetNum);
+            resultSet = statement.executeQuery();
+            
+            // Verificar si se encontró un estudiante con el código dado
+            if (resultSet.next()) {
+                // Crear un objeto Estudiante con los datos obtenidos de la consulta
+                estudianteEncontrado = new Estudiante();
+                estudianteEncontrado.setCarnet(resultSet.getInt("carne"));
+                estudianteEncontrado.setNombre(resultSet.getString("nombre"));
+                estudianteEncontrado.setCorreo(resultSet.getString("correo"));
+                estudianteEncontrado.setContrasena(resultSet.getString("contrasena"));
+                estudianteEncontrado.setCelular(resultSet.getInt("numeroCelular"));  
+            }
+            
+        } finally {
+            // Cerrar los recursos utilizados
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+        }
+        
+        return estudianteEncontrado;
+    }
     
 }

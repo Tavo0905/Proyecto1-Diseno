@@ -581,15 +581,50 @@ app.post("/defGuia", urlParser, (req, res) => {
       request.end();
    }
 })
-
+//res.render("modEst.ejs", est)
 app.post("/modEst", urlParser, (req, res) => {
-   est = { id :  "1",
-      nombre : "Gustavo",
-      correo : "gperezb2002@gmail.com",
-      cel : "86435450"
-   }
-   res.render("modEst.ejs", est)
-})
+   const codigo = JSON.stringify({
+      codigo: req.body.elementosTabla
+    });
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/profesor/modEst',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+      }
+   };
+
+   options.headers['Content-Length'] = codigo.length;
+
+   const request = http.request(options, (response) => {
+      let responseBody = '';
+
+      response.on('data', (chunk) => {
+         responseBody += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const estudiante = JSON.parse(responseBody);
+            res.render("modEst.ejs", { est: estudiante });
+         }else{
+            console.log("ERROR: " + responseBody);
+         }
+
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error('Error al realizar la solicitud:', error);
+      res.status(500).send('Error interno del servidor');
+   });
+
+   request.write(codigo);
+   request.end();
+});
 
 app.post("/datosEstRes", urlParser, (req, res) => {
    estudiante = {id: req.body.entryId,

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.Gson;
 import com.proyecto1diseno.app.Modelo.Estudiante;
 import com.proyecto1diseno.app.Modelo.Profesor;
 import com.proyecto1diseno.app.Servicio.EstudianteService;
@@ -39,5 +40,16 @@ public class ControladorEstudiante {
         log.info("ESTUDIANTES: " + estudiantes);
         return ResponseEntity.ok().body(estudiantes);
     }
+
+    @PostMapping("/modificarEstudiante")
+    public ResponseEntity<String> getEstudiante(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        String codigoEst = (String) requestBody.get("carnet");
+        log.info("AQUI");
+        log.info(codigoEst);
+        Estudiante estudianteAMostrar = estudianteService.getEstudiante(codigoEst);
+        Gson gson = new Gson();
+        String jsonEstudiante = gson.toJson(estudianteAMostrar);
+        return ResponseEntity.ok().body(jsonEstudiante);
+        }
 
 }

@@ -15,6 +15,9 @@ public class Estudiante {
         this.contrasena = contrasena;
     }
 
+    public Estudiante (){
+        
+    }
     public int getCarnet() {
         return carnet;
     }
