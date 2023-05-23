@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,7 +73,11 @@ public class ControladorEstudiante {
             estudiante.setContrasena((String) estudianteData.get("pass"));
             estudiante.setCelular(Integer.parseInt(estudianteData.get("tel").toString()));
             String respuestaModificar = estudianteService.modificarEstudiante(estudiante);
-            return ResponseEntity.ok().body("respuestaModificar");
+            if (respuestaModificar.startsWith("Error: ")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaModificar);
+            } else {
+                return ResponseEntity.ok().body(respuestaModificar);
             }
+        }
 
 }

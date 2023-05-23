@@ -106,19 +106,34 @@ public class EstudianteDAO {
             ResultSet resultSet = checkEmailStatement.executeQuery();
             
             if (resultSet.next()) {
-                return "El correo ya está en uso por otro estudiante.";
-            } else {
-                updateStatement.setString(1, estudiante.getNombre());
-                updateStatement.setString(2,estudiante.getApellido1());
-                updateStatement.setString(3,estudiante.getApellido2());
-                updateStatement.setString(3, estudiante.getCorreo());
-                updateStatement.setString(5, estudiante.getContrasena());
-                updateStatement.setInt(6, estudiante.getCelular());
-                updateStatement.setInt(7, estudiante.getCarnet());
-                updateStatement.executeUpdate();
-                return "Modificación exitosa.";
+                if (resultSet.getInt("carne") != estudiante.getCarnet()) {
+                    return "Error: El correo ya está en uso por otro estudiante.";
+                } else {
+                        
+                    updateStatement.setString(1, estudiante.getNombre());
+                    updateStatement.setString(2,estudiante.getApellido1());
+                    updateStatement.setString(3,estudiante.getApellido2());
+                    updateStatement.setString(4, estudiante.getCorreo());
+                    updateStatement.setString(5, estudiante.getContrasena());
+                    updateStatement.setInt(6, estudiante.getCelular());
+                    updateStatement.setInt(7, estudiante.getCarnet());
+                    updateStatement.executeUpdate();
+                    return "Modificación exitosa.";
             }
         }
+        else{
+                    updateStatement.setString(1, estudiante.getNombre());
+                    updateStatement.setString(2,estudiante.getApellido1());
+                    updateStatement.setString(3,estudiante.getApellido2());
+                    updateStatement.setString(4, estudiante.getCorreo());
+                    updateStatement.setString(5, estudiante.getContrasena());
+                    updateStatement.setInt(6, estudiante.getCelular());
+                    updateStatement.setInt(7, estudiante.getCarnet());
+                    updateStatement.executeUpdate();
+                    return "Modificación exitosa.";
+
+        }
     }
-    
-}
+} 
+}  
+
