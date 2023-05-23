@@ -87,57 +87,7 @@ var profes = [
    }
 ]
 
-var estudiantes = [
-   {
-      id: "2020084831",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084832",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084833",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084834",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084835",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084836",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084837",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-]
+
 
 
 app.get('/', (req, res) => {
@@ -703,6 +653,7 @@ app.post("/modEst", urlParser, (req, res) => {
       response.on('end', () => {
          if (response.statusCode === 200) {
             const estudiante = JSON.parse(responseBody);
+            console.log(estudiante)
             res.render("modEst.ejs", { est: estudiante });
          }else{
             console.log("ERROR: " + responseBody);
@@ -719,17 +670,104 @@ app.post("/modEst", urlParser, (req, res) => {
    request.write(codigo);
    request.end();
 });
-
+//res.render("gestion.ejs", {clave: 1, arreglo: []})
 app.post("/datosEstRes", urlParser, (req, res) => {
-   estudiante = {id: req.body.entryId,
-      nombre: req.body.entryName,
-      apellido1: req.body.entryApellido1,
-      apellido2: req.body.entryApellido2,
-      correo: req.body.entryCE,
-      cel: req.body.entryCel
-   }
-   console.log(estudiante)
-   res.render("gestion.ejs", {clave: 1, arreglo: []})
+
+   const entryId = req.body.entryId;
+   const entryName = req.body.entryName;
+   const entryApellido1 = req.body.entryApellido1;
+   const entryApellido2 = req.body.entryApellido2;
+   const entryCE = req.body.entryCE;
+   //const entryPass = req.body.entryPass;
+   //const entryTel = req.body.entryTel;
+   const entryCel = req.body.entryCel;
+
+   if (entryId && entryName && entryApellido1 && entryApellido2 && entryCE && entryCel) {
+      const est = {
+         id: entryId,
+         nombre: entryName,
+         apellido1: entryApellido1,
+         apellido2: entryApellido2,
+         correo: entryCE,
+         cel: entryCel,
+         user: usuario.user
+      };
+
+      const estJson = JSON.stringify(est);
+
+      const options1 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/datosEstRes',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': estJson.length
+         }
+      };
+
+      const request1 = http.request(options1, (response1) => {
+         let responseData = '';
+
+         response1.on('data', (chunk) => {
+            responseData += chunk;
+         });
+
+         response1.on('end', () => {
+            if (response1.statusCode === 200) {
+               const user = { user: usuario.user };
+               const postUser = JSON.stringify(user);
+
+               const options2 = {
+                  hostname: 'localhost',
+                  port: 8080,
+                  path: '/estudiante/gestionarEst',
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                     'Content-Length': Buffer.byteLength(postUser),
+                  }
+               };
+
+               const request2 = http.request(options2, (response2) => {
+                  let responseData2 = '';
+
+                  response2.on('data', (chunk2) => {
+                     responseData2 += chunk2;
+                  });
+
+                  response2.on('end', () => {
+                     if (response2.statusCode === 200) {
+                        const profesores = JSON.parse(responseData2);
+                        res.render("gestion.ejs", { clave: 2, arreglo: estudiantes });
+                     } else {
+                        console.log("ERROR: ResponseData - " + responseData2);
+                     }
+                  });
+               });
+
+               request2.on('error', (error2) => {
+                  console.error(error2);
+               });
+
+               request2.write(postUser);
+               request2.end();
+            }else{
+               console.log("ERROR: ResponseData - " + responseData);   
+               }
+            
+         });
+      });
+
+      request1.on('error', (error1) => {
+         console.error(error1);
+      });
+
+      request1.write(profeJson);
+      request1.end();
+   }else{
+      console.log("Revisa que ningun campo este vacio.");
+   } 
 })
 
 app.post("/agrActividad", urlParser, (req, res) => {

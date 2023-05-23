@@ -157,17 +157,17 @@ select * from dbo.TiposModificaciones
 GO
 
 
--- ModificacionesProfesoresGuias
+-- ModificacionesProfesores
 /*
-INSERT INTO dbo.ModificacionesProfesoresGuias (idProfesor, idAsistente, idTipoModificacion, fecha)
+INSERT INTO dbo.ModificacionesProfesores (idProfesor, idAsistente, idTipoModificacion, fecha)
 VALUES (1, 1, 1, CONVERT(date, GETDATE())),
 (6, 4, 1, CONVERT(date, GETDATE())),
 (11, 7, 1, CONVERT(date, GETDATE())),
 (16, 10, 1, CONVERT(date, GETDATE())),
 (21, 13, 1, CONVERT(date, GETDATE()))
 
-select * from dbo.ModificacionesProfesoresGuias
-inner join ProfesoresGuias on ModificacionesProfesoresGuias.idProfesor = ProfesoresGuias.idProfesor
+select * from dbo.ModificacionesProfesores
+inner join ProfesoresGuias on ModificacionesProfesores.idProfesor = ProfesoresGuias.idProfesor
 */
 GO
 
