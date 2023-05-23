@@ -786,6 +786,9 @@ app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
    res.render("gestionPlanTrabajo.ejs", {arreglo: []})
 })
 
+app.post("/comentario", urlParser, (req, res) => {
+   res.render("comentarios.ejs", {comentarios: []})
+})
 
 var server = app.listen(3000, function () {
    var host = server.address().address

@@ -501,3 +501,41 @@ tr {
 #elementosTabla:checked {
     border: 6px solid black;
 }
+
+#btnComentario {
+    margin-top: 200px;
+    margin-left: 100px;
+    width: 20%;
+}
+
+#mensaje {
+    display: block;
+    position: center;
+    border-width: 0px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #999;
+    padding: 20px;
+    width: 600px;
+    height: 100px;
+    margin: 0 auto;
+    margin-top: 50px;
+    
+    overflow-y: scroll;
+}
+
+.tituloComen {
+    margin-top: 50px;
+    font-family: Arial;
+    margin-left: 25%;
+    font-size: x-large;
+}
+
+#mensajeTxt {
+    position:absolute;
+    margin-top: 25px;
+}
+
+.submitComentario {
+    max-width: 100px;
+    margin-left: 60%;
+}

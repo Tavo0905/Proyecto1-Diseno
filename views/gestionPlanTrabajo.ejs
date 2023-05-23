@@ -21,13 +21,32 @@
             </button>
         </div>
         <div class = "columna1">
-            <select class = "actLB" id = "actividadLB" name = "actividadLB" size = "2">
-                <% for (elemento of arreglo) { %>
-                    <option value = <%= elemento["id"] %>>
-                        <%= elemento["id"] %>
-                    </option>
-                <% } %>
-            </select>
+            <div class = "estudLB" id = "actividadesLB" name = "actividadesLB">
+                <table class = "tablaHeader">
+                    <tr>
+                        <th>Semana</th>
+                        <th>Nombre</th>
+                        <th>Tipo de Actividad</th>
+                        <th>Fecha y hora</th>
+                    </tr>
+                </table>
+                <div class = "divInfo">
+                    <table>
+                        <% for (elemento of arreglo) { %>
+                        <tr>
+                            <td><%= elemento["semana"] %></td>
+                            <td><%= elemento["nombre"] %></td>
+                            <td><%= elemento["tipoAct"] %></td>
+                            <td><%= elemento["FechaHora"] %></td>
+                            <td>
+                                <input type = "radio" id = "elementosTabla" name = "elementosTabla" value = "<%= elemento['id'] %>">
+                            </td>
+                        </tr>
+                        <% } %>
+                    </table>
+                </div>
+            </div>
+        </div>
             <div class = "columna2">
                 <button class = "botonesAct" id = "btnNuevaAct" name = "btnNuevoProfGuia" formaction = "agrActividad">
                     Agregar actividad
@@ -43,6 +62,10 @@
                 <button class = "botonesAct" id = "btnPublicAct" name = "btnPublicAct" onclick = "confirm('Se ha activado la publicación con éxito!')"
                 formaction = "">
                     Activar publicación
+                </button>
+                <button class = "botonesAct" id = "btnComentario" name = "btnComentario"
+                formaction = "comentario">
+                    Comentarios
                 </button>
             </div>
         </div>

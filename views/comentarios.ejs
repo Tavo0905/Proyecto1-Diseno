@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Comentarios</title>
+    <link rel = "stylesheet" href = "style.css">
+    <title>Comentarios</title>
 </head>
 <body>
   <h1>Comentarios</h1>
 
+  <h2 class = "tituloComen">Comentarios anteriores:</h2>
+
+  <div class = "containerDatos" style = "overflow-y: scroll;">
+    <% if (comentarios.length === 0) { %>
+      <p>No hay comentarios aún.</p>
+    <% } else { %>
+      <% comentarios.forEach(function(comentario) { %>
+        <p><strong><%= comentario.nombre %></strong>: <%= comentario.mensaje %></p>
+      <% }); %>
+    <% } %>
+  </div>
+
+
   <form action="/comentarios" method="POST">
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" required><br><br>
 
-    <label for="mensaje">Mensaje:</label><br>
-    <textarea id="mensaje" name="mensaje" rows="4" cols="50" required></textarea><br><br>
+    <label class = "tituloComen" id = "mensajeTxt" for="mensaje">Mensaje:</label><br>
+    <textarea id = "mensaje" name = "mensaje" rows = "4" cols = "50" required></textarea><br><br>
 
-    <input type="submit" value="Enviar">
+    <input class = "submitComentario" type = "submit" value = "Enviar">
   </form>
-
-  <h2>Comentarios anteriores:</h2>
-
-  <% if (comentarios.length === 0) { %>
-    <p>No hay comentarios aún.</p>
-  <% } else { %>
-    <% comentarios.forEach(function(comentario) { %>
-      <p><strong><%= comentario.nombre %></strong>: <%= comentario.mensaje %></p>
-    <% }); %>
-  <% } %>
 
 </body>
 </html>
