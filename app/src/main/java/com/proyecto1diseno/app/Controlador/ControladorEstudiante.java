@@ -66,14 +66,14 @@ public class ControladorEstudiante {
         @PostMapping("/datosEstRes")
         public ResponseEntity<String> modificarEstudiante(@RequestBody Map<String, Object> estudianteData) throws SQLException {
             Estudiante estudiante = new Estudiante();
-            estudiante.setCarnet(Integer.parseInt(estudianteData.get("id").toString()));
+            estudiante.setCarnet(Integer.parseInt(estudianteData.get("carnet").toString()));
             estudiante.setNombre((String) estudianteData.get("nombre"));
             estudiante.setApellido1((String) estudianteData.get("apellido1"));
             estudiante.setApellido2((String) estudianteData.get("apellido2"));
             estudiante.setCorreo((String) estudianteData.get("correo"));
-            //profesor.setContrasena((String) profesorData.get("pass"));
+            estudiante.setContrasena((String) estudianteData.get("contrasena"));
             //profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
-            estudiante.setCelular(Integer.parseInt(estudianteData.get("cel").toString()));
+            estudiante.setCelular(Integer.parseInt(estudianteData.get("celular").toString()));
             String respuestaModificar = estudianteService.modificarEstudiante(estudiante);
             return ResponseEntity.ok().body("respuestaModificar");
             }

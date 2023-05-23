@@ -678,21 +678,21 @@ app.post("/datosEstRes", urlParser, (req, res) => {
    const entryApellido1 = req.body.entryApellido1;
    const entryApellido2 = req.body.entryApellido2;
    const entryCE = req.body.entryCE;
-   //const entryPass = req.body.entryPass;
+   const entryPass = req.body.entryPass;
    //const entryTel = req.body.entryTel;
    const entryCel = req.body.entryCel;
 
-   if (entryId && entryName && entryApellido1 && entryApellido2 && entryCE && entryCel) {
+   if (entryId && entryName && entryApellido1 && entryApellido2 && entryCE && entryCel && entryPass) {
       const est = {
          id: entryId,
          nombre: entryName,
          apellido1: entryApellido1,
          apellido2: entryApellido2,
          correo: entryCE,
-         cel: entryCel,
+         pass: entryPass,
+         tel: entryCel,
          user: usuario.user
       };
-
       const estJson = JSON.stringify(est);
 
       const options1 = {
@@ -738,8 +738,8 @@ app.post("/datosEstRes", urlParser, (req, res) => {
 
                   response2.on('end', () => {
                      if (response2.statusCode === 200) {
-                        const profesores = JSON.parse(responseData2);
-                        res.render("gestion.ejs", { clave: 2, arreglo: estudiantes });
+                        const estudiantes = JSON.parse(responseData2);
+                        res.render("gestion.ejs", { clave: 1, arreglo: estudiantes });
                      } else {
                         console.log("ERROR: ResponseData - " + responseData2);
                      }
@@ -763,9 +763,16 @@ app.post("/datosEstRes", urlParser, (req, res) => {
          console.error(error1);
       });
 
-      request1.write(profeJson);
+      request1.write(estJson);
       request1.end();
    }else{
+      console.log(req.body.entryId)
+      console.log(req.body.entryApellido1)
+      console.log(req.body.entryApellido2)
+      console.log(req.body.entryCE)
+      console.log(req.body.entryName)
+      console.log(req.body.entryPass)
+      console.log(req.body.entryCE)
       console.log("Revisa que ningun campo este vacio.");
    } 
 })
