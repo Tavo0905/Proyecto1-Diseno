@@ -55,8 +55,6 @@ public class ControladorEstudiante {
         @PostMapping("/modEst")
         public ResponseEntity<String> getEstudiante(@RequestBody Map<String, Object> requestBody) throws SQLException {
             String codigoEst = (String) requestBody.get("codigo");
-            log.info("AQUI");
-            log.info(codigoEst);
             Estudiante estudianteAMostrar = estudianteService.getEstudiante(codigoEst);
             Gson gson = new Gson();
             String jsonEstudiante = gson.toJson(estudianteAMostrar);
@@ -66,14 +64,13 @@ public class ControladorEstudiante {
         @PostMapping("/datosEstRes")
         public ResponseEntity<String> modificarEstudiante(@RequestBody Map<String, Object> estudianteData) throws SQLException {
             Estudiante estudiante = new Estudiante();
-            estudiante.setCarnet(Integer.parseInt(estudianteData.get("carnet").toString()));
+            estudiante.setCarnet(Integer.parseInt(estudianteData.get("id").toString()));
             estudiante.setNombre((String) estudianteData.get("nombre"));
             estudiante.setApellido1((String) estudianteData.get("apellido1"));
             estudiante.setApellido2((String) estudianteData.get("apellido2"));
             estudiante.setCorreo((String) estudianteData.get("correo"));
-            estudiante.setContrasena((String) estudianteData.get("contrasena"));
-            //profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
-            estudiante.setCelular(Integer.parseInt(estudianteData.get("celular").toString()));
+            estudiante.setContrasena((String) estudianteData.get("pass"));
+            estudiante.setCelular(Integer.parseInt(estudianteData.get("tel").toString()));
             String respuestaModificar = estudianteService.modificarEstudiante(estudiante);
             return ResponseEntity.ok().body("respuestaModificar");
             }

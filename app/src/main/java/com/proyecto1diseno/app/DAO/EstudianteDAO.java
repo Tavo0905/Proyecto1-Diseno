@@ -101,6 +101,8 @@ public class EstudianteDAO {
              PreparedStatement updateStatement = connection.prepareStatement(sqlUpdate)) {
             
             checkEmailStatement.setString(1, estudiante.getCorreo());
+            log.info("AQUI");
+            log.info(estudiante.getCorreo());
             ResultSet resultSet = checkEmailStatement.executeQuery();
             
             if (resultSet.next()) {
