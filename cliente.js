@@ -87,57 +87,7 @@ var profes = [
    }
 ]
 
-var estudiantes = [
-   {
-      id: "2020084831",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084832",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084833",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084834",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084835",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084836",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-   {
-      id: "2020084837",
-      nombre: "Gustavo Pérez Badilla",
-      correo: "gperezb2002@estudiantec.cr",
-      tel: "22658776",
-      cel: "86435450"
-   },
-]
+
 
 
 app.get('/', (req, res) => {
@@ -703,6 +653,7 @@ app.post("/modEst", urlParser, (req, res) => {
       response.on('end', () => {
          if (response.statusCode === 200) {
             const estudiante = JSON.parse(responseBody);
+            console.log(estudiante)
             res.render("modEst.ejs", { est: estudiante });
          }else{
             console.log("ERROR: " + responseBody);
@@ -726,10 +677,11 @@ app.post("/datosEstRes", urlParser, (req, res) => {
       apellido1: req.body.entryApellido1,
       apellido2: req.body.entryApellido2,
       correo: req.body.entryCE,
+      constrasena: req.body.entryPass,
       cel: req.body.entryCel
    }
    console.log(estudiante)
-   res.render("gestion.ejs", {clave: 1, arreglo: []})
+   res.render("gestion.ejs", {})
 })
 
 app.post("/agrActividad", urlParser, (req, res) => {
