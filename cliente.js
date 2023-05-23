@@ -790,6 +790,11 @@ app.post("/comentario", urlParser, (req, res) => {
    res.render("comentarios.ejs", {comentarios: []})
 })
 
+app.post("/datosActRes", urlParser, (req, res) => {
+   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
+})
+
+
 var server = app.listen(3000, function () {
    var host = server.address().address
    var port = server.address().port
