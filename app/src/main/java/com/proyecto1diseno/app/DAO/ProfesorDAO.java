@@ -184,8 +184,19 @@ public class ProfesorDAO {
             checkEmailStatement.setString(1, profesor.getCorreo());
             ResultSet resultSet = checkEmailStatement.executeQuery();
             
-            if (resultSet.next()) {
-                return "Error: El correo ya está en uso por otro profesor.";
+            if (resultSet.next()){
+                if (resultSet.getInt("idProfesor") != profesor.getIdProfesor()) {
+                    return "Error: El correo ya está en uso por otro profesor.";
+                } else {
+                    updateStatement.setString(1, profesor.getNombre());
+                    updateStatement.setString(2, profesor.getCorreo());
+                    updateStatement.setString(3, profesor.getContrasena());
+                    updateStatement.setInt(4, profesor.getTelOficina());
+                    updateStatement.setInt(5, profesor.getCelular());
+                    updateStatement.setInt(6, profesor.getIdProfesor());
+                    updateStatement.executeUpdate();
+                    return "Modificación exitosa.";
+                }
             } else {
                 updateStatement.setString(1, profesor.getNombre());
                 updateStatement.setString(2, profesor.getCorreo());
@@ -196,6 +207,7 @@ public class ProfesorDAO {
                 updateStatement.executeUpdate();
                 return "Modificación exitosa.";
             }
+            
         }
     }
 
