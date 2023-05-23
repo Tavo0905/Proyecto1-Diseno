@@ -681,7 +681,7 @@ app.post("/datosEstRes", urlParser, (req, res) => {
    const entryPass = req.body.entryPass;
    //const entryTel = req.body.entryTel;
    const entryCel = req.body.entryCel;
-
+   
    if (entryId && entryName && entryApellido1 && entryApellido2 && entryCE && entryCel && entryPass) {
       const est = {
          id: entryId,
@@ -693,6 +693,7 @@ app.post("/datosEstRes", urlParser, (req, res) => {
          tel: entryCel,
          user: usuario.user
       };
+      
       const estJson = JSON.stringify(est);
 
       const options1 = {
@@ -779,6 +780,10 @@ app.post("/datosEstRes", urlParser, (req, res) => {
 
 app.post("/agrActividad", urlParser, (req, res) => {
    res.render("crearActividad.ejs")
+})
+
+app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
+   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
 })
 
 
