@@ -37,4 +37,7 @@ public class EstudianteService {
         return estudianteEncontrado;
     }
     
+    public String modificarEstudiante(Estudiante estudiante) throws SQLException {
+        return estudianteDAO.modificarEstudiante(estudiante);
+    }
 }
