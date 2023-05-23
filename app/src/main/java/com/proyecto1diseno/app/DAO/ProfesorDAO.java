@@ -145,7 +145,7 @@ public class ProfesorDAO {
                 if (resultSet.next()) {
                     idSede = resultSet.getString("idSede");
                 } else {
-                    return "No se encontro el profesor a hacer guia.";
+                    return "Error: No se encontro el profesor a hacer guia.";
                 }
             }
         }
@@ -160,7 +160,7 @@ public class ProfesorDAO {
             ResultSet resultSet = checkEmailStatement.executeQuery();
     
             if (resultSet.next()) {
-                return "El correo ya está en uso por otro profesor.";
+                return "Error: El correo ya está en uso por otro profesor.";
             } else {
                 insertStatement.setString(1, profesor.getNombre());
                 insertStatement.setString(2, profesor.getCorreo());
@@ -169,7 +169,7 @@ public class ProfesorDAO {
                 insertStatement.setInt(5, profesor.getTelOficina());
                 insertStatement.setInt(6, profesor.getCelular());
                 insertStatement.executeUpdate();
-                return "Profesor agregado exitosamente.";
+                return "Error: Profesor agregado exitosamente.";
             }
         }
     }
@@ -185,7 +185,7 @@ public class ProfesorDAO {
             ResultSet resultSet = checkEmailStatement.executeQuery();
             
             if (resultSet.next()) {
-                return "El correo ya está en uso por otro profesor.";
+                return "Error: El correo ya está en uso por otro profesor.";
             } else {
                 updateStatement.setString(1, profesor.getNombre());
                 updateStatement.setString(2, profesor.getCorreo());
@@ -214,10 +214,10 @@ public class ProfesorDAO {
                         }
                         return "Profesor dado de baja.";
                     } else {
-                        return "El profesor ya está de baja.";
+                        return "Error: El profesor ya está de baja.";
                     }
                 } else {
-                    return "No se encontró el profesor con el código especificado.";
+                    return "Error: No se encontró el profesor con el código especificado.";
                 }
             }
         }
@@ -234,7 +234,7 @@ public class ProfesorDAO {
                 if (resultSet.next()) {
                     idSede = resultSet.getString("idSede");
                 } else {
-                    return "No se encontro el profesor a hacer guia.";
+                    return "Error: No se encontro el profesor a hacer guia.";
                 }
             }
         }
@@ -245,7 +245,7 @@ public class ProfesorDAO {
             selectIdProfesorStatement.setInt(1, idProfesor);
             try (ResultSet resultSet = selectIdProfesorStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return "Este profesor ya es profesor guia.";
+                    return "Error: Este profesor ya es profesor guia.";
                 }
             }
         }

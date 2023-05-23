@@ -6,6 +6,7 @@ import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,7 +71,11 @@ public class ControladorProfesor {
         profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
         profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
         String respuestaAgregar = profesorService.agregarProfesor(profesor, user);
-        return ResponseEntity.ok().body(respuestaAgregar);
+        if (respuestaAgregar.startsWith("Error: ")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaAgregar);
+        } else {
+            return ResponseEntity.ok().body(respuestaAgregar);
+        }
     }
 
     @PostMapping("/gestionarProf")
@@ -99,7 +104,11 @@ public class ControladorProfesor {
         profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
         profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
         String respuestaModificar = profesorService.modificarProfesor(profesor);
-        return ResponseEntity.ok().body("respuestaModificar");
+        if (respuestaModificar.startsWith("Error: ")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaModificar);
+        } else {
+            return ResponseEntity.ok().body(respuestaModificar);
+        }
     }
 
     @PostMapping("/bajaProf")
@@ -107,7 +116,11 @@ public class ControladorProfesor {
         String codigoProfString = (String) requestBody.get("codigo");
         int codigoProf = Integer.parseInt(codigoProfString);
         String respuestaBaja = profesorService.darDeBajaProfesor(codigoProf);
-        return ResponseEntity.ok().body("Profesor dado de baja");
+        if (respuestaBaja.startsWith("Error: ")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaBaja);
+        } else {
+            return ResponseEntity.ok().body(respuestaBaja);
+        }
     }
 
     @PostMapping("/defGuia")
@@ -115,7 +128,11 @@ public class ControladorProfesor {
         String codigoProfString = (String) requestBody.get("codigo");
         int codigoProf = Integer.parseInt(codigoProfString);
         String respuestaGuia = profesorService.defGuiaProfesor(codigoProf);
-        return ResponseEntity.ok().body("Profesor añadido como guia.");
+        if (respuestaGuia.startsWith("Error: ")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaGuia);
+        } else {
+            return ResponseEntity.ok().body(respuestaGuia);
+        }
     }
 
 }
