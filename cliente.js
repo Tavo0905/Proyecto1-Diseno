@@ -794,6 +794,15 @@ app.post("/datosActRes", urlParser, (req, res) => {
    res.render("gestionPlanTrabajo.ejs", {arreglo: []})
 })
 
+app.post("/salirGestionPT", urlParser, (req, res) => {
+   res.render("selModulo.ejs")
+})
+
+app.post("/salirLogin", urlParser, (req, res) => {
+   res.render("login.ejs")
+})
+
+
 
 var server = app.listen(3000, function () {
    var host = server.address().address

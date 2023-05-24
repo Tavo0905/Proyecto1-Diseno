@@ -14,7 +14,7 @@ GO
 
 -- Estudiantes
 /*
-INSERT INTO dbo.Estudiantes (idSede, carne, apellido1, apellido2, nombre, segundoNombre, correo, numeroCelular, contraseña)
+INSERT INTO dbo.Estudiantes (idSede, carne, apellido1, apellido2, nombre, segundoNombre, correo, numeroCelular, contraseï¿½a)
 VALUES
     ('CA', 2020087412, 'Salazar', 'Rojas', 'Alexander', 'Javier', 'asalazar@estudiantec.cr', 60408135, '18374087'),
     ('CA', 2023153905, 'Alvarado', 'Arguedas', 'Luis', 'Esteban', 'lalvarado@estudiantec.cr', 81159042, '90827312'),
@@ -74,7 +74,7 @@ GO
 
 -- Asistentes
 /*
-INSERT INTO dbo.Asistentes (nombre, idSede, correo, contraseña, celular) VALUES
+INSERT INTO dbo.Asistentes (nombre, idSede, correo, contraseï¿½a, celular) VALUES
 ('Juan Carlos Fernandez', 'CA', 'jfernandez@itcr.ac.cr', '12345678', '62123456'),
 ('Maria Perez Gomez', 'CA', 'mperez@itcr.ac.cr', '98765432', '63456789'),
 ('Luis Rodriguez Martinez', 'CA', 'lrodriguez@itcr.ac.cr', '45678901', '67891234'),
@@ -98,7 +98,7 @@ GO
 
 -- Profesores
 /*
-INSERT INTO dbo.Profesores (nombre, idSede, correo, numeroOficina, numeroCelular, foto, contraseña, darDeBaja) VALUES
+INSERT INTO dbo.Profesores (nombre, idSede, correo, numeroOficina, numeroCelular, foto, contraseï¿½a, darDeBaja) VALUES
 ('Luisa Herrera Fernandez', 'CA', 'lherrera@itcr.ac.cr', 12345678, 61234567, NULL, '87654321', 0),
 ('Ricardo Ramirez Gomez', 'CA', 'rramirez@itcr.ac.cr', 23456789, 62345678, NULL, '98765432', 0),
 ('Laura Torres Martinez', 'CA', 'ltorres@itcr.ac.cr', 34567890, 63456789, NULL, '23456789', 0),
