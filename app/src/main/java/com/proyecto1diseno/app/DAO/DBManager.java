@@ -23,4 +23,8 @@ public class DBManager {
     public static EstudianteDAO getEstudianteDAO() throws SQLException {
         return new EstudianteDAO(getConnection());
     }
+
+    public static PlanTrabajoDAO getPlanTrabajoDAO() throws SQLException {
+        return new PlanTrabajoDAO(getConnection());
+    }
 }

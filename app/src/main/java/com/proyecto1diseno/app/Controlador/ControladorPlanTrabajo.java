@@ -1,17 +1,25 @@
 package com.proyecto1diseno.app.Controlador;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.proyecto1diseno.app.Modelo.Actividad;
-import com.proyecto1diseno.app.Modelo.Comentario;
-import com.proyecto1diseno.app.Modelo.Estados;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.proyecto1diseno.app.Servicio.PlanTrabajoService;
 
 @RestController
+@Slf4j
 @RequestMapping("/plantrabajo")
 public class ControladorPlanTrabajo {
     
@@ -21,44 +29,9 @@ public class ControladorPlanTrabajo {
     public ControladorPlanTrabajo() {
     }
     
-    @RequestMapping("/editaractividad")
-    public boolean editarActividad(long idActividad, String nombre, String descripcion, int duracion) {
-        return planTrabajoService.editarActividad(idActividad, nombre, descripcion, duracion);
-    }
-    
-    @RequestMapping("/borraractividad")
-    public boolean borrarActividad(long idActividad) {
-        return planTrabajoService.borrarActividad(idActividad);
-    }
-    
-    @RequestMapping("/obtenerActividades")
-    public Collection<Actividad> obtenerActividades() {
-        return planTrabajoService.getActividades();
-    }
-    
-    @RequestMapping("/getactividad")
-    public Actividad getActividad(long idActividad) {
-        return planTrabajoService.getActividad(idActividad);
-    }
-    
-    @RequestMapping("/addfecharecordatorio")
-    public boolean addFechaRecordatorio(long idActividad, Date fecha) {
-        return planTrabajoService.addFechaRecordatorio(idActividad, fecha);
-    }
-    
-    @RequestMapping("/addcomentario")
-    public boolean addComentario(long idActividad, Comentario comentario) {
-        return planTrabajoService.addComentario(idActividad, comentario);
-    }
-    
-    @RequestMapping("/addreplica")
-    public boolean addReplica(long idActividad, Comentario comentario) {
-        return planTrabajoService.addReplica(idActividad, comentario);
-    }
-    
-    @RequestMapping("/editarestado")
-    public boolean editarEstado(long idActividad, Estados estado) {
-        return planTrabajoService.editarEstado(idActividad, estado);
-
+    @PostMapping("/obtenerActividades")
+    public ResponseEntity<List<Map<String, Object>>> obtenerActividades() throws SQLException, JsonProcessingException {
+        List<Map<String, Object>> actividades = planTrabajoService.obtenerActividades();
+        return ResponseEntity.ok().body(actividades);
     }
 }

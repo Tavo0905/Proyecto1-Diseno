@@ -56,7 +56,7 @@ public class ControladorProfesor {
         String user = (String) requestBody.get("user");
         List<Map<String, Object>> profesores = profesorService.obtenerProfesores(user);
         return ResponseEntity.ok().body(profesores);
-    }
+    } 
 
     @PostMapping("/modProf")
     public ResponseEntity<String> obtenerProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {

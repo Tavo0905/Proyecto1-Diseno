@@ -7,89 +7,6 @@ var usuario = {user: "", password: ""}
 
 app.use(express.static('views'))
 
-
-/////////////////////////////////////////////////////
-// EJEMPLOS DE ESTUDIANTES
-/////////////////////////////////////////////////////
-
-var profes = [
-   {
-      id: "CA-1",
-      nombre: "Jorge Vargas",
-      correo: "jvargas@itcr",
-      tel: "22650000",
-      cel: "87878787",
-      guia: false
-   },
-   {
-      id: "CA-2",
-      nombre: "Jorge Vargas",
-      correo: "jvargas@itcr",
-      tel: "22650000",
-      cel: "87878787",
-      guia: false
-   },
-   {
-      id: "CA-3",
-      nombre: "Jorge Vargas",
-      correo: "jvargas@itcr",
-      tel: "22650000",
-      cel: "87878787",
-      guia: false
-   },
-   {
-      id: "CA-4",
-      nombre: "Jorge Vargas",
-      correo: "jvargas@itcr",
-      tel: "22650000",
-      cel: "87878787",
-      guia: false
-   },
-   {
-      id: "CA-5",
-      nombre: "Jorge Vargas",
-      correo: "jvargas@itcr",
-      tel: "22650000",
-      cel: "87878787",
-      guia: false
-   },
-   {
-      id: "CA-6",
-      nombre: "Jorge Vargas",
-      correo: "jvargas@itcr",
-      tel: "22650000",
-      cel: "87878787",
-      guia: false
-   },
-   {
-      id: "CA-7",
-      nombre: "Jorge Vargas",
-      correo: "jvargas@itcr",
-      tel: "22650000",
-      cel: "87878787",
-      guia: false
-   },
-   {
-      id: "CA-8",
-      nombre: "Jorge Vargas",
-      correo: "jvargas@itcr",
-      tel: "22650000",
-      cel: "87878787",
-      guia: false
-   },
-   {
-      id: "CA-9",
-      nombre: "Jorge Vargas",
-      correo: "jvargas@itcr",
-      tel: "22650000",
-      cel: "87878787",
-      guia: false
-   }
-]
-
-
-
-
 app.get('/', (req, res) => {
    res.render('login.ejs')
 })
@@ -367,21 +284,19 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
       request1.write(profeJson);
       request1.end();
    }else{
-      console.log("Revisa que ningun campo este vacio.");
+      console.log("Revisa que ningun campo este vacio./Modificar");
    } 
 });
 
-app.post("/datosProfesRes2", urlParser, (req, res) => {
-   const entryId = req.body.entryId;
+app.post("/agregarProf", urlParser, (req, res) => {
    const entryName = req.body.entryName;
    const entryCE = req.body.entryCE;
    const entryPass = req.body.entryPass;
    const entryTel = req.body.entryTel;
    const entryCel = req.body.entryCel;
 
-   if (entryId && entryName && entryCE && entryPass && entryTel && entryCel) {
+   if (entryName && entryCE && entryPass && entryTel && entryCel) {
       const profe = {
-         id: entryId,
          nombre: entryName,
          correo: entryCE,
          pass: entryPass,
@@ -463,7 +378,7 @@ app.post("/datosProfesRes2", urlParser, (req, res) => {
       request1.write(profeJson);
       request1.end();
    }else{
-      console.log("Revisa que ningun campo este vacio.");
+      console.log("Revisa que ningun campo este vacio/Agregar.");
    } 
 });
 
@@ -783,7 +698,6 @@ app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
       method: 'POST',
       headers: {
          'Content-Type': 'application/json',
-         'Content-Length': Buffer.byteLength(postUser),
       }
    };
    
@@ -797,6 +711,11 @@ app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
       response.on('end', () => {
          if (response.statusCode === 200) {
             const actividades = JSON.parse(responseData);
+            actividades.forEach((actividad) => {
+               const fechaHoraOriginal = new Date(actividad.FechaHora);
+               const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+               actividad.FechaHora = fechaHoraFormateada;
+             });
             res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
          }else{
             console.log("ERROR: ResponseData - " + responseData);   
@@ -809,7 +728,6 @@ app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
    });
    
    request.end()
-   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
 })
 
 app.post("/comentario", urlParser, (req, res) => {
@@ -817,6 +735,18 @@ app.post("/comentario", urlParser, (req, res) => {
 })
 
 app.post("/datosActRes", urlParser, (req, res) => {
+   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
+})
+
+app.post("/marcarActRealizada", urlParser, (req, res) => {
+   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
+})
+
+app.post("/marcarActCancelada", urlParser, (req, res) => {
+   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
+})
+
+app.post("/marcarActPublicada", urlParser, (req, res) => {
    res.render("gestionPlanTrabajo.ejs", {arreglo: []})
 })
 
@@ -828,9 +758,7 @@ app.post("/salirLogin", urlParser, (req, res) => {
    res.render("login.ejs")
 })
 
-app.post("/agregarProf", urlParser, (req, res) => {
-   res.render("gestion", {clave: 2, arreglo: []})
-})
+
 
 var server = app.listen(3000, function () {
    var host = server.address().address
