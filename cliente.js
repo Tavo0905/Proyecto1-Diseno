@@ -802,7 +802,9 @@ app.post("/salirLogin", urlParser, (req, res) => {
    res.render("login.ejs")
 })
 
-
+app.post("/agregarProf", urlParser, (req, res) => {
+   res.render("gestion", {clave: 2, arreglo: []})
+})
 
 var server = app.listen(3000, function () {
    var host = server.address().address
