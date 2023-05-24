@@ -93,7 +93,7 @@ public class ProfesorDAO {
         }
     }
 
-    public Profesor getProfesor(String codigo) throws SQLException {
+    public Profesor obtenerProfesor(String codigo) throws SQLException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Profesor profesorEncontrado = null;
