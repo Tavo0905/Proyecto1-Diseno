@@ -767,13 +767,6 @@ app.post("/datosEstRes", urlParser, (req, res) => {
       request1.write(estJson);
       request1.end();
    }else{
-      console.log(req.body.entryId)
-      console.log(req.body.entryApellido1)
-      console.log(req.body.entryApellido2)
-      console.log(req.body.entryCE)
-      console.log(req.body.entryName)
-      console.log(req.body.entryPass)
-      console.log(req.body.entryCE)
       console.log("Revisa que ningun campo este vacio.");
    } 
 })
@@ -783,6 +776,39 @@ app.post("/agrActividad", urlParser, (req, res) => {
 })
 
 app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/plantrabajo/obtenerActividades',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(postUser),
+      }
+   };
+   
+   const request = http.request(options, (response) => {
+      let responseData = '';
+   
+      response.on('data', (chunk) => {
+         responseData += chunk;
+         });
+      
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const actividades = JSON.parse(responseData);
+            res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);   
+            }
+      });
+   });
+      
+   request.on('error', (error) => {
+      console.error(error);
+   });
+   
+   request.end()
    res.render("gestionPlanTrabajo.ejs", {arreglo: []})
 })
 

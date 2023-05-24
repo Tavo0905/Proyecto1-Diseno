@@ -31,8 +31,8 @@ public class ControladorPlanTrabajo {
         return planTrabajoService.borrarActividad(idActividad);
     }
     
-    @RequestMapping("/getactividades")
-    public Collection<Actividad> getActividades() {
+    @RequestMapping("/obtenerActividades")
+    public Collection<Actividad> obtenerActividades() {
         return planTrabajoService.getActividades();
     }
     

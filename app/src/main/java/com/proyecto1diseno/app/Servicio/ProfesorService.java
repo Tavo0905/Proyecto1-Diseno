@@ -31,8 +31,8 @@ public class ProfesorService {
         return profesorDAO.obtenerProfesores(user);
     }
 
-    public Profesor getProfesor(String codigoProf) throws SQLException {
-        Profesor profesorEncontrado = profesorDAO.getProfesor(codigoProf);
+    public Profesor obtenerProfesor(String codigoProf) throws SQLException {
+        Profesor profesorEncontrado = profesorDAO.obtenerProfesor(codigoProf);
 
         if (profesorEncontrado == null) {
             throw new NoSuchElementException("Profesor no encontrado");

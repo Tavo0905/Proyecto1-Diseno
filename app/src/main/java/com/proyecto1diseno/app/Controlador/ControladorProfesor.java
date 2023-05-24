@@ -34,33 +34,6 @@ public class ControladorProfesor {
         this.estudianteService = estudianteService;
     }
 
-    @RequestMapping("/accesarListaEstudiantes")
-    public void accesarListaEstudiantes(String campus) {
-        // TBD
-    }
-       
-    @RequestMapping("/generarExcel")
-    public void generarExcel(String campus) {
-        // TBD
-    }
-
-    @RequestMapping("/consultarEquipoGuia")
-    public com.proyecto1diseno.app.Modelo.EquipoGuia consultarEquipoGuia() {
-        // TBD
-        return null;
-    }
-
-    @RequestMapping("/consultarPlanDeTrabajo")
-    public void consultarPlanDeTrabajo() {
-        // TBD
-    }
-
-    @RequestMapping("/definirPlanTrabajo")
-    public com.proyecto1diseno.app.Modelo.PlanTrabajo definirPlanTrabajo(com.proyecto1diseno.app.Modelo.PlanTrabajo plan) {
-        // TBD
-        return null;
-    }
-
     @PostMapping("/agregarProfes")
     public ResponseEntity<String> agregarProfesor(@RequestBody Map<String, Object> profesorData) throws SQLException {
         String user = (String) profesorData.get("user");
@@ -79,16 +52,16 @@ public class ControladorProfesor {
     }
 
     @PostMapping("/gestionarProf")
-    public ResponseEntity<List<Map<String,Object>>> gestionarProf(@RequestBody Map<String, Object> requestBody) throws SQLException, JsonProcessingException {
+    public ResponseEntity<List<Map<String,Object>>> obtenerProfesores(@RequestBody Map<String, Object> requestBody) throws SQLException, JsonProcessingException {
         String user = (String) requestBody.get("user");
         List<Map<String, Object>> profesores = profesorService.obtenerProfesores(user);
         return ResponseEntity.ok().body(profesores);
     }
 
     @PostMapping("/modProf")
-    public ResponseEntity<String> getProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {
+    public ResponseEntity<String> obtenerProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {
         String codigoProf = (String) requestBody.get("codigo");
-        Profesor profesorAMostrar = profesorService.getProfesor(codigoProf);
+        Profesor profesorAMostrar = profesorService.obtenerProfesor(codigoProf);
         Gson gson = new Gson();
         String jsonProfesor = gson.toJson(profesorAMostrar);
         return ResponseEntity.ok().body(jsonProfesor);
