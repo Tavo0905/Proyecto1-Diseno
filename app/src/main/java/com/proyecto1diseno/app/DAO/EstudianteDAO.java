@@ -2,6 +2,7 @@ package com.proyecto1diseno.app.DAO;
 import com.proyecto1diseno.app.Modelo.Estudiante;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -135,5 +136,57 @@ public class EstudianteDAO {
         }
     }
 } 
+    public String insertarEstudiante(Estudiante estudiante) throws SQLException{
+        if (!existeCarne(estudiante.getCarnet()) && !existeCorreo(estudiante.getCorreo())) {
+            try (connection) {
+                String query = "INSERT INTO Estudiantes (carne, apellido1, apellido2, nombre, correo, numeroCelular, contraseña) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement statement = connection.prepareStatement(query);
+                //statement.setInt(1, estudiante.getIdSede());
+                statement.setInt(1, estudiante.getCarnet());
+                statement.setString(2, estudiante.getApellido1());
+                statement.setString(3, estudiante.getApellido2());
+                statement.setString(4, estudiante.getNombre());
+                //statement.setString(6, estudiante.getSegundoNombre());
+                statement.setString(5, estudiante.getCorreo());
+                statement.setInt(6, estudiante.getCelular());
+                statement.setString(7, estudiante.getContrasena());
+                statement.executeUpdate();
+                return "Se inserto correctamente";
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return "Error en la coneccion";
+            }
+        } else {
+            
+            return "Error: El carne o el correo ya existen en la base de datos.";
+        }
+    }
+
+    private boolean existeCarne(int carne) {
+        try (connection) {
+            String query = "SELECT * FROM Estudiantes WHERE carne = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, carne);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next(); // Devuelve true si hay algún resultado, es decir, el carne ya existe
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    private boolean existeCorreo(String correo) {
+        try (connection) {
+            String query = "SELECT * FROM Estudiantes WHERE correo = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, correo);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next(); // Devuelve true si hay algún resultado, es decir, el correo ya existe
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }  
 
