@@ -288,103 +288,92 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
          console.log("Revisa que ningun campo este vacio.");
       }
    } else {
-      // Codigo de crear profe
-      res.render("gestion.ejs", {clave: 2, arreglo: []})
-   }
-});
-
-app.post("/agregarProf", urlParser, (req, res) => {
-   const entryName = req.body.entryName;
-   const entryCE = req.body.entryCE;
-   const entryPass = req.body.entryPass;
-   const entryTel = req.body.entryTel;
-   const entryCel = req.body.entryCel;
-
-   if (entryName && entryCE && entryPass && entryTel && entryCel) {
-      const profe = {
-         nombre: entryName,
-         correo: entryCE,
-         pass: entryPass,
-         tel: entryTel,
-         cel: entryCel,
-         user: usuario.user
-      };
-
-      const profeJson = JSON.stringify(profe);
-
-      const options1 = {
-         hostname: 'localhost',
-         port: 8080,
-         path: '/profesor/agregarProfesor',
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': profeJson.length
-         }
-      };
-
-      const request1 = http.request(options1, (response1) => {
-         let responseData = '';
-
-         response1.on('data', (chunk) => {
-            responseData += chunk;
-         });
-
-         response1.on('end', () => {
-            if (response1.statusCode === 200) {
-               const user = { user: usuario.user };
-               const postUser = JSON.stringify(user);
-
-               const options2 = {
-                  hostname: 'localhost',
-                  port: 8080,
-                  path: '/profesor/gestionarProf',
-                  method: 'POST',
-                  headers: {
-                     'Content-Type': 'application/json',
-                     'Content-Length': Buffer.byteLength(postUser),
-                  }
-               };
-
-               const request2 = http.request(options2, (response2) => {
-                  let responseData2 = '';
-
-                  response2.on('data', (chunk2) => {
-                     responseData2 += chunk2;
-                  });
-
-                  response2.on('end', () => {
-                     if (response2.statusCode === 200) {
-                        const profesores = JSON.parse(responseData2);
-                        res.render("gestion.ejs", { clave: 2, arreglo: profesores });
-                     } else {
-                        console.log("ERROR: ResponseData - " + responseData2);
+      if (entryName && entryCE && entryPass && entryTel && entryCel) {
+         const profe = {
+            nombre: entryName,
+            correo: entryCE,
+            pass: entryPass,
+            tel: entryTel,
+            cel: entryCel,
+            user: usuario.user
+         };
+   
+         const profeJson = JSON.stringify(profe);
+   
+         const options1 = {
+            hostname: 'localhost',
+            port: 8080,
+            path: '/profesor/agregarProf',
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+               'Content-Length': profeJson.length
+            }
+         };
+   
+         const request1 = http.request(options1, (response1) => {
+            let responseData = '';
+   
+            response1.on('data', (chunk) => {
+               responseData += chunk;
+            });
+   
+            response1.on('end', () => {
+               if (response1.statusCode === 200) {
+                  const user = { user: usuario.user };
+                  const postUser = JSON.stringify(user);
+   
+                  const options2 = {
+                     hostname: 'localhost',
+                     port: 8080,
+                     path: '/profesor/gestionarProf',
+                     method: 'POST',
+                     headers: {
+                        'Content-Type': 'application/json',
+                        'Content-Length': Buffer.byteLength(postUser),
                      }
+                  };
+   
+                  const request2 = http.request(options2, (response2) => {
+                     let responseData2 = '';
+   
+                     response2.on('data', (chunk2) => {
+                        responseData2 += chunk2;
+                     });
+   
+                     response2.on('end', () => {
+                        if (response2.statusCode === 200) {
+                           const profesores = JSON.parse(responseData2);
+                           res.render("gestion.ejs", { clave: 2, arreglo: profesores });
+                        } else {
+                           console.log("ERROR: ResponseData - " + responseData2);
+                        }
+                     });
                   });
-               });
-
-               request2.on('error', (error2) => {
-                  console.error(error2);
-               });
-
-               request2.write(postUser);
-               request2.end();
-            }else{
-               console.log("ERROR: ResponseData - " + responseData);   
-               }
-            
+   
+                  request2.on('error', (error2) => {
+                     console.error(error2);
+                  });
+   
+                  request2.write(postUser);
+                  request2.end();
+               }else{
+                  console.log("ERROR: ResponseData - " + responseData);   
+                  }
+               
+            });
          });
-      });
-
-      request1.on('error', (error1) => {
-         console.error(error1);
-      });
-
-      request1.write(profeJson);
-      request1.end();
-   }else{
-      console.log("Revisa que ningun campo este vacio/Agregar.");
-   } 
+   
+         request1.on('error', (error1) => {
+            console.error(error1);
+         });
+   
+         request1.write(profeJson);
+         request1.end();
+      }else{
+         console.log("Revisa que ningun campo este vacio excepto ID.");
+      } 
+   }
 });
 
 app.post("/bajaProf", urlParser, (req, res) => {
@@ -740,7 +729,101 @@ app.post("/comentario", urlParser, (req, res) => {
 })
 
 app.post("/datosActRes", urlParser, (req, res) => {
-   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
+   const entrySemana = req.body.entrySemana;
+   const entryTipo = req.body.entryTipo;
+   const entryFecha = req.body.entryFecha;
+   const entryHora = req.body.entryHora;
+   const entryFechaP = req.body.entryFechaP;
+   const entryRes = req.body.entryRes;
+   const entryModalidad = req.body.entryModalidad;
+   const entryEstado = req.body.Estado;
+   if (entrySemana && entryTipo && entryFecha && entry && entryHora && entryFechaP && entryRes && entryModalidad && entryEstado ) {
+      const actividad = {
+         nombre: entryName,
+         correo: entryCE,
+         pass: entryPass,
+         tel: entryTel,
+         cel: entryCel,
+         user: usuario.user
+      };
+
+      const profeJson = JSON.stringify(profe);
+
+      const options1 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/agregarProf',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': profeJson.length
+         }
+      };
+
+      const request1 = http.request(options1, (response1) => {
+         let responseData = '';
+
+         response1.on('data', (chunk) => {
+            responseData += chunk;
+         });
+
+         response1.on('end', () => {
+            if (response1.statusCode === 200) {
+
+               const options2 = {
+                  hostname: 'localhost',
+                  port: 8080,
+                  path: '/plantrabajo/obtenerActividades',
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                  }
+               };
+
+               const request2 = http.request(options2, (response2) => {
+                  let responseData2 = '';
+
+                  response2.on('data', (chunk2) => {
+                     responseData2 += chunk2;
+                  });
+
+                  response2.on('end', () => {
+                     if (response2.statusCode === 200) {
+                        const actividades = JSON.parse(responseData);
+                        actividades.forEach((actividad) => {
+                           const fechaHoraOriginal = new Date(actividad.FechaHora);
+                           const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+                           actividad.FechaHora = fechaHoraFormateada;
+                        });
+                        res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
+                     } else {
+                        console.log("ERROR: ResponseData - " + responseData2);
+                     }
+                  });
+               });
+
+               request2.on('error', (error2) => {
+                  console.error(error2);
+               });
+
+               request2.write(postUser);
+               request2.end();
+            }else{
+               console.log("ERROR: ResponseData - " + responseData);   
+               }
+            
+         });
+      });
+
+      request1.on('error', (error1) => {
+         console.error(error1);
+      });
+
+      request1.write(profeJson);
+      request1.end();
+   }else{
+      console.log("Revisa que ningun campo este vacio excepto ID.");
+   } 
 })
 
 app.post("/marcarActRealizada", urlParser, (req, res) => {

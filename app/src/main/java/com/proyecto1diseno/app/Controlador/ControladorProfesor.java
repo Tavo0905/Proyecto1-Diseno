@@ -34,7 +34,7 @@ public class ControladorProfesor {
         this.estudianteService = estudianteService;
     }
 
-    @PostMapping("/agregarProfes")
+    @PostMapping("/agregarProf")
     public ResponseEntity<String> agregarProfesor(@RequestBody Map<String, Object> profesorData) throws SQLException {
         String user = (String) profesorData.get("user");
         Profesor profesor = new Profesor();

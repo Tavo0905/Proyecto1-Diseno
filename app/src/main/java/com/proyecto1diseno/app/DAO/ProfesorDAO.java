@@ -169,7 +169,7 @@ public class ProfesorDAO {
                 insertStatement.setInt(5, profesor.getTelOficina());
                 insertStatement.setInt(6, profesor.getCelular());
                 insertStatement.executeUpdate();
-                return "Error: Profesor agregado exitosamente.";
+                return "Profesor agregado exitosamente.";
             }
         }
     }
