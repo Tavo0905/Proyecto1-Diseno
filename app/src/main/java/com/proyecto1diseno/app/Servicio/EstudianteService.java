@@ -40,4 +40,8 @@ public class EstudianteService {
     public String modificarEstudiante(Estudiante estudiante) throws SQLException {
         return estudianteDAO.modificarEstudiante(estudiante);
     }
+
+    public String insertarEstudiante(Estudiante estudiante) throws SQLException{
+        return estudianteDAO.insertarEstudiante(estudiante);
+    }
 }
