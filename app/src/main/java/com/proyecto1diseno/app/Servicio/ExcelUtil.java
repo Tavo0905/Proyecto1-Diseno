@@ -1,4 +1,6 @@
-/*import org.apache.poi.ss.usermodel.*;
+package com.proyecto1diseno.app.Servicio;
+
+import org.apache.poi.ss.usermodel.*;
 
 import com.proyecto1diseno.app.Modelo.Estudiante;
 
@@ -30,7 +32,7 @@ public class ExcelUtil {
 
                 // Crear un objeto Estudiante y asignar los valores de las celdas a las propiedades correspondientes
                 Estudiante estudiante = new Estudiante();
-                estudiante.setIdSede((int) row.getCell(0).getNumericCellValue());
+                /*estudiante.setIdSede((int) row.getCell(0).getNumericCellValue());
                 estudiante.setCarne(row.getCell(1).getStringCellValue());
                 estudiante.setApellido1(row.getCell(2).getStringCellValue());
                 estudiante.setApellido2(row.getCell(3).getStringCellValue());
@@ -38,7 +40,7 @@ public class ExcelUtil {
                 estudiante.setSegundoNombre(row.getCell(5).getStringCellValue());
                 estudiante.setCorreo(row.getCell(6).getStringCellValue());
                 estudiante.setNumeroCelular(row.getCell(7).getStringCellValue());
-                estudiante.setContraseña(row.getCell(8).getStringCellValue());
+                estudiante.setContraseña(row.getCell(8).getStringCellValue());*/
 
                 estudiantes.add(estudiante);
             }
@@ -49,4 +51,4 @@ public class ExcelUtil {
 
         return estudiantes;
     }
-}*/
+}
