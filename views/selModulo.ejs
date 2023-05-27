@@ -6,7 +6,7 @@
 <body>
     <form class = "formSalirALogin" method = post>
         <div>
-            <button class = "formGest" id = "salirSelMod" name = "salirSelMod" 
+            <button class = "btnSalir1" id = "salirSelMod" name = "salirSelMod" 
             formaction = "salirLogin">
                 Salir
             </button>
@@ -16,17 +16,20 @@
     <form class = "formGest" method = "post"></form>
     <div>
         <form class = "formGest" method = "post">
-            <button class = "botonesMod" id = "gestionEst" formaction = "gestionarEst">Gestion de estudiantes</button>
-            <button class = "botonesMod" id = "gestionProf" formaction = "gestionarProf">Gestion de profesores</button>
+            <% if (clave == 1) { %>
+                <button class = "botonesMod" id = "gestionBtn" formaction = "gestionarEst">Gestion de estudiantes</button>
+            <% } if (clave == 2) { %>
+                <button class = "botonesMod" id = "gestionBtn" formaction = "gestionarProf">Gestion de profesores</button>
+            <% } %>
+            <button class = "botonesMod" id = "btnPlanTrabajo" name = "btnPlanTrabajo" formaction = "gestionPlanTrabajo">
+                Gestion de plan de trabajo
+            </button>
         </form>
     </div>
     <div>
         <form class = "formGest" method = "post">
             <button class = "botonConfGrGuia" id = "confGrGuia" name = "confGrGuia" formaction = "gestionarGuias">
                 Conformacion de grupo guia
-            </button>
-            <button class = "botonPlanTrabajo" id = "btnPlanTrabajo" name = "btnPlanTrabajo" formaction = "gestionPlanTrabajo">
-                Gestion de plan de trabajo
             </button>
         </form>
     </div>
