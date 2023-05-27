@@ -917,19 +917,28 @@ app.post("/salirLogin", urlParser, (req, res) => {
 
 app.post("/generarExcel", urlParser, (req, res) => {
 
+   const user = { user: usuario.user };
+   postUser = JSON.stringify(user);
+
    const options = {
       hostname: 'localhost',
       port: 8080,
       path: '/estudiante/generarExcel',
       method: 'POST',
       headers: {
-         'Content-Type': 'application/json'
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(postUser),
       }
    };
 
    const request = http.request(options, response => {
       console.log(`statusCode: ${response.statusCode}`);
       
+      let responseData = '';
+   
+      response.on('data', (chunk) => {
+         responseData += chunk;
+         });
 
       response.on('data', d => {
          process.stdout.write(d)
@@ -947,12 +956,15 @@ app.post("/generarExcel", urlParser, (req, res) => {
    request.on('error', error => {
       console.error(error);
    });
+
+   request.write(postUser);
    request.end();
 })
 
 app.post("/cargarExcel", urlParser, (req, res) => {
 
-   require('child_process').exec(`explorer.exe "${winPath}"`);
+   const user = { user: usuario.user };
+   postUser = JSON.stringify(user);
 
    const options = {
       hostname: 'localhost',
@@ -960,7 +972,8 @@ app.post("/cargarExcel", urlParser, (req, res) => {
       path: '/estudiante/cargarExcel',
       method: 'POST',
       headers: {
-         'Content-Type': 'application/json'
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(postUser),
       }
    };
 
@@ -984,6 +997,8 @@ app.post("/cargarExcel", urlParser, (req, res) => {
    request.on('error', error => {
       console.error(error);
    });
+
+   request.write(postUser)
    request.end();
 })
 
