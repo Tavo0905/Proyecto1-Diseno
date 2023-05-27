@@ -132,13 +132,45 @@ app.post('/gestionarProf', urlParser, (req, res) => {
    });
 
 app.post('/gestionarGuias', urlParser, (req, res) => {
-   /*let guias = []
-   for (profe of profes) {
-      if (profe["guia"]) {
-         guias.push(profe)
+   const user = { user: usuario.user };
+   postUser = JSON.stringify(user);
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/profesor/gestionarProfGuia',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(postUser),
       }
-   }*/
-   res.render("gestion.ejs", {clave: 3, arreglo: []})
+   };
+   
+   const request = http.request(options, (response) => {
+      let responseData = '';
+   
+      response.on('data', (chunk) => {
+         responseData += chunk;
+         });
+      
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const profesores = JSON.parse(responseData);
+            res.render("gestion.ejs", {clave: 3, arreglo : profesores});
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);   
+            }
+      });
+   });
+      
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(postUser);
+   
+   request.end()
+   //res.render("gestion.ejs", {clave: 3, arreglo: []})
 })
 
 app.post('/salirGestion', urlParser, (req, res) => {

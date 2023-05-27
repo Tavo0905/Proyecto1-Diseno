@@ -57,6 +57,9 @@ public class ProfesorService {
         return profesorDAO.defGuiaProfesor(codigoProf);
     }
 
+    public List<Map<String, Object>> obtenerProfesoresGuia(String user) throws SQLException {
+        return profesorDAO.obtenerProfesoresGuia(user);
+    }
 
 
 

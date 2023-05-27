@@ -12,6 +12,10 @@ import java.util.Optional;
 
 import com.proyecto1diseno.app.Modelo.Profesor;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+
 public class ProfesorDAO {
     private final Connection connection;
 
@@ -288,6 +292,54 @@ public class ProfesorDAO {
         }
     }
 
+    public List<Map<String, Object>> obtenerProfesoresGuia(String user) throws SQLException {
+        List<Map<String, Object>> profesGuia = new ArrayList<>();
+        //String query1 = "SELECT * FROM Profesores";
+        PreparedStatement statement1 = null;
+        ResultSet resultSet1 = null;
+        PreparedStatement statement2 = null;
+        ResultSet resultSet2 = null;
+    
+        try {
+            
+                log.info("AQUI3");
+                String query2 = "SELECT DISTINCT p.* FROM Profesores p INNER JOIN ProfesoresGuias pg ON p.idProfesor = pg.idProfesor WHERE p.idProfesor = pg.idProfesor";
+                statement2 = connection.prepareStatement(query2);
+                String profesorID = "1";
+                //statement2.setString(1, profesorID);
+                resultSet2 = statement2.executeQuery();
+                while (resultSet2.next()) {
+                    log.info("AQUI4");
+                    Map<String, Object> profesorGuia = new HashMap<>();
+                    //profesorGuia.put("id", resultSet2.getInt("idProfesor"));
+                    profesorGuia.put("nombre", resultSet2.getString("nombre"));
+                    profesorGuia.put("correo", resultSet2.getString("correo"));
+                    profesorGuia.put("tel", resultSet2.getString("numeroOficina"));
+                    profesGuia.add(profesorGuia);
+                    }
+               // }
+           // }
+    
+            return profesGuia;
+        } finally {
+            // Cerrar los recursos en el bloque finally
+            if (resultSet2 != null) {
+                resultSet2.close();
+            }
+    
+            if (statement2 != null) {
+                statement2.close();
+            }
+    
+            if (resultSet1 != null) {
+                resultSet1.close();
+            }
+    
+            if (statement1 != null) {
+                statement1.close();
+            }
+        }
+    }
     
 
 

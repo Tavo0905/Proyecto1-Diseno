@@ -108,4 +108,11 @@ public class ControladorProfesor {
         }
     }
 
+    @PostMapping("/gestionarProfGuia")
+    public ResponseEntity<List<Map<String,Object>>> obtenerProfesoresGuia(@RequestBody Map<String, Object> requestBody) throws SQLException, JsonProcessingException {
+        String user = (String) requestBody.get("user");
+        List<Map<String, Object>> profesoresGuia = profesorService.obtenerProfesoresGuia(user);
+        return ResponseEntity.ok().body(profesoresGuia);
+    } 
+
 }
