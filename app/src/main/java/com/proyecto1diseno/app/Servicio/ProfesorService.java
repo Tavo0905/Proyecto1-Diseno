@@ -57,7 +57,13 @@ public class ProfesorService {
         return profesorDAO.defGuiaProfesor(codigoProf);
     }
 
+    public List<Map<String, Object>> obtenerProfesoresGuia(String user) throws SQLException {
+        return profesorDAO.obtenerProfesoresGuia(user);
+    }
 
+    public String definirCoordinador(int codigoProf, String user) throws SQLException {
+        return profesorDAO.definirCoordinador(codigoProf, user);
+    }
 
 
     

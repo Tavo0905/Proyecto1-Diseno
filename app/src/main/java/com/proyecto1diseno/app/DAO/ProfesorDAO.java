@@ -12,6 +12,10 @@ import java.util.Optional;
 
 import com.proyecto1diseno.app.Modelo.Profesor;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+
 public class ProfesorDAO {
     private final Connection connection;
 
@@ -288,7 +292,99 @@ public class ProfesorDAO {
         }
     }
 
+    public List<Map<String, Object>> obtenerProfesoresGuia(String user) throws SQLException {
+        List<Map<String, Object>> profesGuia = new ArrayList<>();
+        //String query1 = "SELECT * FROM Profesores";
+        PreparedStatement statement1 = null;
+        ResultSet resultSet1 = null;
+        PreparedStatement statement2 = null;
+        ResultSet resultSet2 = null;
     
+        try {
+            
+               
+                String query2 = "SELECT DISTINCT p.* FROM Profesores p INNER JOIN ProfesoresGuias pg ON p.idProfesor = pg.idProfesor WHERE p.idProfesor = pg.idProfesor";
+                statement2 = connection.prepareStatement(query2);
+                String profesorID = "1";
+                //statement2.setString(1, profesorID);
+                resultSet2 = statement2.executeQuery();
+                while (resultSet2.next()) {
+                    
+                    Map<String, Object> profesorGuia = new HashMap<>();
+                    //profesorGuia.put("id", resultSet2.getInt("idProfesor"));
+                    profesorGuia.put("nombre", resultSet2.getString("nombre"));
+                    profesorGuia.put("correo", resultSet2.getString("correo"));
+                    profesorGuia.put("tel", resultSet2.getString("numeroOficina"));
+                    profesGuia.add(profesorGuia);
+                    }
+               // }
+           // }
+    
+            return profesGuia;
+        } finally {
+            // Cerrar los recursos en el bloque finally
+            if (resultSet2 != null) {
+                resultSet2.close();
+            }
+    
+            if (statement2 != null) {
+                statement2.close();
+            }
+    
+            if (resultSet1 != null) {
+                resultSet1.close();
+            }
+    
+            if (statement1 != null) {
+                statement1.close();
+            }
+        }
+    }
+    
+    public String definirCoordinador(int codigoProf, String user) throws SQLException {
+        log.info("AQUI1");
+        String query1 = "SELECT * FROM Asistentes WHERE correo = ?";
+        PreparedStatement statement1 = null;
+        ResultSet resultSet1 = null;
+        PreparedStatement statement2 = null;
+        ResultSet resultSet2 = null;
+    
+        log.info("AQUI2");
+        statement1 = connection.prepareStatement(query1);
+        statement1.setString(1, user);
+        resultSet1 = statement1.executeQuery();
+    
+        log.info("AQUI3");
+        String asistSede = resultSet1.getString("idSede");
+        if(asistSede == "CA"){
+            log.info("AQUI4");
+        String sql = "SELECT coordinador FROM ProfesoresGuias WHERE idProfesor = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, codigoProf);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int coordinador = resultSet.getInt("coordinador");
+                    if (coordinador == 0) {
+                        String updateSql = "UPDATE ProfesoresGuias SET coordinador = 1 WHERE idProfesor = ?";
+                        try (PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
+                            updateStatement.setInt(1, codigoProf);
+                            updateStatement.executeUpdate();
+                        }
+                        return "Profesor definido como coordinador.";
+                    } else {
+                        return "Error: El profesor ya es coordinador.";
+                    }
+                } else {
+                    return "Error: No se encontró el profesor con el código especificado.";
+                }
+            }
+            }
+            
+        } else{
+            return "No es asistente de Cartago";
+        }
+
+    }
 
 
 
