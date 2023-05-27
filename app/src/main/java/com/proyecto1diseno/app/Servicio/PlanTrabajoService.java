@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 import com.proyecto1diseno.app.DAO.DBManager;
 import com.proyecto1diseno.app.DAO.PlanTrabajoDAO;
 import com.proyecto1diseno.app.Modelo.Actividad;
-import com.proyecto1diseno.app.Modelo.Comentario;
-import com.proyecto1diseno.app.Modelo.Estados;
-import com.proyecto1diseno.app.Modelo.PlanTrabajo;
 
 @Service
 public class PlanTrabajoService {
@@ -26,5 +23,9 @@ public class PlanTrabajoService {
 
     public List<Map<String, Object>> obtenerActividades() throws SQLException {
         return planTrabajoDAO.obtenerActividades();
+    }
+
+    public String agregarActividad(Actividad actividad, String user) throws SQLException {
+        return planTrabajoDAO.agregarActividad(actividad, user);
     }
 }
