@@ -1,6 +1,9 @@
 package com.proyecto1diseno.app.Controlador;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +12,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.proyecto1diseno.app.Modelo.Actividad;
 import com.proyecto1diseno.app.Servicio.PlanTrabajoService;
 
 @RestController
@@ -34,4 +39,31 @@ public class ControladorPlanTrabajo {
         List<Map<String, Object>> actividades = planTrabajoService.obtenerActividades();
         return ResponseEntity.ok().body(actividades);
     }
+
+    @PostMapping("/agregarAct")
+    public ResponseEntity<String> agregarActividad(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        try {
+            String tipoActividad = (String) requestBody.get("tipoActividad");
+            int semana = Integer.parseInt((String) requestBody.get("semana"));
+            String nombre = (String) requestBody.get("nombre");
+            LocalDate fechaPublicacion = LocalDate.parse((String) requestBody.get("fechaPublicacion"));
+            String responsableProfesor = (String) requestBody.get("responsableProfesor");
+            String modalidad = (String) requestBody.get("modalidad");
+            String enlace = (String) requestBody.get("enlace");
+            String estado = (String) requestBody.get("estado");
+            LocalDate fecha = LocalDate.parse((String) requestBody.get("fecha"));
+            LocalTime hora = LocalTime.parse((String) requestBody.get("hora"));
+            LocalDateTime fechaHora = LocalDateTime.of(fecha, hora);
+            Actividad actividad = new Actividad(semana, tipoActividad, nombre, fechaHora, responsableProfesor, fechaPublicacion, modalidad, enlace, estado);
+            String user = (String )requestBody.get("user");
+            String respuestaAgregar = planTrabajoService.agregarActividad(actividad, user);
+            if (respuestaAgregar.startsWith("Error: ")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaAgregar);
+            } else {
+                return ResponseEntity.ok().body(respuestaAgregar);
+            }
+        }finally{  
+        }
+    }
+            
 }

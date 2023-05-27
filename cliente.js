@@ -774,32 +774,60 @@ app.post("/comentario", urlParser, (req, res) => {
 app.post("/datosActRes", urlParser, (req, res) => {
    const entrySemana = req.body.entrySemana;
    const entryTipo = req.body.entryTipo;
+   const entryNombre = req.body.entryNombre;
    const entryFecha = req.body.entryFecha;
    const entryHora = req.body.entryHora;
    const entryFechaP = req.body.entryFechaP;
    const entryRes = req.body.entryRes;
    const entryModalidad = req.body.entryModalidad;
-   const entryEstado = req.body.Estado;
-   if (entrySemana && entryTipo && entryFecha && entry && entryHora && entryFechaP && entryRes && entryModalidad && entryEstado ) {
+   const entryEnlace = req.body.entryEnlace;
+   const entryEstado = req.body.entryEstado;
+
+   // Validar formatos
+   const fechaRegex = /^\d{4}-\d{2}-\d{2}$/;
+   const horaRegex = /^\d{2}:\d{2}$/;
+
+   if (!fechaRegex.test(entryFecha)) {
+      console.log("El formato de Fecha debe ser yyyy-MM-dd");
+      return;
+   }
+
+   if (!horaRegex.test(entryHora)) {
+      console.log("El formato de Hora debe ser HH:mm");
+      return;
+   }
+
+   if (!fechaRegex.test(entryFechaP)) {
+      console.log("Fecha de publicación debe ser yyyy-MM-dd");
+      return;
+   }
+
+   if (entrySemana && entryTipo && entryFecha && entryNombre && entryHora && entryFechaP && entryRes && entryModalidad && entryEstado) {
       const actividad = {
-         nombre: entryName,
-         correo: entryCE,
-         pass: entryPass,
-         tel: entryTel,
-         cel: entryCel,
+         idPlanDeTrabajo: 1,
+         tipoActividad: entryTipo,
+         semana: entrySemana,
+         nombre: entryNombre,
+         fechaPublicacion: entryFechaP,
+         responsableProfesor: entryRes,
+         modalidad: entryModalidad,
+         enlace: entryEnlace,
+         estado: entryEstado,
+         fecha: entryFecha,
+         hora:entryHora,
          user: usuario.user
       };
 
-      const profeJson = JSON.stringify(profe);
+      const actividadJson = JSON.stringify(actividad);
 
       const options1 = {
          hostname: 'localhost',
          port: 8080,
-         path: '/profesor/agregarProf',
+         path: '/plantrabajo/agregarAct',
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
-            'Content-Length': profeJson.length
+            'Content-Length': actividadJson.length
          }
       };
 
@@ -812,7 +840,6 @@ app.post("/datosActRes", urlParser, (req, res) => {
 
          response1.on('end', () => {
             if (response1.statusCode === 200) {
-
                const options2 = {
                   hostname: 'localhost',
                   port: 8080,
@@ -832,7 +859,7 @@ app.post("/datosActRes", urlParser, (req, res) => {
 
                   response2.on('end', () => {
                      if (response2.statusCode === 200) {
-                        const actividades = JSON.parse(responseData);
+                        const actividades = JSON.parse(responseData2);
                         actividades.forEach((actividad) => {
                            const fechaHoraOriginal = new Date(actividad.FechaHora);
                            const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
@@ -849,12 +876,10 @@ app.post("/datosActRes", urlParser, (req, res) => {
                   console.error(error2);
                });
 
-               request2.write(postUser);
                request2.end();
             }else{
                console.log("ERROR: ResponseData - " + responseData);   
-               }
-            
+               }  
          });
       });
 
@@ -862,10 +887,10 @@ app.post("/datosActRes", urlParser, (req, res) => {
          console.error(error1);
       });
 
-      request1.write(profeJson);
+      request1.write(actividadJson);
       request1.end();
    }else{
-      console.log("Revisa que ningun campo este vacio excepto ID.");
+      console.log("Revisa que ningun campo este vacio excepto enlace si aun no tienes uno.");
    } 
 })
 

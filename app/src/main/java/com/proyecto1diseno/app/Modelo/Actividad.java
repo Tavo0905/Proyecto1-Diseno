@@ -2,7 +2,9 @@ package com.proyecto1diseno.app.Modelo;
 
 import java.util.Collection;
 import java.util.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class Actividad {
 
@@ -10,30 +12,25 @@ public class Actividad {
     private Tipos tipo;
     private String nombre;
     private LocalDateTime fechaHora;
-    private Collection<Profesor> organizadores;
+    private String responsable;
     private Date fechaPublicacion;
     private Collection<Date> fechasRecordatorios;
     private Modalidades modalidad;
     private String enlace;
     private String afiche;
     private Estados estado;
-    private Collection<Comentario> comentarios;
 
-    public Actividad(int semanaRealizacion, Tipos tipo, String nombre, LocalDateTime fechaHora, Collection<Profesor> organizadores,
-                     Date fechaPublicacion, Collection<Date> fechasRecordatorios, Modalidades modalidad, String enlace,
-                     String afiche, Estados estado, Collection<Comentario> comentarios) {
-        this.semanaRealizacion = semanaRealizacion;
-        this.tipo = tipo;
+    public Actividad(int semana, String tipoActividad, String nombre, LocalDateTime fechaHora2, String responsableProfesor,
+            LocalDate fechaPublicacion, String modalidad, String enlace, String estado) {
+        this.semanaRealizacion = semana;
+        this.tipo = Tipos.valueOf(tipoActividad);
         this.nombre = nombre;
-        this.fechaHora = fechaHora;
-        this.organizadores = organizadores;
-        this.fechaPublicacion = fechaPublicacion;
-        this.fechasRecordatorios = fechasRecordatorios;
-        this.modalidad = modalidad;
+        this.fechaHora = fechaHora2;
+        this.responsable = responsableProfesor;
+        this.fechaPublicacion = Date.from(fechaPublicacion.atStartOfDay().toInstant(ZoneOffset.UTC));
+        this.modalidad = Modalidades.valueOf(modalidad);
         this.enlace = enlace;
-        this.afiche = afiche;
-        this.estado = estado;
-        this.comentarios = comentarios;
+        this.estado = Estados.valueOf(estado);
     }
 
     public int getSemanaRealizacion() {
@@ -68,12 +65,12 @@ public class Actividad {
         this.fechaHora = fechaHora;
     }
 
-    public Collection<Profesor> getOrganizadores() {
-        return organizadores;
+    public String getResponsable(){
+        return this.responsable;
     }
 
-    public void setOrganizadores(Collection<Profesor> organizadores) {
-        this.organizadores = organizadores;
+    public void setResponsable(String responsable) {
+        this.responsable = responsable;
     }
 
     public Date getFechaPublicacion() {
@@ -122,14 +119,5 @@ public class Actividad {
 
     public void setEstado(Estados estado) {
         this.estado = estado;
-    }
-
-    public Collection<Comentario> getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(Collection<Comentario> comentarios) {
-        this.comentarios = comentarios;
-        
     }
 }

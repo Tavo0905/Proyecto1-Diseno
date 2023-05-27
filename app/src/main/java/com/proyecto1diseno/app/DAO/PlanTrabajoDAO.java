@@ -4,10 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Date;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,6 +69,104 @@ public class PlanTrabajoDAO {
         statement.close();
 
         return tipoActividad;
+    }
+
+    public String agregarActividad(Actividad actividad, String user) throws SQLException {
+
+        //Verifica que no exista el nombre.
+        String verificarExistenciaSql = "SELECT COUNT(*) AS count FROM Actividades WHERE nombre = ?";
+        PreparedStatement verificarExistenciaStmt = connection.prepareStatement(verificarExistenciaSql);
+        verificarExistenciaStmt.setString(1, actividad.getNombre());
+        ResultSet existenciaResult = verificarExistenciaStmt.executeQuery();
+        existenciaResult.next();
+        int count = existenciaResult.getInt("count");
+    
+        
+        if (count > 0) {
+            return("Error: El nombre de la actividad ya existe. No se puede agregar la actividad.");
+        }
+
+        //Se prepara para hacer insert.
+        String sql = "INSERT INTO Actividades (idPlanDeTrabajo, semana, idTipoActividad, nombre, cantidadDiasAnuncio, fechaPublicacion, cantidadRecordatorios, idModalidad, enlace, idEstado, fechaHora, afiche) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        statement.setInt(1, 1);
+        statement.setInt(2, actividad.getSemanaRealizacion());
+        statement.setInt(3, actividad.getTipo().ordinal() + 1);
+        statement.setString(4, actividad.getNombre());
+
+        java.util.Date fechaActual = new java.util.Date();
+        java.util.Date fechaPublicacion = actividad.getFechaPublicacion();
+        long diferenciaEnMilisegundos = fechaPublicacion.getTime() - fechaActual.getTime();
+        int diasRestantes = (int) Math.round(diferenciaEnMilisegundos / (24 * 60 * 60 * 1000.0));
+
+        statement.setInt(5, diasRestantes);
+        statement.setDate(6, new java.sql.Date(fechaPublicacion.getTime()));
+        statement.setInt(7, 0);
+        statement.setInt(8, actividad.getModalidad().ordinal() + 1);
+        statement.setString(9, actividad.getEnlace());
+        statement.setInt(10, actividad.getEstado().ordinal() + 1);
+        statement.setTimestamp(11, Timestamp.valueOf(actividad.getFechaHora()));
+        byte[] datos = new byte[1];
+        datos[0] = 0;
+
+        statement.setBytes(12, datos);
+
+        //Verifica que los profesores existan.
+        String[] profesores = actividad.getResponsable().split(", ");
+        List<Integer> idProfesores = new ArrayList<>();
+
+        for (String profesor : profesores) {
+            String consultarProfesorSql = "SELECT idProfesor FROM Profesores WHERE nombre = ?";
+            PreparedStatement consultarProfesorStmt = connection.prepareStatement(consultarProfesorSql);
+            consultarProfesorStmt.setString(1, profesor);
+
+            ResultSet resultSet = consultarProfesorStmt.executeQuery();
+
+            if (resultSet.next()) {
+                int idProfesor = resultSet.getInt("idProfesor");
+                idProfesores.add(idProfesor);
+            } else {
+                statement.close();
+                resultSet.close();
+                consultarProfesorStmt.close();
+                return ("Error: El profesor " + profesor + " no existe en la base de datos. Recuerda escribir el nombre completo de los profesores y separar los profesores por una coma y un espacio. Ejem: Mario Castillo, Gustavo Madriz");
+            }
+
+            resultSet.close();
+            consultarProfesorStmt.close();
+        }
+
+        //Hace el insert luego de las validaciones.
+        statement.executeUpdate();
+        statement.close();
+
+        //Recupera el ID de la ultima actividad ingresada
+        String nombreActividad = actividad.getNombre();
+        String obtenerIdActividadSql = "SELECT idActividad FROM Actividades WHERE nombre = ?";
+        PreparedStatement obtenerIdActividadStmt = connection.prepareStatement(obtenerIdActividadSql);
+        obtenerIdActividadStmt.setString(1, nombreActividad);
+        ResultSet idActividadResult = obtenerIdActividadStmt.executeQuery();
+        int idActividad = 0;
+        if (idActividadResult.next()) {
+            idActividad = idActividadResult.getInt("idActividad");
+            log.info("IDACTIVIDAD: " + idActividad);
+        }
+        obtenerIdActividadStmt.close();
+
+        //Hace el insert de responsables de la Actividad en ProfesoresActividad.
+        String insertarProfesoresActividadesSql = "INSERT INTO ProfesoresActividades (idActividad, idProfesor) VALUES (?, ?)";
+        PreparedStatement insertarProfesoresActividadesStmt = connection.prepareStatement(insertarProfesoresActividadesSql);
+
+        for (int idProfesor : idProfesores) {
+            insertarProfesoresActividadesStmt.setInt(1, idActividad);
+            insertarProfesoresActividadesStmt.setInt(2, idProfesor);
+            insertarProfesoresActividadesStmt.executeUpdate();
+        }
+
+        insertarProfesoresActividadesStmt.close();
+
+        return "Actividad agregada";
     }
 }
 
