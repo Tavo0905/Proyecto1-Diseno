@@ -132,13 +132,13 @@ app.post('/gestionarProf', urlParser, (req, res) => {
    });
 
 app.post('/gestionarGuias', urlParser, (req, res) => {
-   let guias = []
+   /*let guias = []
    for (profe of profes) {
       if (profe["guia"]) {
          guias.push(profe)
       }
-   }
-   res.render("gestion.ejs", {clave: 3, arreglo: guias})
+   }*/
+   res.render("gestion.ejs", {clave: 3, arreglo: []})
 })
 
 app.post('/salirGestion', urlParser, (req, res) => {
