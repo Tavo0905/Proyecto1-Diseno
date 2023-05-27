@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -85,10 +86,10 @@ public class ControladorEstudiante {
         }
 
         @PostMapping("/generarExcel")
-        public void generarExcel(String user) {
+        public List<Map<String,Object>> generarExcel(String user) {
             try {
                 List<Map<String, Object>> estudiantes = estudianteService.obtenerEstudiantes(user);
-    
+                
                 // Crear un objeto de Excel
                 Workbook workbook = new XSSFWorkbook();
                 Sheet sheet = workbook.createSheet("Estudiantes");
@@ -109,15 +110,16 @@ public class ControladorEstudiante {
                     row.createCell(2).setCellValue(String.valueOf(estudiante.get("correo")));
                     row.createCell(3).setCellValue(String.valueOf(estudiante.get("tel")));
                 }
-    
                 // Guardar el archivo Excel
                 try (OutputStream outputStream = new FileOutputStream("estudiantes.xlsx")) {
                     workbook.write(outputStream);
                 } catch (IOException e) {
                     // Manejar el error de escritura del archivo
                 }
-    
+                return estudiantes;
             } catch (SQLException e) {
+                List<Map<String, Object>> estudiantes = new ArrayList<Map<String, Object>>();
+                return estudiantes;
                 // Manejar el error y enviar una respuesta de error al cliente
             }
         }
