@@ -904,3 +904,23 @@ var server = app.listen(3000, function () {
    
    console.log("Example app listening at http://%s:%s", host, port)
 })
+
+app.post("/defCoord", urlParser, (req, res) => {
+   if (req.body.btnDefProfCoord == "1") {
+      const codigo = JSON.stringify({
+         codigo: req.body.elementosTabla
+      });
+   
+      const options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/defCoord',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(codigo),
+         }
+      }
+   }
+   //res.render("gestion.ejs", {clave: 3, arreglo: []})
+})

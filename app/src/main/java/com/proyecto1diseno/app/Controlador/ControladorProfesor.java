@@ -115,4 +115,17 @@ public class ControladorProfesor {
         return ResponseEntity.ok().body(profesoresGuia);
     } 
 
+    @PostMapping("/defCoord")
+    public ResponseEntity<String> definirCoordinador(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        String user = (String) requestBody.get("user");
+        String codigoProfString = (String) requestBody.get("codigo");
+        int codigoProf = Integer.parseInt(codigoProfString);
+        String respuestaBaja = profesorService.definirCoordinador(codigoProf, user);
+        if (respuestaBaja.startsWith("Error: ")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaBaja);
+        } else {
+            return ResponseEntity.ok().body(respuestaBaja);
+        }
+    }
+
 }
