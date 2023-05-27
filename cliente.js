@@ -1,14 +1,18 @@
 const http = require('http');
 var express = require('express')
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+const { stringify } = require('querystring');
 var app = express()
 var urlParser = bodyParser.urlencoded({extended: false})
 var usuario = {user: "", password: ""}
+let tipoUsuario = ''
+let claveSelMod = 0
 
 app.use(express.static('views'))
 
 app.get('/', (req, res) => {
    res.render('login.ejs')
+   tipoUsuario = ''
 })
 
 app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
@@ -30,16 +34,23 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
    };
 
    const request = http.request(options, response => {
-   console.log(`statusCode: ${response.statusCode}`);
-    
+      console.log(`statusCode: ${response.statusCode}`);
+      
+
       response.on('data', d => {
-        process.stdout.write(d);
+         tipoUsuario += d
       });
-    
+      
       response.on('end', () => {
-        if (response.statusCode === 200) {
-          res.render('selModulo.ejs');
-        }
+         if (response.statusCode === 200) {
+            if (tipoUsuario === "Profesor") {
+               claveSelMod = 1
+               res.render('selModulo.ejs', {clave: claveSelMod})
+            } else if (tipoUsuario === "Asistente") {
+               claveSelMod = 2
+               res.render('selModulo.ejs', {clave: claveSelMod})
+            }
+         }
       });
    });
     
@@ -142,7 +153,7 @@ app.post('/gestionarGuias', urlParser, (req, res) => {
 })
 
 app.post('/salirGestion', urlParser, (req, res) => {
-   res.render("selModulo.ejs")
+   res.render("selModulo.ejs", {clave: claveSelMod})
 })
 
 app.post("/agregarProf", urlParser, (req, res) => {
@@ -844,6 +855,7 @@ app.post("/salirGestionPT", urlParser, (req, res) => {
 
 app.post("/salirLogin", urlParser, (req, res) => {
    res.render("login.ejs")
+   tipoUsuario = ''
 })
 
 app.post("/generarExcel", urlParser, (req, res) => {
