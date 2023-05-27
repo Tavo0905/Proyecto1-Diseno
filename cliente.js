@@ -916,12 +916,81 @@ app.post("/salirLogin", urlParser, (req, res) => {
 })
 
 app.post("/generarExcel", urlParser, (req, res) => {
-   //res.render("selModulo.ejs")
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/estudiante/generarExcel',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json'
+      }
+   };
+
+   const request = http.request(options, response => {
+      console.log(`statusCode: ${response.statusCode}`);
+      
+
+      response.on('data', d => {
+         process.stdout.write(d)
+      });
+      
+      response.on('end', () => {
+         if (response.statusCode == 200) {
+            const estudiantes = JSON.parse(responseData)
+            console.log(estudiantes)
+            res.render("gestion.ejs", {clave: 1, arreglo: estudiantes})
+         }
+      });
+   });
+    
+   request.on('error', error => {
+      console.error(error);
+   });
+   request.end();
 })
 
 app.post("/cargarExcel", urlParser, (req, res) => {
-   res.render("selModulo.ejs")
+
+   require('child_process').exec(`explorer.exe "${winPath}"`);
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/estudiante/cargarExcel',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json'
+      }
+   };
+
+   const request = http.request(options, response => {
+      console.log(`statusCode: ${response.statusCode}`);
+      
+
+      response.on('data', d => {
+         process.stdout.write(d)
+      });
+      
+      response.on('end', () => {
+         if (response.statusCode == 200) {
+            const estudiantes = JSON.parse(responseData)
+            console.log(estudiantes)
+            res.render("gestion.ejs", {clave: 1, arreglo: estudiantes})
+         }
+      });
+   });
+    
+   request.on('error', error => {
+      console.error(error);
+   });
+   request.end();
 })
+
+app.post("/defCoord", urlParser, (req, res) => {
+   res.render("gestion.ejs", {clave: 2, arreglo: []})
+})
+
 
 var server = app.listen(3000, function () {
    var host = server.address().address
