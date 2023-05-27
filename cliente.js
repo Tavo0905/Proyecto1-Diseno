@@ -891,7 +891,7 @@ app.post("/salirLogin", urlParser, (req, res) => {
 })
 
 app.post("/generarExcel", urlParser, (req, res) => {
-   res.render("selModulo.ejs")
+   //res.render("selModulo.ejs")
 })
 
 app.post("/cargarExcel", urlParser, (req, res) => {
@@ -906,7 +906,9 @@ var server = app.listen(3000, function () {
 })
 
 app.post("/defCoord", urlParser, (req, res) => {
+   console.log("AQUI1")
    if (req.body.btnDefProfCoord == "1") {
+      console.log("AQUI2")
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla
       });
@@ -920,7 +922,68 @@ app.post("/defCoord", urlParser, (req, res) => {
             'Content-Type': 'application/json',
             'Content-Length': Buffer.byteLength(codigo),
          }
-      }
+      };
+   
+      const request = http.request(options, (response) => {
+         let responseData = '';
+
+         response.on('data', (chunk) => {
+            responseData += chunk;
+         });
+
+         response.on('end', () => {
+            if (response.statusCode === 200) {
+
+               // Realizar el segundo request HTTP anidado
+               const user = { user: usuario.user };
+               postUser = JSON.stringify(user);
+
+               const innerOptions = {
+                  hostname: 'localhost',
+                  port: 8080,
+                  path: '/profesor/gestionarProfGuia',
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                     'Content-Length': Buffer.byteLength(postUser),
+                  }
+               };
+
+               const innerRequest = http.request(innerOptions, (innerResponse) => {
+                  let innerResponseData = '';
+
+                  innerResponse.on('data', (innerChunk) => {
+                     innerResponseData += innerChunk;
+                  });
+
+                  innerResponse.on('end', () => {
+                     if (innerResponse.statusCode === 200) {
+                        const innerProfesores = JSON.parse(innerResponseData);
+                        res.render("gestion.ejs", { clave: 3, arreglo: innerProfesores });
+                     } else {
+                        console.log("ERROR: Inner ResponseData - " + innerResponseData);
+                     }
+                  });
+               });
+
+               innerRequest.on('error', (innerError) => {
+                  console.error(innerError);
+               });
+
+               innerRequest.write(postUser);
+               innerRequest.end();
+            } else {
+               console.log("ERROR: ResponseData - " + responseData);
+            }
+         });
+      });
+
+      request.on('error', (error) => {
+      console.error(error);
+      });
+
+      request.write(codigo);
+      request.end();
    }
    //res.render("gestion.ejs", {clave: 3, arreglo: []})
 })

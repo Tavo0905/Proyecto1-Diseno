@@ -1,8 +1,12 @@
 package com.proyecto1diseno.app.Controlador;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,5 +83,46 @@ public class ControladorEstudiante {
                 return ResponseEntity.ok().body(respuestaModificar);
             }
         }
+
+        @PostMapping("/generarExcel")
+        public void generarExcel(String user) {
+            try {
+                List<Map<String, Object>> estudiantes = estudianteService.obtenerEstudiantes(user);
+    
+                // Crear un objeto de Excel
+                Workbook workbook = new XSSFWorkbook();
+                Sheet sheet = workbook.createSheet("Estudiantes");
+    
+                // Establecer los encabezados de columna
+                Row headerRow = sheet.createRow(0);
+                headerRow.createCell(0).setCellValue("ID");
+                headerRow.createCell(1).setCellValue("Nombre");
+                headerRow.createCell(2).setCellValue("Correo");
+                headerRow.createCell(3).setCellValue("Teléfono");
+    
+                // Agregar los datos de los estudiantes a las filas
+                int rowNum = 1;
+                for (Map<String, Object> estudiante : estudiantes) {
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(String.valueOf(estudiante.get("id")));
+                    row.createCell(1).setCellValue(String.valueOf(estudiante.get("nombre")));
+                    row.createCell(2).setCellValue(String.valueOf(estudiante.get("correo")));
+                    row.createCell(3).setCellValue(String.valueOf(estudiante.get("tel")));
+                }
+    
+                // Guardar el archivo Excel
+                try (OutputStream outputStream = new FileOutputStream("estudiantes.xlsx")) {
+                    workbook.write(outputStream);
+                } catch (IOException e) {
+                    // Manejar el error de escritura del archivo
+                }
+    
+            } catch (SQLException e) {
+                // Manejar el error y enviar una respuesta de error al cliente
+            }
+        }
+    
+
+    
 
 }
