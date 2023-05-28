@@ -52,7 +52,7 @@ public class Estudiante {
     }
 
     public String getSegundoNombre() {
-        return idSede;
+        return segundoNombre;
     }
 
     public void setSegundoNombre(String segundoNombre) {

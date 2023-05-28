@@ -137,10 +137,12 @@ public class EstudianteDAO {
     }
 } 
     public String insertarEstudiante(Estudiante estudiante) throws SQLException{
-        if (!existeCarne(estudiante.getCarnet()) && !existeCorreo(estudiante.getCorreo())) {
-            try (connection) {
-                String query = "INSERT INTO dbo.Estudiantes (idSede, carne, apellido1, apellido2, nombre, segundoNombre, correo, numeroCelular, contraseña) " +
+        String query = "INSERT INTO dbo.Estudiantes (idSede, carne, apellido1, apellido2, nombre, segundoNombre, correo, numeroCelular, contraseña) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        log.info("AQUI1");
+        if (!existeCarne(estudiante.getCarnet()) && !existeCorreo(estudiante.getCorreo())) {
+            log.info("AQUI1");
+            try (PreparedStatement selectProfesorStatement = connection.prepareStatement(query)) {
                 PreparedStatement statement = connection.prepareStatement(query);
                 statement.setString(1, estudiante.getIdSede());
                 statement.setInt(2, estudiante.getCarnet());
@@ -164,8 +166,8 @@ public class EstudianteDAO {
     }
 
     private boolean existeCarne(int carne) {
-        try (connection) {
-            String query = "SELECT * FROM Estudiantes WHERE carne = ?";
+        String query = "SELECT * FROM Estudiantes WHERE carne = ?";
+        try (PreparedStatement selectProfesorStatement = connection.prepareStatement(query)) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, carne);
             ResultSet resultSet = statement.executeQuery();
@@ -176,8 +178,8 @@ public class EstudianteDAO {
         }
     }
     private boolean existeCorreo(String correo) {
-        try (connection) {
-            String query = "SELECT * FROM Estudiantes WHERE correo = ?";
+        String query = "SELECT * FROM Estudiantes WHERE correo = ?";
+        try (PreparedStatement selectProfesorStatement = connection.prepareStatement(query)) {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, correo);
             ResultSet resultSet = statement.executeQuery();
