@@ -193,15 +193,15 @@ app.post('/gestionarGuias', urlParser, (req, res) => {
    //res.render("gestion.ejs", {clave: 3, arreglo: []})
 })
 
-app.post('/salirGestion', urlParser, (req, res) => {
+app.post('/salirGestion', urlParser, upload.any(), (req, res) => {
    res.render("selModulo.ejs", {clave: claveSelMod})
 })
 
-app.post("/agregarProf", urlParser, (req, res) => {
+app.post("/agregarProf", urlParser, upload.any(), (req, res) => {
    res.render("datosProfes.ejs", {profe: {id: "", nombre: "", correo: "", pass: "", tel: "", cel: ""}})
 })
 
-app.post("/modProf", urlParser, (req, res) => {
+app.post("/modProf", urlParser, upload.any(), (req, res) => {
    const codigo = JSON.stringify({
       codigo: req.body.elementosTabla
     });
@@ -429,7 +429,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
    }
 });
 
-app.post("/bajaProf", urlParser, (req, res) => {
+app.post("/bajaProf", urlParser, upload.any(), (req, res) => {
    if (req.body.btnBajaProfGuia == "1") {
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla,
@@ -511,7 +511,7 @@ app.post("/bajaProf", urlParser, (req, res) => {
    }
 })
 
-app.post("/defGuia", urlParser, (req, res) => {
+app.post("/defGuia", urlParser, upload.any(), (req, res) => {
    if (req.body.btnDefProfGuia== "1") {
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla
@@ -591,7 +591,10 @@ app.post("/defGuia", urlParser, (req, res) => {
    }
 })
 //res.render("modEst.ejs", est)
-app.post("/modEst", urlParser, (req, res) => {
+app.post("/modEst", urlParser, upload.any(), (req, res) => {
+
+   console.log(req.body.elementosTabla)
+
    const codigo = JSON.stringify({
       codigo: req.body.elementosTabla
     });
@@ -1234,7 +1237,7 @@ app.post("/salirLogin", urlParser, (req, res) => {
    tipoUsuario = ''
 })
 
-app.post("/generarExcel", urlParser, (req, res) => {
+app.post("/generarExcel", urlParser, upload.any(), (req, res) => {
 
    const user = { user: usuario.user };
    postUser = JSON.stringify(user);
@@ -1344,7 +1347,7 @@ var server = app.listen(3000, function () {
    console.log("Example app listening at http://%s:%s", host, port)
 })
 
-app.post("/defCoord", urlParser, (req, res) => {
+app.post("/defCoord", urlParser, upload.any(), (req, res) => {
       console.log("AQUI1")
       const codigo = JSON.stringify({
          user: usuario.user,
