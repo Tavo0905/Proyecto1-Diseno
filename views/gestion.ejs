@@ -115,11 +115,11 @@
                     formaction = "defGuia">
                         Definir profesor guía
                     </button>
-                <% } if (clave == 3) { %>
+                <% } if (clave == 3) { if (tUsuario == "Asistente") { %>
                     <button class = "botonesGuia" id = "btnDefProfCoord" name = "btnDefProfCoord" formaction = "defCoord">
                         Definir profesor coordinador
                     </button>
-                <% } %>
+                <% }} %>
             </div>
         </div>
     </form>

@@ -92,7 +92,8 @@ app.post('/gestionarEst', urlParser, (req, res) => {
       response.on('end', () => {
          const estudiantes = JSON.parse(responseData);
          console.log(estudiantes);
-         res.render("gestion.ejs", {clave: 1, arreglo : estudiantes});
+         res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
+            arreglo : estudiantes});
          });
       });
       
@@ -131,7 +132,8 @@ app.post('/gestionarProf', urlParser, (req, res) => {
       response.on('end', () => {
          if (response.statusCode === 200) {
             const profesores = JSON.parse(responseData);
-            res.render("gestion.ejs", {clave: 2, arreglo : profesores});
+            res.render("gestion.ejs", {clave: 2, tUsuario: tipoUsuario,
+               arreglo : profesores});
          }else{
             console.log("ERROR: ResponseData - " + responseData);   
             }
@@ -173,7 +175,8 @@ app.post('/gestionarGuias', urlParser, (req, res) => {
          if (response.statusCode === 200) {
             const profesores = JSON.parse(responseData);
             console.log(profesores);
-            res.render("gestion.ejs", {clave: 3, arreglo : profesores});
+            res.render("gestion.ejs", {clave: 3, tUsuario: tipoUsuario,
+               arreglo : profesores});
          }else{
             console.log("ERROR: ResponseData - " + responseData);   
             }
@@ -308,7 +311,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                      response2.on('end', () => {
                         if (response2.statusCode === 200) {
                            const profesores = JSON.parse(responseData2);
-                           res.render("gestion.ejs", { clave: 2, arreglo: profesores });
+                           res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario, arreglo: profesores });
                         } else {
                            console.log("ERROR: ResponseData - " + responseData2);
                         }
@@ -394,7 +397,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                      response2.on('end', () => {
                         if (response2.statusCode === 200) {
                            const profesores = JSON.parse(responseData2);
-                           res.render("gestion.ejs", { clave: 2, arreglo: profesores });
+                           res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario, arreglo: profesores });
                         } else {
                            console.log("ERROR: ResponseData - " + responseData2);
                         }
@@ -479,7 +482,8 @@ app.post("/bajaProf", urlParser, (req, res) => {
                   innerResponse.on('end', () => {
                      if (innerResponse.statusCode === 200) {
                         const innerProfesores = JSON.parse(innerResponseData);
-                        res.render("gestion.ejs", { clave: 2, arreglo: innerProfesores });
+                        res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario,
+                           arreglo: innerProfesores });
                      } else {
                         console.log("ERROR: Inner ResponseData - " + innerResponseData);
                      }
@@ -558,7 +562,8 @@ app.post("/defGuia", urlParser, (req, res) => {
                   innerResponse.on('end', () => {
                      if (innerResponse.statusCode === 200) {
                         const innerProfesores = JSON.parse(innerResponseData);
-                        res.render("gestion.ejs", { clave: 2, arreglo: innerProfesores });
+                        res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario,
+                           arreglo: innerProfesores });
                      } else {
                         console.log("ERROR: Inner ResponseData - " + innerResponseData);
                      }
@@ -700,7 +705,8 @@ app.post("/datosEstRes", urlParser, (req, res) => {
                   response2.on('end', () => {
                      if (response2.statusCode === 200) {
                         const estudiantes = JSON.parse(responseData2);
-                        res.render("gestion.ejs", { clave: 1, arreglo: estudiantes });
+                        res.render("gestion.ejs", { clave: 1, tUsuario: tipoUsuario,
+                           arreglo: estudiantes });
                      } else {
                         console.log("ERROR: ResponseData - " + responseData2);
                      }
@@ -1261,7 +1267,8 @@ app.post("/generarExcel", urlParser, (req, res) => {
          if (response.statusCode == 200) {
             const estudiantes = JSON.parse(responseData)
             console.log(estudiantes)
-            res.render("gestion.ejs", {clave: 1, arreglo: estudiantes})
+            res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
+               arreglo: estudiantes})
          }
       });
    });
@@ -1322,7 +1329,8 @@ app.post("/cargarExcel", urlParser, upload.single("btnImpExcel"), (req, res) => 
             } catch (error) {
                console.error('Error al eliminar el directorio:', error);
             }
-            res.render("gestion.ejs", {clave: 1, arreglo: estudiantes})
+            res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
+               arreglo: estudiantes})
          }
       });
    });
@@ -1395,7 +1403,8 @@ app.post("/defCoord", urlParser, (req, res) => {
                   innerResponse.on('end', () => {
                      if (innerResponse.statusCode === 200) {
                         const innerProfesores = JSON.parse(innerResponseData);
-                        res.render("gestion.ejs", { clave: 3, arreglo: innerProfesores });
+                        res.render("gestion.ejs", { clave: 3, tUsuario: tipoUsuario,
+                           arreglo: innerProfesores });
                      } else {
                         console.log("ERROR: Inner ResponseData - " + innerResponseData);
                      }
