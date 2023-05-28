@@ -149,7 +149,7 @@ public class ControladorEstudiante {
                 String user = (String) requestBody.get("user");
                 
                 // RUTA PROVISIONAL CAMBIAR EN CASO DE QUE ALGUIEN LO QUIERA PROBAR
-                String path = "C:\\Users\\celin\\OneDrive\\Escritorio\\estudiantes1.xlsx";
+                String path = "C:\\Users\\gpere\\OneDrive\\Escritorio\\estudiantes1.xlsx";
 
                 FileInputStream archivo = new FileInputStream(new File(path));
     
@@ -174,6 +174,8 @@ public class ControladorEstudiante {
                                 tempEst.add(celda.getStringCellValue());
                             } else if (celda.getCellType().toString() == "NUMERIC") {
                                 tempEst.add((int) celda.getNumericCellValue());
+                            } else if (celda.getCellType().toString() == "BLANK") {
+                                break;
                             }
                         }
 
