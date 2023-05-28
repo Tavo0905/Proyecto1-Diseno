@@ -28,4 +28,8 @@ public class PlanTrabajoService {
     public String agregarActividad(Actividad actividad, String user) throws SQLException {
         return planTrabajoDAO.agregarActividad(actividad, user);
     }
+
+    public String marcarActividad(String nombreAct, int estado) throws SQLException {
+        return planTrabajoDAO.marcarActividad(nombreAct, estado);
+    }
 }

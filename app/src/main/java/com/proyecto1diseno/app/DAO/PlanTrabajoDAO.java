@@ -168,5 +168,33 @@ public class PlanTrabajoDAO {
 
         return "Actividad agregada";
     }
+
+    public String marcarActividad(String nombreAct, int estado) {
+        try {
+            String selectQuery = "SELECT idEstado FROM Actividades WHERE nombre = ?";
+            PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
+            selectStatement.setString(1, nombreAct);
+            ResultSet resultSet = selectStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int idEstado = resultSet.getInt("idEstado");
+                if (idEstado == estado) {
+                    return "Error: La actividad ya ha sido marcada con este estado anteriormente.";
+                } else {
+                    String updateQuery = "UPDATE Actividades SET idEstado = ? WHERE nombre = ?";
+                    PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+                    updateStatement.setInt(1, estado);
+                    updateStatement.setString(2, nombreAct);
+                    updateStatement.executeUpdate();
+                    
+                    return "La actividad se ha marcado con el estado correspondiente exitosamente.";
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error: Ocurrió un error al marcar la actividad.";
+        }
+        return "";
+    }
 }
 

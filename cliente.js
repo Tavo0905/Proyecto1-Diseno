@@ -767,10 +767,6 @@ app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
    request.end()
 })
 
-app.post("/comentario", urlParser, (req, res) => {
-   res.render("comentarios.ejs", {comentarios: []})
-})
-
 app.post("/datosActRes", urlParser, (req, res) => {
    const entrySemana = req.body.entrySemana;
    const entryTipo = req.body.entryTipo;
@@ -879,7 +875,7 @@ app.post("/datosActRes", urlParser, (req, res) => {
                request2.end();
             }else{
                console.log("ERROR: ResponseData - " + responseData);   
-               }  
+            }  
          });
       });
 
@@ -895,15 +891,314 @@ app.post("/datosActRes", urlParser, (req, res) => {
 })
 
 app.post("/marcarActRealizada", urlParser, (req, res) => {
-   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
+   if (req.body.btnMarcarRealizada == "1") {
+      const codigo = JSON.stringify({
+         codigo: req.body.elementosTabla,
+         estado: 3
+      });
+   
+      const options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/plantrabajo/marcarActividad',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(codigo),
+         }
+      };
+   
+      const request = http.request(options, (response) => {
+         let responseData = '';
+
+         response.on('data', (chunk) => {
+            responseData += chunk;
+         });
+
+         response.on('end', () => {
+            if (response.statusCode === 200) {
+               const options2 = {
+                  hostname: 'localhost',
+                  port: 8080,
+                  path: '/plantrabajo/obtenerActividades',
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                  }
+               };
+
+               const request2 = http.request(options2, (response2) => {
+                  let responseData2 = '';
+
+                  response2.on('data', (chunk2) => {
+                     responseData2 += chunk2;
+                  });
+
+                  response2.on('end', () => {
+                     if (response2.statusCode === 200) {
+                        const actividades = JSON.parse(responseData2);
+                        actividades.forEach((actividad) => {
+                           const fechaHoraOriginal = new Date(actividad.FechaHora);
+                           const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+                           actividad.FechaHora = fechaHoraFormateada;
+                        });
+                        res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
+                     } else {
+                        console.log("ERROR: ResponseData - " + responseData2);
+                     }
+                  });
+               });
+
+               request2.on('error', (error2) => {
+                  console.error(error2);
+               });
+
+               request2.end();
+            }else{
+               console.log("ERROR: ResponseData - " + responseData);   
+            }  
+         });
+      });
+
+      request.on('error', (error) => {
+         console.error(error);
+      });
+
+      request.write(codigo);
+      request.end();
+   }
 })
 
 app.post("/marcarActCancelada", urlParser, (req, res) => {
-   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
+   if (req.body.btnCancelarAct == "1") {
+      const codigo = JSON.stringify({
+         codigo: req.body.elementosTabla,
+         estado: 4
+      });
+   
+      const options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/plantrabajo/marcarActividad',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(codigo),
+         }
+      };
+   
+      const request = http.request(options, (response) => {
+         let responseData = '';
+
+         response.on('data', (chunk) => {
+            responseData += chunk;
+         });
+
+         response.on('end', () => {
+            if (response.statusCode === 200) {
+               const options2 = {
+                  hostname: 'localhost',
+                  port: 8080,
+                  path: '/plantrabajo/obtenerActividades',
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                  }
+               };
+
+               const request2 = http.request(options2, (response2) => {
+                  let responseData2 = '';
+
+                  response2.on('data', (chunk2) => {
+                     responseData2 += chunk2;
+                  });
+
+                  response2.on('end', () => {
+                     if (response2.statusCode === 200) {
+                        const actividades = JSON.parse(responseData2);
+                        actividades.forEach((actividad) => {
+                           const fechaHoraOriginal = new Date(actividad.FechaHora);
+                           const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+                           actividad.FechaHora = fechaHoraFormateada;
+                        });
+                        res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
+                     } else {
+                        console.log("ERROR: ResponseData - " + responseData2);
+                     }
+                  });
+               });
+
+               request2.on('error', (error2) => {
+                  console.error(error2);
+               });
+
+               request2.end();
+            }else{
+               console.log("ERROR: ResponseData - " + responseData);   
+            }  
+         });
+      });
+
+      request.on('error', (error) => {
+         console.error(error);
+      });
+
+      request.write(codigo);
+      request.end();
+   }
 })
 
 app.post("/marcarActPublicada", urlParser, (req, res) => {
-   res.render("gestionPlanTrabajo.ejs", {arreglo: []})
+   if (req.body.btnPublicAct == "1") {
+      const codigo = JSON.stringify({
+         codigo: req.body.elementosTabla,
+         estado: 2
+      });
+   
+      const options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/plantrabajo/marcarActividad',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(codigo),
+         }
+      };
+   
+      const request = http.request(options, (response) => {
+         let responseData = '';
+
+         response.on('data', (chunk) => {
+            responseData += chunk;
+         });
+
+         response.on('end', () => {
+            if (response.statusCode === 200) {
+               const options2 = {
+                  hostname: 'localhost',
+                  port: 8080,
+                  path: '/plantrabajo/obtenerActividades',
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                  }
+               };
+
+               const request2 = http.request(options2, (response2) => {
+                  let responseData2 = '';
+
+                  response2.on('data', (chunk2) => {
+                     responseData2 += chunk2;
+                  });
+
+                  response2.on('end', () => {
+                     if (response2.statusCode === 200) {
+                        const actividades = JSON.parse(responseData2);
+                        actividades.forEach((actividad) => {
+                           const fechaHoraOriginal = new Date(actividad.FechaHora);
+                           const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+                           actividad.FechaHora = fechaHoraFormateada;
+                        });
+                        res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
+                     } else {
+                        console.log("ERROR: ResponseData - " + responseData2);
+                     }
+                  });
+               });
+
+               request2.on('error', (error2) => {
+                  console.error(error2);
+               });
+
+               request2.end();
+            }else{
+               console.log("ERROR: ResponseData - " + responseData);   
+            }  
+         });
+      });
+
+      request.on('error', (error) => {
+         console.error(error);
+      });
+
+      request.write(codigo);
+      request.end();
+   }
+})
+
+app.post("/comentario", urlParser, (req, res) => {
+   if (req.body.btnPublicAct == "1") {
+      const codigo = JSON.stringify({
+         codigo: req.body.elementosTabla,
+         estado: 2
+      });
+   
+      const options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/plantrabajo/marcarActividad',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(codigo),
+         }
+      };
+   
+      const request = http.request(options, (response) => {
+         let responseData = '';
+
+         response.on('data', (chunk) => {
+            responseData += chunk;
+         });
+
+         response.on('end', () => {
+            if (response.statusCode === 200) {
+               const options2 = {
+                  hostname: 'localhost',
+                  port: 8080,
+                  path: '/plantrabajo/obtenerComentarios',
+                  method: 'POST',
+                  headers: {
+                     'Content-Type': 'application/json',
+                  }
+               };
+
+               const request2 = http.request(options2, (response2) => {
+                  let responseData2 = '';
+
+                  response2.on('data', (chunk2) => {
+                     responseData2 += chunk2;
+                  });
+
+                  response2.on('end', () => {
+                     if (response2.statusCode === 200) {
+                        const comentarios = JSON.parse(responseData2);
+                        res.render("comentarios.ejs", {comentarios: comentarios})
+                     } else {
+                        console.log("ERROR: ResponseData - " + responseData2);
+                     }
+                  });
+               });
+
+               request2.on('error', (error2) => {
+                  console.error(error2);
+               });
+
+               request2.end();
+            }else{
+               console.log("ERROR: ResponseData - " + responseData);   
+            }  
+         });
+      });
+
+      request.on('error', (error) => {
+         console.error(error);
+      });
+
+      request.write(codigo);
+      request.end();
+   }
 })
 
 app.post("/salirGestionPT", urlParser, (req, res) => {
