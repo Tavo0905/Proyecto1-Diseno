@@ -2,8 +2,13 @@ const http = require('http');
 var express = require('express')
 var bodyParser = require('body-parser');
 const { stringify } = require('querystring');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+const xlsx = require('xlsx');
 var app = express()
 var urlParser = bodyParser.urlencoded({extended: false})
+const upload = multer({ dest: 'descargas/' });
 var usuario = {user: "", password: ""}
 let tipoUsuario = ''
 let claveSelMod = 0
@@ -1226,10 +1231,22 @@ app.post("/generarExcel", urlParser, (req, res) => {
    request.end();
 })
 
-app.post("/cargarExcel", urlParser, (req, res) => {
+app.post("/cargarExcel", urlParser, upload.single("btnImpExcel"), (req, res) => {
+
+   const archivo = req.file;
+   const original = archivo.path;
+   console.log(original)
+   const nuevoNombre = 'estudiantes.xlsx';
+   const nuevaRuta = path.join(path.dirname(original), nuevoNombre);
+
+   const workbook = xlsx.readFile(original);
+   const primeraHoja = workbook.Sheets[workbook.SheetNames[0]];
+   const datos = xlsx.utils.sheet_to_json(primeraHoja, { header: 1 });
+   console.log(datos)
+   xlsx.writeFile(workbook, nuevaRuta);
 
    const data = { user: usuario.user,
-                  path: req.body.btnImpExcel};
+                  path: original};
    const postData = JSON.stringify(data);
 
    const options = {
@@ -1256,6 +1273,12 @@ app.post("/cargarExcel", urlParser, (req, res) => {
          if (response.statusCode == 200) {
             const estudiantes = JSON.parse(responseData)
             console.log(estudiantes)
+            try {
+               fs.rmdirSync("descargas", { recursive: true });
+               console.log('Directorio eliminado correctamente.');
+            } catch (error) {
+               console.error('Error al eliminar el directorio:', error);
+            }
             res.render("gestion.ejs", {clave: 1, arreglo: estudiantes})
          }
       });
