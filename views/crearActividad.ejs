@@ -16,7 +16,14 @@
                 <label class = "textoAct" id = "textoTipo" name = "textoTipo" for = "entryTipo">
                     Tipo:
                 </label>
-                <input class = "entryAct" type = "text" id = "entryTipo" name = "entryTipo">
+                <select class = "listBoxAct" id = "tipoActLB" name = "tipoActLB">
+                    <option value = "0">Seleccionar</option>
+                    <option value = "1">Orientadora</option>
+                    <option value = "2">Motivacional</option>
+                    <option value = "3">Apoyo vida estudiantil</option>
+                    <option value = "4">Orden técnico</option>
+                    <option value = "5">Recreación</option>
+                </select>
             </div>
             <div>
                 <label class = "textoAct" id = "textoNombre" name = "textoNombre" for = "entryNombre">
@@ -52,7 +59,11 @@
                 <label class = "textoAct" id = "textoModalidad" name = "textoModalidad" for = "entryModalidad">
                     Modalidad:
                 </label>
-                <input class = "entryAct" type = "text" id = "entryModalidad" name = "entryModalidad">
+                <select class = "listBoxAct" id = "tipoActLB" name = "tipoActLB">
+                    <option value = "0">Seleccionar</option>
+                    <option value = "1">Presencial</option>
+                    <option value = "2">Virtual</option>
+                </select>
             </div>
             <div>
                 <label class = "textoAct" id = "textoEnlace" name = "textoEnlace" for = "entryEnlace">
@@ -70,7 +81,13 @@
                 <label class = "textoAct" id = "textoEstado" name = "textoEstado" for = "entryEstado">
                     Estado:
                 </label>
-                <input class = "entryAct" type = "text" id = "entryEstado" name = "entryEstado">
+                <select class = "listBoxAct" id = "tipoActLB" name = "tipoActLB">
+                    <option value = "0">Seleccionar</option>
+                    <option value = "1">Planeada</option>
+                    <option value = "2">Notificada</option>
+                    <option value = "3">Realizada</option>
+                    <option value = "4">Cancelada</option>
+                </select>
                 <button type = "submit" id = "guardarAct" name = "guardarAct" onclick = "alert('Guardado con éxito!')">Guardar</button>
             </div>
         </form>
