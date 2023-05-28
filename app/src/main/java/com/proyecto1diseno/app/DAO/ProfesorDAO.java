@@ -1,5 +1,6 @@
 package com.proyecto1diseno.app.DAO;
 
+import java.io.Console;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -403,7 +404,7 @@ public class ProfesorDAO {
                 while (resultSet2.next()) {
                     
                     Map<String, Object> profesorGuia = new HashMap<>();
-                    //profesorGuia.put("id", resultSet2.getInt("idProfesor"));
+                    profesorGuia.put("id", resultSet2.getInt("idProfesor"));
                     profesorGuia.put("nombre", resultSet2.getString("nombre"));
                     profesorGuia.put("correo", resultSet2.getString("correo"));
                     profesorGuia.put("tel", resultSet2.getString("numeroOficina"));
@@ -434,21 +435,27 @@ public class ProfesorDAO {
     }
     
     public String definirCoordinador(int codigoProf, String user) throws SQLException {
+        System.out.println(user);
+        System.out.println(codigoProf);
         log.info("AQUI1");
         String query1 = "SELECT * FROM Asistentes WHERE correo = ?";
         PreparedStatement statement1 = null;
         ResultSet resultSet1 = null;
-        PreparedStatement statement2 = null;
-        ResultSet resultSet2 = null;
     
         log.info("AQUI2");
         statement1 = connection.prepareStatement(query1);
         statement1.setString(1, user);
         resultSet1 = statement1.executeQuery();
-    
+        String asistSede = null;
         log.info("AQUI3");
-        String asistSede = resultSet1.getString("idSede");
-        if(asistSede == "CA"){
+        if (resultSet1.next()) {
+            asistSede = resultSet1.getObject("idSede").toString();
+        } else {
+            asistSede = "";
+        }
+
+        System.out.println(asistSede);
+        if(asistSede.equals("CA")){
             log.info("AQUI4");
         String sql = "SELECT coordinador FROM ProfesoresGuias WHERE idProfesor = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

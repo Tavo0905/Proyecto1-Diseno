@@ -149,7 +149,7 @@ public class ControladorEstudiante {
                 String user = (String) requestBody.get("user");
                 
                 // RUTA PROVISIONAL CAMBIAR EN CASO DE QUE ALGUIEN LO QUIERA PROBAR
-                String path = "C:\\Users\\gpere\\OneDrive\\Escritorio\\estudiantes1.xlsx";
+                String path = "C:\\Users\\gpere\\Downloads\\estudiantes1.xlsx";
 
                 FileInputStream archivo = new FileInputStream(new File(path));
     
@@ -177,6 +177,10 @@ public class ControladorEstudiante {
                             } else if (celda.getCellType().toString() == "BLANK") {
                                 break;
                             }
+                        }
+
+                        for (Object o : tempEst) {
+                            System.out.println(o.toString());
                         }
 
                         Estudiante estudiante = new Estudiante(tempEst.get(0).toString(),

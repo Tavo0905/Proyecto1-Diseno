@@ -167,6 +167,7 @@ app.post('/gestionarGuias', urlParser, (req, res) => {
       response.on('end', () => {
          if (response.statusCode === 200) {
             const profesores = JSON.parse(responseData);
+            console.log(profesores);
             res.render("gestion.ejs", {clave: 3, arreglo : profesores});
          }else{
             console.log("ERROR: ResponseData - " + responseData);   
@@ -1268,11 +1269,6 @@ app.post("/cargarExcel", urlParser, (req, res) => {
    request.end();
 })
 
-app.post("/defCoord", urlParser, (req, res) => {
-   res.render("gestion.ejs", {clave: 2, arreglo: []})
-})
-
-
 var server = app.listen(3000, function () {
    var host = server.address().address
    var port = server.address().port
@@ -1281,12 +1277,12 @@ var server = app.listen(3000, function () {
 })
 
 app.post("/defCoord", urlParser, (req, res) => {
-   console.log("AQUI1")
-   if (req.body.btnDefProfCoord == "1") {
-      console.log("AQUI2")
+      console.log("AQUI1")
       const codigo = JSON.stringify({
+         user: usuario.user,
          codigo: req.body.elementosTabla
       });
+      console.log(codigo)
    
       const options = {
          hostname: 'localhost',
@@ -1308,8 +1304,7 @@ app.post("/defCoord", urlParser, (req, res) => {
 
          response.on('end', () => {
             if (response.statusCode === 200) {
-
-               // Realizar el segundo request HTTP anidado
+               
                const user = { user: usuario.user };
                postUser = JSON.stringify(user);
 
@@ -1359,6 +1354,4 @@ app.post("/defCoord", urlParser, (req, res) => {
 
       request.write(codigo);
       request.end();
-   }
-   //res.render("gestion.ejs", {clave: 3, arreglo: []})
-})
+   })
