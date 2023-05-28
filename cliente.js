@@ -1323,12 +1323,6 @@ app.post("/cargarExcel", urlParser, upload.single("btnImpExcel"), (req, res) => 
          if (response.statusCode == 200) {
             const estudiantes = JSON.parse(responseData)
             console.log(estudiantes)
-            try {
-               fs.rmdirSync("descargas", { recursive: true });
-               console.log('Directorio eliminado correctamente.');
-            } catch (error) {
-               console.error('Error al eliminar el directorio:', error);
-            }
             res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
                arreglo: estudiantes})
          }
