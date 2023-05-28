@@ -32,4 +32,8 @@ public class PlanTrabajoService {
     public String marcarActividad(String nombreAct, int estado) throws SQLException {
         return planTrabajoDAO.marcarActividad(nombreAct, estado);
     }
+
+    public List<Map<String, Object>> obtenerComentarios(String nombreAct) {
+        return planTrabajoDAO.obtenerComentarios(nombreAct);
+    }
 }

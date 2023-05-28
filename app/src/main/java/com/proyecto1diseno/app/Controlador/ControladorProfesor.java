@@ -69,6 +69,7 @@ public class ControladorProfesor {
 
     @PostMapping("/datosProfesRes")
     public ResponseEntity<String> modificarProfesor(@RequestBody Map<String, Object> profesorData) throws SQLException {
+        String user = (String) profesorData.get("user");
         Profesor profesor = new Profesor();
         profesor.setIdProfesor(Integer.parseInt(profesorData.get("id").toString()));
         profesor.setNombre((String) profesorData.get("nombre"));
@@ -76,7 +77,7 @@ public class ControladorProfesor {
         profesor.setContrasena((String) profesorData.get("pass"));
         profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
         profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
-        String respuestaModificar = profesorService.modificarProfesor(profesor);
+        String respuestaModificar = profesorService.modificarProfesor(profesor, user);
         if (respuestaModificar.startsWith("Error: ")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaModificar);
         } else {
@@ -86,9 +87,10 @@ public class ControladorProfesor {
 
     @PostMapping("/bajaProf")
     public ResponseEntity<String> darDeBajaProfesor(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        String user = (String) requestBody.get("user");
         String codigoProfString = (String) requestBody.get("codigo");
         int codigoProf = Integer.parseInt(codigoProfString);
-        String respuestaBaja = profesorService.darDeBajaProfesor(codigoProf);
+        String respuestaBaja = profesorService.darDeBajaProfesor(codigoProf, user);
         if (respuestaBaja.startsWith("Error: ")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaBaja);
         } else {

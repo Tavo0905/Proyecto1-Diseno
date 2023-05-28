@@ -45,12 +45,12 @@ public class ProfesorService {
         return profesorDAO.agregarProfesor(profesor, user);
     }
 
-    public String modificarProfesor(Profesor profesor) throws SQLException {
-        return profesorDAO.modificarProfesor(profesor);
+    public String modificarProfesor(Profesor profesor, String user) throws SQLException {
+        return profesorDAO.modificarProfesor(profesor, user);
     }
 
-    public String darDeBajaProfesor(int codigoProf) throws SQLException {
-        return profesorDAO.darDeBajaProfesor(codigoProf);
+    public String darDeBajaProfesor(int codigoProf, String user) throws SQLException {
+        return profesorDAO.darDeBajaProfesor(codigoProf, user);
     }
 
     public String defGuiaProfesor(int codigoProf) throws SQLException {

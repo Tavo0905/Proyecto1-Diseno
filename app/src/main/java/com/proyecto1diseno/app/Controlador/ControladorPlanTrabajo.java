@@ -69,13 +69,20 @@ public class ControladorPlanTrabajo {
     @PostMapping("/marcarActividad")
     public ResponseEntity<String> marcarActividad(@RequestBody Map<String, Object> requestBody) throws SQLException {
         String nombreAct = (String) requestBody.get("codigo");
-        int estado = Integer.parseInt((String) requestBody.get("estado"));
+        int estado = Integer.parseInt(requestBody.get("estado").toString());
         String respuestaMarcar = planTrabajoService.marcarActividad(nombreAct, estado);
         if (respuestaMarcar.startsWith("Error: ")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaMarcar);
         } else {
             return ResponseEntity.ok().body(respuestaMarcar);
         }
+    }
+
+    @PostMapping("/obtenerComentarios")
+    public ResponseEntity<List<Map<String, Object>>> obtenerComentarios(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        String nombreAct = (String) requestBody.get("codigo");
+        List<Map<String, Object>> comentarios = planTrabajoService.obtenerComentarios(nombreAct);
+        return ResponseEntity.ok().body(comentarios);
     }
 
     

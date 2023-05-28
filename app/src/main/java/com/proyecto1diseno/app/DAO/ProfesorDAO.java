@@ -1,9 +1,11 @@
 package com.proyecto1diseno.app.DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 public class ProfesorDAO {
     private final Connection connection;
+    Date fechaActual = Date.valueOf(LocalDate.now());
 
     public ProfesorDAO(Connection connection) {
         this.connection = connection;
@@ -139,8 +142,9 @@ public class ProfesorDAO {
 
     public String agregarProfesor(Profesor profesor, String user) throws SQLException {
 
-        String selectProfesorSql = "SELECT idSede FROM Asistentes WHERE correo = ?";
+        String selectProfesorSql = "SELECT idAsistente, idSede FROM Asistentes WHERE correo = ?";
         String idSede;
+        String idAsistente;
 
         try (PreparedStatement selectProfesorStatement = connection.prepareStatement(selectProfesorSql)) {
             selectProfesorStatement.setString(1, user);
@@ -148,6 +152,7 @@ public class ProfesorDAO {
             try (ResultSet resultSet = selectProfesorStatement.executeQuery()) {
                 if (resultSet.next()) {
                     idSede = resultSet.getString("idSede");
+                    idAsistente = resultSet.getString("idAsistente");
                 } else {
                     return "Error: No se encontro el profesor a hacer guia.";
                 }
@@ -156,13 +161,15 @@ public class ProfesorDAO {
 
         String sqlCheckEmail = "SELECT idProfesor FROM Profesores WHERE correo = ?";
         String sqlInsert = "INSERT INTO Profesores (nombre, correo, idSede, contraseña, numeroOficina, numeroCelular, darDeBaja) VALUES (?, ?, ?, ?, ?, ?, 0)";
-    
+        String sqlInsertModificacion = "INSERT INTO ModificacionesProfesores (idProfesor, idAsistente, idTipoModificacion, fecha) VALUES (?, ?, ?, ?)";
+
         try (PreparedStatement checkEmailStatement = connection.prepareStatement(sqlCheckEmail);
-             PreparedStatement insertStatement = connection.prepareStatement(sqlInsert)) {
-    
+            PreparedStatement insertStatement = connection.prepareStatement(sqlInsert);
+            PreparedStatement insertModificacionStatement = connection.prepareStatement(sqlInsertModificacion)) {
+
             checkEmailStatement.setString(1, profesor.getCorreo());
             ResultSet resultSet = checkEmailStatement.executeQuery();
-    
+
             if (resultSet.next()) {
                 return "Error: El correo ya está en uso por otro profesor.";
             } else {
@@ -173,22 +180,41 @@ public class ProfesorDAO {
                 insertStatement.setInt(5, profesor.getTelOficina());
                 insertStatement.setInt(6, profesor.getCelular());
                 insertStatement.executeUpdate();
+
+                // Obtener el idProfesor del profesor recién agregado
+                String selectIdProfesorQuery = "SELECT idProfesor FROM Profesores WHERE correo = ?";
+                PreparedStatement selectIdProfesorStatement = connection.prepareStatement(selectIdProfesorQuery);
+                selectIdProfesorStatement.setString(1, profesor.getCorreo());
+                ResultSet idProfesorResultSet = selectIdProfesorStatement.executeQuery();
+                int idTipoModificacion = 1;
+
+                if (idProfesorResultSet.next()) {
+                    int idProfesor = idProfesorResultSet.getInt("idProfesor");
+                    insertModificacionStatement.setInt(1, idProfesor);
+                    insertModificacionStatement.setString(2, idAsistente);
+                    insertModificacionStatement.setInt(3, idTipoModificacion);
+                    insertModificacionStatement.setDate(4, fechaActual);
+                    insertModificacionStatement.executeUpdate(); 
+                }
+
                 return "Profesor agregado exitosamente.";
             }
-        }
+        }   
     }
 
-    public String modificarProfesor(Profesor profesor) throws SQLException {
+    public String modificarProfesor(Profesor profesor, String user) throws SQLException {
         String sqlCheckEmail = "SELECT idProfesor FROM Profesores WHERE correo = ?";
         String sqlUpdate = "UPDATE Profesores SET nombre = ?, correo = ?, contraseña = ?, numeroOficina = ?, numeroCelular = ? WHERE idProfesor = ?";
-        
+        String sqlInsertModificacion = "INSERT INTO ModificacionesProfesores (idProfesor, idAsistente, idTipoModificacion, fecha) VALUES (?, ?, ?, ?)";
+
         try (PreparedStatement checkEmailStatement = connection.prepareStatement(sqlCheckEmail);
-             PreparedStatement updateStatement = connection.prepareStatement(sqlUpdate)) {
-            
+            PreparedStatement updateStatement = connection.prepareStatement(sqlUpdate);
+            PreparedStatement insertModificacionStatement = connection.prepareStatement(sqlInsertModificacion)) {
+
             checkEmailStatement.setString(1, profesor.getCorreo());
             ResultSet resultSet = checkEmailStatement.executeQuery();
-            
-            if (resultSet.next()){
+
+            if (resultSet.next()) {
                 if (resultSet.getInt("idProfesor") != profesor.getIdProfesor()) {
                     return "Error: El correo ya está en uso por otro profesor.";
                 } else {
@@ -199,6 +225,26 @@ public class ProfesorDAO {
                     updateStatement.setInt(5, profesor.getCelular());
                     updateStatement.setInt(6, profesor.getIdProfesor());
                     updateStatement.executeUpdate();
+
+                    // Obtener el idAsistente del asistente correspondiente al correo "user"
+                    String selectIdAsistenteQuery = "SELECT idAsistente FROM Asistentes WHERE correo = ?";
+                    PreparedStatement selectIdAsistenteStatement = connection.prepareStatement(selectIdAsistenteQuery);
+                    selectIdAsistenteStatement.setString(1, user);
+                    ResultSet idAsistenteResultSet = selectIdAsistenteStatement.executeQuery();
+
+                    if (idAsistenteResultSet.next()) {
+                        String idAsistente = idAsistenteResultSet.getString("idAsistente");
+                        int idTipoModificacion = 3;
+                        Date fechaActual = Date.valueOf(LocalDate.now());
+
+                        // Insertar la modificación en la tabla ModificacionesProfesores
+                        insertModificacionStatement.setInt(1, profesor.getIdProfesor());
+                        insertModificacionStatement.setString(2, idAsistente);
+                        insertModificacionStatement.setInt(3, idTipoModificacion);
+                        insertModificacionStatement.setDate(4, fechaActual);
+                        insertModificacionStatement.executeUpdate();
+                    }
+
                     return "Modificación exitosa.";
                 }
             } else {
@@ -209,25 +255,67 @@ public class ProfesorDAO {
                 updateStatement.setInt(5, profesor.getCelular());
                 updateStatement.setInt(6, profesor.getIdProfesor());
                 updateStatement.executeUpdate();
+
+                // Obtener el idAsistente del asistente correspondiente al correo "user"
+                String selectIdAsistenteQuery = "SELECT idAsistente FROM Asistentes WHERE correo = ?";
+                PreparedStatement selectIdAsistenteStatement = connection.prepareStatement(selectIdAsistenteQuery);
+                selectIdAsistenteStatement.setString(1, user);
+                ResultSet idAsistenteResultSet = selectIdAsistenteStatement.executeQuery();
+
+                if (idAsistenteResultSet.next()) {
+                    String idAsistente = idAsistenteResultSet.getString("idAsistente");
+                    int idTipoModificacion = 3;
+                    Date fechaActual = Date.valueOf(LocalDate.now());
+
+                    insertModificacionStatement.setInt(1, profesor.getIdProfesor());
+                    insertModificacionStatement.setString(2, idAsistente);
+                    insertModificacionStatement.setInt(3, idTipoModificacion);
+                    insertModificacionStatement.setDate(4, fechaActual);
+                    insertModificacionStatement.executeUpdate();
+                }
+
                 return "Modificación exitosa.";
             }
-            
         }
     }
 
-    public String darDeBajaProfesor(int codigoProf) throws SQLException {
+    public String darDeBajaProfesor(int codigoProf, String user) throws SQLException {
         String sql = "SELECT darDeBaja FROM Profesores WHERE idProfesor = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        String sqlInsertModificacion = "INSERT INTO ModificacionesProfesores (idProfesor, idAsistente, idTipoModificacion, fecha) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement insertModificacionStatement = connection.prepareStatement(sqlInsertModificacion)) {
+
             statement.setInt(1, codigoProf);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     int darDeBaja = resultSet.getInt("darDeBaja");
                     if (darDeBaja == 0) {
+                        // Actualizar el campo "darDeBaja" del profesor a 1
                         String updateSql = "UPDATE Profesores SET darDeBaja = 1 WHERE idProfesor = ?";
                         try (PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
                             updateStatement.setInt(1, codigoProf);
                             updateStatement.executeUpdate();
                         }
+
+                        // Obtener el idAsistente del asistente correspondiente al correo "user"
+                        String selectIdAsistenteQuery = "SELECT idAsistente FROM Asistentes WHERE correo = ?";
+                        PreparedStatement selectIdAsistenteStatement = connection.prepareStatement(selectIdAsistenteQuery);
+                        selectIdAsistenteStatement.setString(1, user);
+                        ResultSet idAsistenteResultSet = selectIdAsistenteStatement.executeQuery();
+
+                        if (idAsistenteResultSet.next()) {
+                            String idAsistente = idAsistenteResultSet.getString("idAsistente");
+                            int idTipoModificacion = 2;
+
+                            // Insertar la modificación en la tabla ModificacionesProfesores
+                            insertModificacionStatement.setInt(1, codigoProf);
+                            insertModificacionStatement.setString(2, idAsistente);
+                            insertModificacionStatement.setInt(3, idTipoModificacion);
+                            insertModificacionStatement.setDate(4, fechaActual);
+                            insertModificacionStatement.executeUpdate();
+                        }
+
                         return "Profesor dado de baja.";
                     } else {
                         return "Error: El profesor ya está de baja.";
@@ -238,6 +326,10 @@ public class ProfesorDAO {
             }
         }
     }
+            
+        
+    
+            
 
     public String defGuiaProfesor(int idProfesor) throws SQLException {
         String selectProfesorSql = "SELECT idSede FROM Profesores WHERE idProfesor = ?";

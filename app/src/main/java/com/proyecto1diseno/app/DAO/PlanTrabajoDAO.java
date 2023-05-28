@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.sql.Date;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -150,7 +149,6 @@ public class PlanTrabajoDAO {
         int idActividad = 0;
         if (idActividadResult.next()) {
             idActividad = idActividadResult.getInt("idActividad");
-            log.info("IDACTIVIDAD: " + idActividad);
         }
         obtenerIdActividadStmt.close();
 
@@ -195,6 +193,52 @@ public class PlanTrabajoDAO {
             return "Error: Ocurrió un error al marcar la actividad.";
         }
         return "";
+    }
+
+    public List<Map<String, Object>> obtenerComentarios(String nombreAct) {
+        List<Map<String, Object>> comentarios = new ArrayList<>();
+    
+        try {
+            String selectIdQuery = "SELECT idActividad FROM Actividades WHERE nombre = ?";
+            PreparedStatement selectIdStatement = connection.prepareStatement(selectIdQuery);
+            selectIdStatement.setString(1, nombreAct);
+            ResultSet idResultSet = selectIdStatement.executeQuery();
+    
+            if (idResultSet.next()) {
+                int idActividad = idResultSet.getInt("idActividad");
+    
+                // Obtener los comentarios de la tabla Comentarios para el idActividad correspondiente
+                String selectComentariosQuery = "SELECT c.comentario, CONCAT(c.idComentario, ' - ', p.nombre) AS nombreProfesor, c.idComentarioOriginal " +
+                                                "FROM Comentarios c " +
+                                                "INNER JOIN Profesores p ON c.idProfesor = p.idProfesor " +
+                                                "WHERE c.idActividad = ?";
+                PreparedStatement selectComentariosStatement = connection.prepareStatement(selectComentariosQuery);
+                selectComentariosStatement.setInt(1, idActividad);
+                ResultSet comentariosResultSet = selectComentariosStatement.executeQuery();
+    
+                while (comentariosResultSet.next()) {
+                    String comentario = comentariosResultSet.getString("comentario");
+                    String nombreProfesor;
+                    int idComentarioOriginal = comentariosResultSet.getInt("idComentarioOriginal");
+    
+                    if (idComentarioOriginal != 0) {
+                        nombreProfesor = comentariosResultSet.getString("nombreProfesor") + " <Replica a comentario: " + idComentarioOriginal + ">";
+                    } else {
+                        nombreProfesor = comentariosResultSet.getString("nombreProfesor");
+                    }
+
+                    Map<String, Object> comentarioMap = new HashMap<>();
+                    comentarioMap.put("nombre", nombreProfesor);
+                    comentarioMap.put("mensaje", comentario);
+    
+                    comentarios.add(comentarioMap);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return comentarios;
     }
 }
 

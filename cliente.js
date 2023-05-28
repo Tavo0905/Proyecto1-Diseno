@@ -252,7 +252,8 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
             correo: entryCE,
             pass: entryPass,
             tel: entryTel,
-            cel: entryCel
+            cel: entryCel,
+            user: usuario.user
          };
 
          const profeJson = JSON.stringify(profe);
@@ -422,7 +423,8 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
 app.post("/bajaProf", urlParser, (req, res) => {
    if (req.body.btnBajaProfGuia == "1") {
       const codigo = JSON.stringify({
-         codigo: req.body.elementosTabla
+         codigo: req.body.elementosTabla,
+         user: usuario.user
       });
    
       const options = {
@@ -891,7 +893,7 @@ app.post("/datosActRes", urlParser, (req, res) => {
 })
 
 app.post("/marcarActRealizada", urlParser, (req, res) => {
-   if (req.body.btnMarcarRealizada == "1") {
+   if ("1" == "1") {
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla,
          estado: 3
@@ -970,7 +972,7 @@ app.post("/marcarActRealizada", urlParser, (req, res) => {
 })
 
 app.post("/marcarActCancelada", urlParser, (req, res) => {
-   if (req.body.btnCancelarAct == "1") {
+   if ("1" == "1") {
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla,
          estado: 4
@@ -1049,7 +1051,7 @@ app.post("/marcarActCancelada", urlParser, (req, res) => {
 })
 
 app.post("/marcarActPublicada", urlParser, (req, res) => {
-   if (req.body.btnPublicAct == "1") {
+   if ("1" == "1") {
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla,
          estado: 2
@@ -1128,16 +1130,15 @@ app.post("/marcarActPublicada", urlParser, (req, res) => {
 })
 
 app.post("/comentario", urlParser, (req, res) => {
-   if (req.body.btnPublicAct == "1") {
+   if ("1" == "1") {
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla,
-         estado: 2
       });
-   
+
       const options = {
          hostname: 'localhost',
          port: 8080,
-         path: '/plantrabajo/marcarActividad',
+         path: '/plantrabajo/obtenerComentarios',
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -1154,40 +1155,8 @@ app.post("/comentario", urlParser, (req, res) => {
 
          response.on('end', () => {
             if (response.statusCode === 200) {
-               const options2 = {
-                  hostname: 'localhost',
-                  port: 8080,
-                  path: '/plantrabajo/obtenerComentarios',
-                  method: 'POST',
-                  headers: {
-                     'Content-Type': 'application/json',
-                  }
-               };
-
-               const request2 = http.request(options2, (response2) => {
-                  let responseData2 = '';
-
-                  response2.on('data', (chunk2) => {
-                     responseData2 += chunk2;
-                  });
-
-                  response2.on('end', () => {
-                     if (response2.statusCode === 200) {
-                        const comentarios = JSON.parse(responseData2);
-                        res.render("comentarios.ejs", {comentarios: comentarios})
-                     } else {
-                        console.log("ERROR: ResponseData - " + responseData2);
-                     }
-                  });
-               });
-
-               request2.on('error', (error2) => {
-                  console.error(error2);
-               });
-
-               request2.end();
-            }else{
-               console.log("ERROR: ResponseData - " + responseData);   
+               const comentarios = JSON.parse(responseData);
+               res.render("comentarios.ejs", {comentarios: comentarios})
             }  
          });
       });
