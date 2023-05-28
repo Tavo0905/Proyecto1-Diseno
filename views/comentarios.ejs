@@ -14,7 +14,11 @@
       <p>No hay comentarios aún.</p>
     <% } else { %>
       <% comentarios.forEach(function(comentario) { %>
-        <p><strong><%= comentario.nombre %></strong>: <%= comentario.mensaje %></p>
+        <p>
+          <strong><%= comentario.nombre %></strong>
+          : <%= comentario.mensaje %>
+          <input type = "radio" id = "rdBtnComentario" name = "rdBtnComentario" value = "<%= comentario.nombre %>">
+        </p>
       <% }); %>
     <% } %>
   </div>

@@ -1176,6 +1176,49 @@ app.post("/comentario", urlParser, (req, res) => {
    }
 })
 
+app.post("/comentarios", urlParser, (req, res) => {
+   if (req.body.rdBtnComentario != "") {
+      const codigo = JSON.stringify({
+         user: usuario.user,
+         reply: req.body.rdBtnComentario,
+         mensaje: req.body.mensaje
+      });
+   }
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/plantrabajo/agregarComentario',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(codigo),
+      }
+   };
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const comentarios = JSON.parse(responseData);
+            res.render("comentarios.ejs", {comentarios: comentarios})
+         }  
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(codigo);
+   request.end();
+})
+
 app.post("/salirGestionPT", urlParser, (req, res) => {
    res.render("selModulo.ejs")
 })
