@@ -1,17 +1,21 @@
 package com.proyecto1diseno.app.Modelo;
 
 public class Estudiante {
+    private String idSede;
     private int carnet;
     private String nombre;
+    private String segundoNombre;
     private String apellido1;
     private String apellido2;
     private String correo;
     private int celular;
     private String contrasena;
 
-    public Estudiante(int carnet, String nombre, String apellido1, String apellido2, String correo, int celular, String contrasena) {
+    public Estudiante(String idSede, int carnet, String nombre, String segundoNombre, String apellido1, String apellido2, String correo, int celular, String contrasena) {
+        this.idSede = idSede;
         this.carnet = carnet;
         this.nombre = nombre;
+        this.segundoNombre = segundoNombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
         this.correo = correo;
@@ -22,6 +26,15 @@ public class Estudiante {
     public Estudiante (){
         
     }
+
+    public String getIdSede() {
+        return idSede;
+    }
+
+    public void setIdSede(String idSede) {
+        this.idSede = idSede;
+    }
+
     public int getCarnet() {
         return carnet;
     }
@@ -36,6 +49,14 @@ public class Estudiante {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getSegundoNombre() {
+        return idSede;
+    }
+
+    public void setSegundoNombre(String segundoNombre) {
+        this.segundoNombre = segundoNombre;
     }
 
     public String getApellido1() {

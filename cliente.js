@@ -963,8 +963,9 @@ app.post("/generarExcel", urlParser, (req, res) => {
 
 app.post("/cargarExcel", urlParser, (req, res) => {
 
-   const user = { user: usuario.user };
-   postUser = JSON.stringify(user);
+   const data = { user: usuario.user,
+                  path: req.body.btnImpExcel};
+   const postData = JSON.stringify(data);
 
    const options = {
       hostname: 'localhost',
@@ -973,17 +974,18 @@ app.post("/cargarExcel", urlParser, (req, res) => {
       method: 'POST',
       headers: {
          'Content-Type': 'application/json',
-         'Content-Length': Buffer.byteLength(postUser),
+         'Content-Length': Buffer.byteLength(postData),
       }
    };
 
    const request = http.request(options, response => {
       console.log(`statusCode: ${response.statusCode}`);
       
-
-      response.on('data', d => {
-         process.stdout.write(d)
-      });
+      let responseData = '';
+   
+      response.on('data', (chunk) => {
+         responseData += chunk;
+         });
       
       response.on('end', () => {
          if (response.statusCode == 200) {
@@ -998,7 +1000,7 @@ app.post("/cargarExcel", urlParser, (req, res) => {
       console.error(error);
    });
 
-   request.write(postUser)
+   request.write(postData)
    request.end();
 })
 

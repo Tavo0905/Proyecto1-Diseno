@@ -139,18 +139,18 @@ public class EstudianteDAO {
     public String insertarEstudiante(Estudiante estudiante) throws SQLException{
         if (!existeCarne(estudiante.getCarnet()) && !existeCorreo(estudiante.getCorreo())) {
             try (connection) {
-                String query = "INSERT INTO Estudiantes (carne, apellido1, apellido2, nombre, correo, numeroCelular, contraseña) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String query = "INSERT INTO dbo.Estudiantes (idSede, carne, apellido1, apellido2, nombre, segundoNombre, correo, numeroCelular, contraseña) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement statement = connection.prepareStatement(query);
-                //statement.setInt(1, estudiante.getIdSede());
-                statement.setInt(1, estudiante.getCarnet());
-                statement.setString(2, estudiante.getApellido1());
-                statement.setString(3, estudiante.getApellido2());
-                statement.setString(4, estudiante.getNombre());
-                //statement.setString(6, estudiante.getSegundoNombre());
-                statement.setString(5, estudiante.getCorreo());
-                statement.setInt(6, estudiante.getCelular());
-                statement.setString(7, estudiante.getContrasena());
+                statement.setString(1, estudiante.getIdSede());
+                statement.setInt(2, estudiante.getCarnet());
+                statement.setString(3, estudiante.getApellido1());
+                statement.setString(4, estudiante.getApellido2());
+                statement.setString(5, estudiante.getNombre());
+                statement.setString(6, estudiante.getSegundoNombre());
+                statement.setString(7, estudiante.getCorreo());
+                statement.setInt(8, estudiante.getCelular());
+                statement.setString(9, estudiante.getContrasena());
                 statement.executeUpdate();
                 return "Se inserto correctamente";
             } catch (SQLException e) {

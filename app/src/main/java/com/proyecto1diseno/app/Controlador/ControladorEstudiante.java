@@ -1,11 +1,17 @@
 package com.proyecto1diseno.app.Controlador;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.sound.midi.SysexMessage;
+
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,10 +92,22 @@ public class ControladorEstudiante {
         }
 
         @PostMapping("/generarExcel")
-        public List<Map<String,Object>> generarExcel(String user) {
+        public List<Map<String,Object>> generarExcel(@RequestBody Map<String, Object> requestBody) {
             try {
-                List<Map<String, Object>> estudiantes = estudianteService.obtenerEstudiantes(user);
                 
+                String user = (String) requestBody.get("user");
+
+                System.out.println();
+                System.out.println();
+                System.out.println();
+                System.out.println();
+                System.out.println(user);
+                System.out.println();
+                System.out.println();
+
+
+                List<Map<String, Object>> estudiantes = estudianteService.obtenerEstudiantes(user);
+
                 // Crear un objeto de Excel
                 Workbook workbook = new XSSFWorkbook();
                 Sheet sheet = workbook.createSheet("Estudiantes");
@@ -124,7 +142,63 @@ public class ControladorEstudiante {
             }
         }
     
+        @PostMapping("/cargarExcel")
+        public List<Map<String,Object>> cargarExcel(@RequestBody Map<String, Object> requestBody) {
+            try {
+                
+                String user = (String) requestBody.get("user");
+                
+                // RUTA PROVISIONAL CAMBIAR EN CASO DE QUE ALGUIEN LO QUIERA PROBAR
+                String path = "C:\\Users\\gpere\\OneDrive\\Escritorio\\estudiantes1.xlsx";
 
+                FileInputStream archivo = new FileInputStream(new File(path));
     
+                Workbook workbook = WorkbookFactory.create(archivo);
+    
+                Sheet hoja = workbook.getSheetAt(0);
+
+                try {
+                    boolean flag = true;
+                    for (Row fila : hoja) {
+                        if (flag) {
+                            for (Cell celda : fila) {
+                                System.out.print(celda.toString() + "\t");
+                            }
+                            flag = false;
+                            continue;
+                        }
+
+                        ArrayList tempEst = new ArrayList<Object>();
+                        for (Cell celda : fila) {
+                            if (celda.getCellType().toString() == "STRING") {
+                                tempEst.add(celda.getStringCellValue());
+                            } else if (celda.getCellType().toString() == "NUMERIC") {
+                                tempEst.add((int) celda.getNumericCellValue());
+                            }
+                        }
+
+                        Estudiante estudiante = new Estudiante(tempEst.get(0).toString(),
+                        Integer.parseInt(tempEst.get(1).toString()), tempEst.get(2).toString(),
+                        tempEst.get(3).toString(), tempEst.get(4).toString(),
+                        tempEst.get(5).toString(), tempEst.get(6).toString(),
+                        Integer.parseInt(tempEst.get(7).toString()), tempEst.get(8).toString());
+
+                        String respuestaInsertar = estudianteService.insertarEstudiante(estudiante);
+                        tempEst.clear();
+                    }
+
+                    List<Map<String, Object>> estudiantes = estudianteService.obtenerEstudiantes(user);
+                    return estudiantes;
+                } catch (SQLException e) {
+                    List<Map<String, Object>> estudiantes = new ArrayList<Map<String, Object>>();
+                    return estudiantes;
+                    // Manejar el error y enviar una respuesta de error al cliente
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                List<Map<String, Object>> estudiantes = new ArrayList<Map<String, Object>>();
+                    return estudiantes;
+            }
+        }
 
 }

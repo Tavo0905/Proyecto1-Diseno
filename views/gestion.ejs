@@ -19,6 +19,11 @@
             }
         }
 
+        function rutaCompleta() {
+            var rutaCompleta = document.getElementById('btnImpExcel').value;
+            console.log(rutaCompleta);
+          }
+
     </script>
 </head>
 <body class = "gestionBd">
@@ -87,9 +92,9 @@
                     <label class = "excelTxt" name = "excelTxt" id = "excelTxt">
                         Cargar Excel:
                     </label>
-                    <input type = "file" id = "btnImpExcel" name = "btnImpExcel"
-                    formaction = "cargarExcel"/>
-                    <button class = "botonesEst" id = "btnImpExcel2" name = "btnImpExcel2" formaction = "modEst">
+                    <input type = "file" id = "btnImpExcel" name = "btnImpExcel"/>
+                    <button class = "botonesEst" id = "btnImpExcel2" name = "btnImpExcel2"
+                    onclick = "rutaCompleta()" formaction = "cargarExcel">
                         Importar
                     </button>
                     <button class = "botonesEst" id = "btnModEst" name = "btnModEst" formaction = "modEst">
