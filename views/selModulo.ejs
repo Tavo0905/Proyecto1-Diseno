@@ -28,9 +28,11 @@
     </div>
     <div>
         <form class = "formGest" method = "post">
-            <button class = "botonConfGrGuia" id = "confGrGuia" name = "confGrGuia" formaction = "gestionarGuias">
-                Conformacion de grupo guia
-            </button>
+            <% if (clave == 2) { %>
+                <button class = "botonConfGrGuia" id = "confGrGuia" name = "confGrGuia" formaction = "gestionarGuias">
+                    Conformacion de grupo guia
+                </button>
+            <% } %>
         </form>
     </div>
 </body>

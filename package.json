@@ -1,5 +1,5 @@
 {
-  "name": "proyecto2",
+  "name": "proyecto2",  
   "main": "cliente.js",
   "scripts": {
     "start": "nodemon Vista\\cliente.js"

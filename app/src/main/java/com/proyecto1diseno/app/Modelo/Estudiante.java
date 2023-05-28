@@ -99,4 +99,19 @@ public class Estudiante {
         this.contrasena = contrasena;
     }
 
+    public void imprimirDatos() {
+
+        System.out.println();
+        System.out.println(this.idSede);
+        System.out.println(this.carnet);
+        System.out.println(this.nombre);
+        System.out.println(this.segundoNombre);
+        System.out.println(this.apellido1);
+        System.out.println(this.apellido2);
+        System.out.println(this.correo);
+        System.out.println(this.celular);
+        System.out.println(this.contrasena);
+        System.out.println();
+    }
+
 }
