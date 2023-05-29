@@ -326,11 +326,7 @@ public class ProfesorDAO {
                 }
             }
         }
-    }
-            
-        
-    
-            
+    }       
 
     public String defGuiaProfesor(int idProfesor) throws SQLException {
         String selectProfesorSql = "SELECT idSede FROM Profesores WHERE idProfesor = ?";
