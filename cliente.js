@@ -798,15 +798,15 @@ app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
 
 app.post("/datosActRes", urlParser, (req, res) => {
    const entrySemana = req.body.entrySemana;
-   const entryTipo = req.body.entryTipo;
+   const entryTipo = req.body.tipoActLB1;
    const entryNombre = req.body.entryNombre;
    const entryFecha = req.body.entryFecha;
    const entryHora = req.body.entryHora;
    const entryFechaP = req.body.entryFechaP;
    const entryRes = req.body.entryRes;
-   const entryModalidad = req.body.entryModalidad;
+   const entryModalidad = req.body.tipoActLB2;
    const entryEnlace = req.body.entryEnlace;
-   const entryEstado = req.body.entryEstado;
+   const entryEstado = req.body.tipoActLB3;
 
    // Validar formatos
    const fechaRegex = /^\d{4}-\d{2}-\d{2}$/;
@@ -827,7 +827,7 @@ app.post("/datosActRes", urlParser, (req, res) => {
       return;
    }
 
-   if (entrySemana && entryTipo && entryFecha && entryNombre && entryHora && entryFechaP && entryRes && entryModalidad && entryEstado) {
+   if (entrySemana && entryTipo!=0 && entryFecha && entryNombre && entryHora && entryFechaP && entryRes && entryModalidad!=0 && entryEstado!=0) {
       const actividad = {
          idPlanDeTrabajo: 1,
          tipoActividad: entryTipo,
@@ -842,6 +842,8 @@ app.post("/datosActRes", urlParser, (req, res) => {
          hora: entryHora,
          user: usuario.user
       };
+
+      console.log(actividad);
 
       const actividadJson = JSON.stringify(actividad);
 
