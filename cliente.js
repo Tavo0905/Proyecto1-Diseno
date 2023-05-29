@@ -2,8 +2,13 @@ const http = require('http');
 var express = require('express')
 var bodyParser = require('body-parser');
 const { stringify } = require('querystring');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+const xlsx = require('xlsx');
 var app = express()
 var urlParser = bodyParser.urlencoded({extended: false})
+const upload = multer({ dest: 'descargas/' });
 var usuario = {user: "", password: ""}
 let tipoUsuario = ''
 let claveSelMod = 0
@@ -87,7 +92,8 @@ app.post('/gestionarEst', urlParser, (req, res) => {
       response.on('end', () => {
          const estudiantes = JSON.parse(responseData);
          console.log(estudiantes);
-         res.render("gestion.ejs", {clave: 1, arreglo : estudiantes});
+         res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
+            arreglo : estudiantes});
          });
       });
       
@@ -126,7 +132,8 @@ app.post('/gestionarProf', urlParser, (req, res) => {
       response.on('end', () => {
          if (response.statusCode === 200) {
             const profesores = JSON.parse(responseData);
-            res.render("gestion.ejs", {clave: 2, arreglo : profesores});
+            res.render("gestion.ejs", {clave: 2, tUsuario: tipoUsuario,
+               arreglo : profesores});
          }else{
             console.log("ERROR: ResponseData - " + responseData);   
             }
@@ -168,7 +175,8 @@ app.post('/gestionarGuias', urlParser, (req, res) => {
          if (response.statusCode === 200) {
             const profesores = JSON.parse(responseData);
             console.log(profesores);
-            res.render("gestion.ejs", {clave: 3, arreglo : profesores});
+            res.render("gestion.ejs", {clave: 3, tUsuario: tipoUsuario,
+               arreglo : profesores});
          }else{
             console.log("ERROR: ResponseData - " + responseData);   
             }
@@ -185,15 +193,15 @@ app.post('/gestionarGuias', urlParser, (req, res) => {
    //res.render("gestion.ejs", {clave: 3, arreglo: []})
 })
 
-app.post('/salirGestion', urlParser, (req, res) => {
+app.post('/salirGestion', urlParser, upload.any(), (req, res) => {
    res.render("selModulo.ejs", {clave: claveSelMod})
 })
 
-app.post("/agregarProf", urlParser, (req, res) => {
+app.post("/agregarProf", urlParser, upload.any(), (req, res) => {
    res.render("datosProfes.ejs", {profe: {id: "", nombre: "", correo: "", pass: "", tel: "", cel: ""}})
 })
 
-app.post("/modProf", urlParser, (req, res) => {
+app.post("/modProf", urlParser, upload.any(), (req, res) => {
    const codigo = JSON.stringify({
       codigo: req.body.elementosTabla
     });
@@ -303,7 +311,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                      response2.on('end', () => {
                         if (response2.statusCode === 200) {
                            const profesores = JSON.parse(responseData2);
-                           res.render("gestion.ejs", { clave: 2, arreglo: profesores });
+                           res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario, arreglo: profesores });
                         } else {
                            console.log("ERROR: ResponseData - " + responseData2);
                         }
@@ -389,7 +397,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                      response2.on('end', () => {
                         if (response2.statusCode === 200) {
                            const profesores = JSON.parse(responseData2);
-                           res.render("gestion.ejs", { clave: 2, arreglo: profesores });
+                           res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario, arreglo: profesores });
                         } else {
                            console.log("ERROR: ResponseData - " + responseData2);
                         }
@@ -421,7 +429,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
    }
 });
 
-app.post("/bajaProf", urlParser, (req, res) => {
+app.post("/bajaProf", urlParser, upload.any(), (req, res) => {
    if (req.body.btnBajaProfGuia == "1") {
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla,
@@ -474,7 +482,8 @@ app.post("/bajaProf", urlParser, (req, res) => {
                   innerResponse.on('end', () => {
                      if (innerResponse.statusCode === 200) {
                         const innerProfesores = JSON.parse(innerResponseData);
-                        res.render("gestion.ejs", { clave: 2, arreglo: innerProfesores });
+                        res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario,
+                           arreglo: innerProfesores });
                      } else {
                         console.log("ERROR: Inner ResponseData - " + innerResponseData);
                      }
@@ -502,7 +511,7 @@ app.post("/bajaProf", urlParser, (req, res) => {
    }
 })
 
-app.post("/defGuia", urlParser, (req, res) => {
+app.post("/defGuia", urlParser, upload.any(), (req, res) => {
    if (req.body.btnDefProfGuia== "1") {
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla
@@ -553,7 +562,8 @@ app.post("/defGuia", urlParser, (req, res) => {
                   innerResponse.on('end', () => {
                      if (innerResponse.statusCode === 200) {
                         const innerProfesores = JSON.parse(innerResponseData);
-                        res.render("gestion.ejs", { clave: 2, arreglo: innerProfesores });
+                        res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario,
+                           arreglo: innerProfesores });
                      } else {
                         console.log("ERROR: Inner ResponseData - " + innerResponseData);
                      }
@@ -581,7 +591,10 @@ app.post("/defGuia", urlParser, (req, res) => {
    }
 })
 //res.render("modEst.ejs", est)
-app.post("/modEst", urlParser, (req, res) => {
+app.post("/modEst", urlParser, upload.any(), (req, res) => {
+
+   console.log(req.body.elementosTabla)
+
    const codigo = JSON.stringify({
       codigo: req.body.elementosTabla
     });
@@ -695,7 +708,8 @@ app.post("/datosEstRes", urlParser, (req, res) => {
                   response2.on('end', () => {
                      if (response2.statusCode === 200) {
                         const estudiantes = JSON.parse(responseData2);
-                        res.render("gestion.ejs", { clave: 1, arreglo: estudiantes });
+                        res.render("gestion.ejs", { clave: 1, tUsuario: tipoUsuario,
+                           arreglo: estudiantes });
                      } else {
                         console.log("ERROR: ResponseData - " + responseData2);
                      }
@@ -1171,6 +1185,49 @@ app.post("/comentario", urlParser, (req, res) => {
    }
 })
 
+app.post("/comentarios", urlParser, (req, res) => {
+   if (req.body.rdBtnComentario != "") {
+      const codigo = JSON.stringify({
+         user: usuario.user,
+         reply: req.body.rdBtnComentario,
+         mensaje: req.body.mensaje
+      });
+   }
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/plantrabajo/agregarComentario',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(codigo),
+      }
+   };
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const comentarios = JSON.parse(responseData);
+            res.render("comentarios.ejs", {comentarios: comentarios})
+         }  
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(codigo);
+   request.end();
+})
+
 app.post("/salirGestionPT", urlParser, (req, res) => {
    res.render("selModulo.ejs")
 })
@@ -1180,7 +1237,7 @@ app.post("/salirLogin", urlParser, (req, res) => {
    tipoUsuario = ''
 })
 
-app.post("/generarExcel", urlParser, (req, res) => {
+app.post("/generarExcel", urlParser, upload.any(), (req, res) => {
 
    const user = { user: usuario.user };
    postUser = JSON.stringify(user);
@@ -1213,7 +1270,8 @@ app.post("/generarExcel", urlParser, (req, res) => {
          if (response.statusCode == 200) {
             const estudiantes = JSON.parse(responseData)
             console.log(estudiantes)
-            res.render("gestion.ejs", {clave: 1, arreglo: estudiantes})
+            res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
+               arreglo: estudiantes})
          }
       });
    });
@@ -1226,10 +1284,22 @@ app.post("/generarExcel", urlParser, (req, res) => {
    request.end();
 })
 
-app.post("/cargarExcel", urlParser, (req, res) => {
+app.post("/cargarExcel", urlParser, upload.single("btnImpExcel"), (req, res) => {
+
+   const archivo = req.file;
+   const original = archivo.path;
+   console.log(original)
+   const nuevoNombre = 'estudiantes.xlsx';
+   const nuevaRuta = path.join(path.dirname(original), nuevoNombre);
+
+   const workbook = xlsx.readFile(original);
+   const primeraHoja = workbook.Sheets[workbook.SheetNames[0]];
+   const datos = xlsx.utils.sheet_to_json(primeraHoja, { header: 1 });
+   console.log(datos)
+   xlsx.writeFile(workbook, nuevaRuta);
 
    const data = { user: usuario.user,
-                  path: req.body.btnImpExcel};
+                  path: original};
    const postData = JSON.stringify(data);
 
    const options = {
@@ -1256,7 +1326,8 @@ app.post("/cargarExcel", urlParser, (req, res) => {
          if (response.statusCode == 200) {
             const estudiantes = JSON.parse(responseData)
             console.log(estudiantes)
-            res.render("gestion.ejs", {clave: 1, arreglo: estudiantes})
+            res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
+               arreglo: estudiantes})
          }
       });
    });
@@ -1276,7 +1347,7 @@ var server = app.listen(3000, function () {
    console.log("Example app listening at http://%s:%s", host, port)
 })
 
-app.post("/defCoord", urlParser, (req, res) => {
+app.post("/defCoord", urlParser, upload.any(), (req, res) => {
       console.log("AQUI1")
       const codigo = JSON.stringify({
          user: usuario.user,
@@ -1329,7 +1400,8 @@ app.post("/defCoord", urlParser, (req, res) => {
                   innerResponse.on('end', () => {
                      if (innerResponse.statusCode === 200) {
                         const innerProfesores = JSON.parse(innerResponseData);
-                        res.render("gestion.ejs", { clave: 3, arreglo: innerProfesores });
+                        res.render("gestion.ejs", { clave: 3, tUsuario: tipoUsuario,
+                           arreglo: innerProfesores });
                      } else {
                         console.log("ERROR: Inner ResponseData - " + innerResponseData);
                      }

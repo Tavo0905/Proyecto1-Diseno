@@ -27,7 +27,7 @@
     </script>
 </head>
 <body class = "gestionBd">
-    <form class = "formGestion" method = "post">
+    <form class = "formGestion" method = "post" enctype = "multipart/form-data">
         <div>
             <% if (clave == 1) {%>
                 <label class = "tituloGestion">INFORMACIÓN ESTUDIANTES DEL CAMPUS</label>
@@ -115,11 +115,11 @@
                     formaction = "defGuia">
                         Definir profesor guía
                     </button>
-                <% } if (clave == 3) { %>
+                <% } if (clave == 3) { if (tUsuario == "Asistente") { %>
                     <button class = "botonesGuia" id = "btnDefProfCoord" name = "btnDefProfCoord" formaction = "defCoord">
                         Definir profesor coordinador
                     </button>
-                <% } %>
+                <% }} %>
             </div>
         </div>
     </form>

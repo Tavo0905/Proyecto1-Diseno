@@ -148,8 +148,7 @@ public class ControladorEstudiante {
                 
                 String user = (String) requestBody.get("user");
                 
-                // RUTA PROVISIONAL CAMBIAR EN CASO DE QUE ALGUIEN LO QUIERA PROBAR
-                String path = "C:\\Users\\gpere\\Downloads\\estudiantes1.xlsx";
+                String path = (String) requestBody.get("path");
 
                 FileInputStream archivo = new FileInputStream(new File(path));
     
@@ -194,12 +193,15 @@ public class ControladorEstudiante {
                     }
 
                     List<Map<String, Object>> estudiantes = estudianteService.obtenerEstudiantes(user);
+                    workbook.close();
                     return estudiantes;
                 } catch (SQLException e) {
                     List<Map<String, Object>> estudiantes = new ArrayList<Map<String, Object>>();
+                    workbook.close();
                     return estudiantes;
                     // Manejar el error y enviar una respuesta de error al cliente
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
                 List<Map<String, Object>> estudiantes = new ArrayList<Map<String, Object>>();
