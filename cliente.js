@@ -1199,14 +1199,14 @@ app.post("/comentario", urlParser, (req, res) => {
    }
 })
 
-app.post("/comentarios", urlParser, (req, res) => {
+app.post("/comentarios", urlParser, upload.any(), (req, res) => {
    const codigo = JSON.stringify({
       user: usuario.user,
       reply: req.body.rdBtnComentario,
       mensaje: req.body.mensaje
    });
-
-   console.log(codigo.toString());
+   
+   console.log(codigo)
 
    const options = {
       hostname: 'localhost',
