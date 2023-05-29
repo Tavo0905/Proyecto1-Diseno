@@ -9,27 +9,26 @@
 
   <h2 class = "tituloComen">Comentarios anteriores:</h2>
 
-  <div class = "containerDatos" style = "overflow-y: scroll;">
-    <% if (comentarios.length === 0) { %>
-      <p>No hay comentarios aún.</p>
-    <% } else { %>
-      <% comentarios.forEach(function(comentario) { %>
-        <p>
-          <strong><%= comentario.nombre %></strong>
-          : <%= comentario.mensaje %>
-          <input type = "radio" id = "rdBtnComentario" name = "rdBtnComentario" value = "<%= comentario.nombre %>">
-        </p>
-      <% }); %>
-    <% } %>
-  </div>
+  <form action = "/comentarios" method = "POST" enctype = "multipart/form-data">
+    <div class = "containerDatos" style = "overflow-y: scroll;">
+      <% if (comentarios.length === 0) { %>
+        <p>No hay comentarios aún.</p>
+      <% } else { %>
+        <% comentarios.forEach(function(comentario) { %>
+          <p>
+            <strong><%= comentario.nombre %></strong>
+            : <%= comentario.mensaje %>
+            <input type = "radio" id = "rdBtnComentario" name = "rdBtnComentario" value = "<%= comentario.nombre %>"/>
+          </p>
+        <% }); %>
+      <% } %>
+    </div>
 
-
-  <form action="/comentarios" method="POST">
 
     <label class = "tituloComen" id = "mensajeTxt" for="mensaje">Mensaje:</label><br>
     <textarea id = "mensaje" name = "mensaje" rows = "4" cols = "50" required></textarea><br><br>
 
-    <input class = "submitComentario" type = "submit" value = "Enviar">
+    <button class = "submitComentario" type = "submit">Enviar</button>
   </form>
 
 </body>
