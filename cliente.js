@@ -7,9 +7,9 @@ const fs = require('fs');
 const path = require('path');
 const xlsx = require('xlsx');
 var app = express()
-var urlParser = bodyParser.urlencoded({extended: false})
+var urlParser = bodyParser.urlencoded({ extended: false })
 const upload = multer({ dest: 'descargas/' });
-var usuario = {user: "", password: ""}
+var usuario = { user: "", password: "" }
 let tipoUsuario = ''
 let claveSelMod = 0
 
@@ -22,8 +22,8 @@ app.get('/', (req, res) => {
 
 app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
    usuario = {
-      user : req.body.user,
-      password : req.body.password
+      user: req.body.user,
+      password: req.body.password
    }
    const data = JSON.stringify(usuario);
 
@@ -40,25 +40,25 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
 
    const request = http.request(options, response => {
       console.log(`statusCode: ${response.statusCode}`);
-      
+
 
       response.on('data', d => {
          tipoUsuario += d
       });
-      
+
       response.on('end', () => {
          if (response.statusCode === 200) {
             if (tipoUsuario === "Profesor") {
                claveSelMod = 1
-               res.render('selModulo.ejs', {clave: claveSelMod})
+               res.render('selModulo.ejs', { clave: claveSelMod })
             } else if (tipoUsuario === "Asistente") {
                claveSelMod = 2
-               res.render('selModulo.ejs', {clave: claveSelMod})
+               res.render('selModulo.ejs', { clave: claveSelMod })
             }
          }
       });
    });
-    
+
    request.on('error', error => {
       console.error(error);
    });
@@ -81,28 +81,30 @@ app.post('/gestionarEst', urlParser, (req, res) => {
          'Content-Length': Buffer.byteLength(postUser),
       }
    };
-   
+
    const request = http.request(options, (response) => {
       let responseData = '';
-   
+
       response.on('data', (chunk) => {
          responseData += chunk;
-         });
-      
+      });
+
       response.on('end', () => {
          const estudiantes = JSON.parse(responseData);
          console.log(estudiantes);
-         res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
-            arreglo : estudiantes});
+         res.render("gestion.ejs", {
+            clave: 1, tUsuario: tipoUsuario,
+            arreglo: estudiantes
          });
       });
-      
+   });
+
    request.on('error', (error) => {
       console.error(error);
    });
 
    request.write(postUser);
-   
+
    request.end()
 });
 
@@ -121,33 +123,35 @@ app.post('/gestionarProf', urlParser, (req, res) => {
          'Content-Length': Buffer.byteLength(postUser),
       }
    };
-   
+
    const request = http.request(options, (response) => {
       let responseData = '';
-   
+
       response.on('data', (chunk) => {
          responseData += chunk;
-         });
-      
+      });
+
       response.on('end', () => {
          if (response.statusCode === 200) {
             const profesores = JSON.parse(responseData);
-            res.render("gestion.ejs", {clave: 2, tUsuario: tipoUsuario,
-               arreglo : profesores});
-         }else{
-            console.log("ERROR: ResponseData - " + responseData);   
-            }
+            res.render("gestion.ejs", {
+               clave: 2, tUsuario: tipoUsuario,
+               arreglo: profesores
+            });
+         } else {
+            console.log("ERROR: ResponseData - " + responseData);
+         }
       });
    });
-      
+
    request.on('error', (error) => {
       console.error(error);
    });
 
    request.write(postUser);
-   
+
    request.end()
-   });
+});
 
 app.post('/gestionarGuias', urlParser, (req, res) => {
    const user = { user: usuario.user };
@@ -163,48 +167,50 @@ app.post('/gestionarGuias', urlParser, (req, res) => {
          'Content-Length': Buffer.byteLength(postUser),
       }
    };
-   
+
    const request = http.request(options, (response) => {
       let responseData = '';
-   
+
       response.on('data', (chunk) => {
          responseData += chunk;
-         });
-      
+      });
+
       response.on('end', () => {
          if (response.statusCode === 200) {
             const profesores = JSON.parse(responseData);
             console.log(profesores);
-            res.render("gestion.ejs", {clave: 3, tUsuario: tipoUsuario,
-               arreglo : profesores});
-         }else{
-            console.log("ERROR: ResponseData - " + responseData);   
-            }
+            res.render("gestion.ejs", {
+               clave: 3, tUsuario: tipoUsuario,
+               arreglo: profesores
+            });
+         } else {
+            console.log("ERROR: ResponseData - " + responseData);
+         }
       });
    });
-      
+
    request.on('error', (error) => {
       console.error(error);
    });
 
    request.write(postUser);
-   
+
    request.end()
    //res.render("gestion.ejs", {clave: 3, arreglo: []})
 })
 
 app.post('/salirGestion', urlParser, upload.any(), (req, res) => {
-   res.render("selModulo.ejs", {clave: claveSelMod})
+   res.render("selModulo.ejs", { clave: claveSelMod })
 })
 
 app.post("/agregarProf", urlParser, upload.any(), (req, res) => {
-   res.render("datosProfes.ejs", {profe: {id: "", nombre: "", correo: "", pass: "", tel: "", cel: ""}})
+   res.render("datosProfes.ejs", { profe: { id: "", nombre: "", correo: "", pass: "", tel: "", cel: "" } })
 })
 
 app.post("/modProf", urlParser, upload.any(), (req, res) => {
    const codigo = JSON.stringify({
       codigo: req.body.elementosTabla
-    });
+   });
 
    const options = {
       hostname: 'localhost',
@@ -229,7 +235,7 @@ app.post("/modProf", urlParser, upload.any(), (req, res) => {
          if (response.statusCode === 200) {
             const profesor = JSON.parse(responseBody);
             res.render("datosProfes.ejs", { profe: profesor });
-         }else{
+         } else {
             console.log("ERROR: " + responseBody);
          }
 
@@ -324,10 +330,10 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
 
                   request2.write(postUser);
                   request2.end();
-               }else{
-                  console.log("ERROR: ResponseData - " + responseData);   
-                  }
-               
+               } else {
+                  console.log("ERROR: ResponseData - " + responseData);
+               }
+
             });
          });
 
@@ -337,7 +343,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
 
          request1.write(profeJson);
          request1.end();
-      }else{
+      } else {
          console.log("Revisa que ningun campo este vacio.");
       }
    } else {
@@ -350,9 +356,9 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
             cel: entryCel,
             user: usuario.user
          };
-   
+
          const profeJson = JSON.stringify(profe);
-   
+
          const options1 = {
             hostname: 'localhost',
             port: 8080,
@@ -363,19 +369,19 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                'Content-Length': profeJson.length
             }
          };
-   
+
          const request1 = http.request(options1, (response1) => {
             let responseData = '';
-   
+
             response1.on('data', (chunk) => {
                responseData += chunk;
             });
-   
+
             response1.on('end', () => {
                if (response1.statusCode === 200) {
                   const user = { user: usuario.user };
                   const postUser = JSON.stringify(user);
-   
+
                   const options2 = {
                      hostname: 'localhost',
                      port: 8080,
@@ -386,14 +392,14 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                         'Content-Length': Buffer.byteLength(postUser),
                      }
                   };
-   
+
                   const request2 = http.request(options2, (response2) => {
                      let responseData2 = '';
-   
+
                      response2.on('data', (chunk2) => {
                         responseData2 += chunk2;
                      });
-   
+
                      response2.on('end', () => {
                         if (response2.statusCode === 200) {
                            const profesores = JSON.parse(responseData2);
@@ -403,29 +409,29 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                         }
                      });
                   });
-   
+
                   request2.on('error', (error2) => {
                      console.error(error2);
                   });
-   
+
                   request2.write(postUser);
                   request2.end();
-               }else{
-                  console.log("ERROR: ResponseData - " + responseData);   
-                  }
-               
+               } else {
+                  console.log("ERROR: ResponseData - " + responseData);
+               }
+
             });
          });
-   
+
          request1.on('error', (error1) => {
             console.error(error1);
          });
-   
+
          request1.write(profeJson);
          request1.end();
-      }else{
+      } else {
          console.log("Revisa que ningun campo este vacio excepto ID.");
-      } 
+      }
    }
 });
 
@@ -435,7 +441,7 @@ app.post("/bajaProf", urlParser, upload.any(), (req, res) => {
          codigo: req.body.elementosTabla,
          user: usuario.user
       });
-   
+
       const options = {
          hostname: 'localhost',
          port: 8080,
@@ -446,7 +452,7 @@ app.post("/bajaProf", urlParser, upload.any(), (req, res) => {
             'Content-Length': Buffer.byteLength(codigo),
          }
       };
-   
+
       const request = http.request(options, (response) => {
          let responseData = '';
 
@@ -482,8 +488,10 @@ app.post("/bajaProf", urlParser, upload.any(), (req, res) => {
                   innerResponse.on('end', () => {
                      if (innerResponse.statusCode === 200) {
                         const innerProfesores = JSON.parse(innerResponseData);
-                        res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario,
-                           arreglo: innerProfesores });
+                        res.render("gestion.ejs", {
+                           clave: 2, tUsuario: tipoUsuario,
+                           arreglo: innerProfesores
+                        });
                      } else {
                         console.log("ERROR: Inner ResponseData - " + innerResponseData);
                      }
@@ -503,7 +511,7 @@ app.post("/bajaProf", urlParser, upload.any(), (req, res) => {
       });
 
       request.on('error', (error) => {
-      console.error(error);
+         console.error(error);
       });
 
       request.write(codigo);
@@ -512,11 +520,11 @@ app.post("/bajaProf", urlParser, upload.any(), (req, res) => {
 })
 
 app.post("/defGuia", urlParser, upload.any(), (req, res) => {
-   if (req.body.btnDefProfGuia== "1") {
+   if (req.body.btnDefProfGuia == "1") {
       const codigo = JSON.stringify({
          codigo: req.body.elementosTabla
       });
-   
+
       const options = {
          hostname: 'localhost',
          port: 8080,
@@ -527,7 +535,7 @@ app.post("/defGuia", urlParser, upload.any(), (req, res) => {
             'Content-Length': Buffer.byteLength(codigo),
          }
       };
-   
+
       const request = http.request(options, (response) => {
          let responseData = '';
 
@@ -562,8 +570,10 @@ app.post("/defGuia", urlParser, upload.any(), (req, res) => {
                   innerResponse.on('end', () => {
                      if (innerResponse.statusCode === 200) {
                         const innerProfesores = JSON.parse(innerResponseData);
-                        res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario,
-                           arreglo: innerProfesores });
+                        res.render("gestion.ejs", {
+                           clave: 2, tUsuario: tipoUsuario,
+                           arreglo: innerProfesores
+                        });
                      } else {
                         console.log("ERROR: Inner ResponseData - " + innerResponseData);
                      }
@@ -597,7 +607,7 @@ app.post("/modEst", urlParser, upload.any(), (req, res) => {
 
    const codigo = JSON.stringify({
       codigo: req.body.elementosTabla
-    });
+   });
 
    const options = {
       hostname: 'localhost',
@@ -623,7 +633,7 @@ app.post("/modEst", urlParser, upload.any(), (req, res) => {
             const estudiante = JSON.parse(responseBody);
             console.log(estudiante)
             res.render("modEst.ejs", { est: estudiante });
-         }else{
+         } else {
             console.log("ERROR: " + responseBody);
          }
 
@@ -649,7 +659,7 @@ app.post("/datosEstRes", urlParser, (req, res) => {
    const entryPass = req.body.entryPass;
    //const entryTel = req.body.entryTel;
    const entryCel = req.body.entryCel;
-   
+
    if (entryId && entryName && entryApellido1 && entryApellido2 && entryCE && entryCel && entryPass) {
       const est = {
          id: entryId,
@@ -661,7 +671,7 @@ app.post("/datosEstRes", urlParser, (req, res) => {
          tel: entryCel,
          user: usuario.user
       };
-      
+
       const estJson = JSON.stringify(est);
 
       const options1 = {
@@ -708,8 +718,10 @@ app.post("/datosEstRes", urlParser, (req, res) => {
                   response2.on('end', () => {
                      if (response2.statusCode === 200) {
                         const estudiantes = JSON.parse(responseData2);
-                        res.render("gestion.ejs", { clave: 1, tUsuario: tipoUsuario,
-                           arreglo: estudiantes });
+                        res.render("gestion.ejs", {
+                           clave: 1, tUsuario: tipoUsuario,
+                           arreglo: estudiantes
+                        });
                      } else {
                         console.log("ERROR: ResponseData - " + responseData2);
                      }
@@ -722,10 +734,10 @@ app.post("/datosEstRes", urlParser, (req, res) => {
 
                request2.write(postUser);
                request2.end();
-            }else{
-               console.log("ERROR: ResponseData - " + responseData);   
-               }
-            
+            } else {
+               console.log("ERROR: ResponseData - " + responseData);
+            }
+
          });
       });
 
@@ -735,9 +747,9 @@ app.post("/datosEstRes", urlParser, (req, res) => {
 
       request1.write(estJson);
       request1.end();
-   }else{
+   } else {
       console.log("Revisa que ningun campo este vacio.");
-   } 
+   }
 })
 
 app.post("/agrActividad", urlParser, (req, res) => {
@@ -754,14 +766,14 @@ app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
          'Content-Type': 'application/json',
       }
    };
-   
+
    const request = http.request(options, (response) => {
       let responseData = '';
-   
+
       response.on('data', (chunk) => {
          responseData += chunk;
-         });
-      
+      });
+
       response.on('end', () => {
          if (response.statusCode === 200) {
             const actividades = JSON.parse(responseData);
@@ -769,18 +781,18 @@ app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
                const fechaHoraOriginal = new Date(actividad.FechaHora);
                const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
                actividad.FechaHora = fechaHoraFormateada;
-             });
-            res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
-         }else{
-            console.log("ERROR: ResponseData - " + responseData);   
-            }
+            });
+            res.render("gestionPlanTrabajo.ejs", { arreglo: actividades })
+         } else {
+            console.log("ERROR: ResponseData - " + responseData);
+         }
       });
    });
-      
+
    request.on('error', (error) => {
       console.error(error);
    });
-   
+
    request.end()
 })
 
@@ -827,7 +839,7 @@ app.post("/datosActRes", urlParser, (req, res) => {
          enlace: entryEnlace,
          estado: entryEstado,
          fecha: entryFecha,
-         hora:entryHora,
+         hora: entryHora,
          user: usuario.user
       };
 
@@ -878,7 +890,7 @@ app.post("/datosActRes", urlParser, (req, res) => {
                            const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
                            actividad.FechaHora = fechaHoraFormateada;
                         });
-                        res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
+                        res.render("gestionPlanTrabajo.ejs", { arreglo: actividades })
                      } else {
                         console.log("ERROR: ResponseData - " + responseData2);
                      }
@@ -890,9 +902,9 @@ app.post("/datosActRes", urlParser, (req, res) => {
                });
 
                request2.end();
-            }else{
-               console.log("ERROR: ResponseData - " + responseData);   
-            }  
+            } else {
+               console.log("ERROR: ResponseData - " + responseData);
+            }
          });
       });
 
@@ -902,9 +914,9 @@ app.post("/datosActRes", urlParser, (req, res) => {
 
       request1.write(actividadJson);
       request1.end();
-   }else{
+   } else {
       console.log("Revisa que ningun campo este vacio excepto enlace si aun no tienes uno.");
-   } 
+   }
 })
 
 app.post("/marcarActRealizada", urlParser, (req, res) => {
@@ -913,7 +925,7 @@ app.post("/marcarActRealizada", urlParser, (req, res) => {
          codigo: req.body.elementosTabla,
          estado: 3
       });
-   
+
       const options = {
          hostname: 'localhost',
          port: 8080,
@@ -924,7 +936,7 @@ app.post("/marcarActRealizada", urlParser, (req, res) => {
             'Content-Length': Buffer.byteLength(codigo),
          }
       };
-   
+
       const request = http.request(options, (response) => {
          let responseData = '';
 
@@ -959,7 +971,7 @@ app.post("/marcarActRealizada", urlParser, (req, res) => {
                            const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
                            actividad.FechaHora = fechaHoraFormateada;
                         });
-                        res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
+                        res.render("gestionPlanTrabajo.ejs", { arreglo: actividades })
                      } else {
                         console.log("ERROR: ResponseData - " + responseData2);
                      }
@@ -971,9 +983,9 @@ app.post("/marcarActRealizada", urlParser, (req, res) => {
                });
 
                request2.end();
-            }else{
-               console.log("ERROR: ResponseData - " + responseData);   
-            }  
+            } else {
+               console.log("ERROR: ResponseData - " + responseData);
+            }
          });
       });
 
@@ -992,7 +1004,7 @@ app.post("/marcarActCancelada", urlParser, (req, res) => {
          codigo: req.body.elementosTabla,
          estado: 4
       });
-   
+
       const options = {
          hostname: 'localhost',
          port: 8080,
@@ -1003,7 +1015,7 @@ app.post("/marcarActCancelada", urlParser, (req, res) => {
             'Content-Length': Buffer.byteLength(codigo),
          }
       };
-   
+
       const request = http.request(options, (response) => {
          let responseData = '';
 
@@ -1038,7 +1050,7 @@ app.post("/marcarActCancelada", urlParser, (req, res) => {
                            const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
                            actividad.FechaHora = fechaHoraFormateada;
                         });
-                        res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
+                        res.render("gestionPlanTrabajo.ejs", { arreglo: actividades })
                      } else {
                         console.log("ERROR: ResponseData - " + responseData2);
                      }
@@ -1050,9 +1062,9 @@ app.post("/marcarActCancelada", urlParser, (req, res) => {
                });
 
                request2.end();
-            }else{
-               console.log("ERROR: ResponseData - " + responseData);   
-            }  
+            } else {
+               console.log("ERROR: ResponseData - " + responseData);
+            }
          });
       });
 
@@ -1071,7 +1083,7 @@ app.post("/marcarActPublicada", urlParser, (req, res) => {
          codigo: req.body.elementosTabla,
          estado: 2
       });
-   
+
       const options = {
          hostname: 'localhost',
          port: 8080,
@@ -1082,7 +1094,7 @@ app.post("/marcarActPublicada", urlParser, (req, res) => {
             'Content-Length': Buffer.byteLength(codigo),
          }
       };
-   
+
       const request = http.request(options, (response) => {
          let responseData = '';
 
@@ -1117,7 +1129,7 @@ app.post("/marcarActPublicada", urlParser, (req, res) => {
                            const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
                            actividad.FechaHora = fechaHoraFormateada;
                         });
-                        res.render("gestionPlanTrabajo.ejs", {arreglo: actividades})
+                        res.render("gestionPlanTrabajo.ejs", { arreglo: actividades })
                      } else {
                         console.log("ERROR: ResponseData - " + responseData2);
                      }
@@ -1129,9 +1141,9 @@ app.post("/marcarActPublicada", urlParser, (req, res) => {
                });
 
                request2.end();
-            }else{
-               console.log("ERROR: ResponseData - " + responseData);   
-            }  
+            } else {
+               console.log("ERROR: ResponseData - " + responseData);
+            }
          });
       });
 
@@ -1144,9 +1156,11 @@ app.post("/marcarActPublicada", urlParser, (req, res) => {
    }
 })
 
+var codigoActividadComentario = null;
+
 app.post("/comentario", urlParser, (req, res) => {
    if ("1" == "1") {
-      const codigo = JSON.stringify({
+      codigoActividadComentario = JSON.stringify({
          codigo: req.body.elementosTabla,
       });
 
@@ -1157,10 +1171,10 @@ app.post("/comentario", urlParser, (req, res) => {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(codigo),
+            'Content-Length': Buffer.byteLength(codigoActividadComentario),
          }
       };
-   
+
       const request = http.request(options, (response) => {
          let responseData = '';
 
@@ -1171,8 +1185,8 @@ app.post("/comentario", urlParser, (req, res) => {
          response.on('end', () => {
             if (response.statusCode === 200) {
                const comentarios = JSON.parse(responseData);
-               res.render("comentarios.ejs", {comentarios: comentarios})
-            }  
+               res.render("comentarios.ejs", { comentarios: comentarios })
+            }
          });
       });
 
@@ -1180,19 +1194,19 @@ app.post("/comentario", urlParser, (req, res) => {
          console.error(error);
       });
 
-      request.write(codigo);
+      request.write(codigoActividadComentario);
       request.end();
    }
 })
 
 app.post("/comentarios", urlParser, (req, res) => {
-   if (req.body.rdBtnComentario != "") {
-      const codigo = JSON.stringify({
-         user: usuario.user,
-         reply: req.body.rdBtnComentario,
-         mensaje: req.body.mensaje
-      });
-   }
+   const codigo = JSON.stringify({
+      user: usuario.user,
+      reply: req.body.rdBtnComentario,
+      mensaje: req.body.mensaje
+   });
+
+   console.log(codigo.toString());
 
    const options = {
       hostname: 'localhost',
@@ -1214,9 +1228,41 @@ app.post("/comentarios", urlParser, (req, res) => {
 
       response.on('end', () => {
          if (response.statusCode === 200) {
-            const comentarios = JSON.parse(responseData);
-            res.render("comentarios.ejs", {comentarios: comentarios})
-         }  
+            const options1 = {
+               hostname: 'localhost',
+               port: 8080,
+               path: '/plantrabajo/obtenerComentarios',
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+                  'Content-Length': Buffer.byteLength(codigoActividadComentario),
+               }
+            };
+      
+            const request1 = http.request(options1, (response1) => {
+               let responseData1 = '';
+      
+               response1.on('data', (chunk) => {
+                  responseData1 += chunk;
+               });
+      
+               response1.on('end', () => {
+                  if (response1.statusCode === 200) {
+                     const comentarios = JSON.parse(responseData1);
+                     res.render("comentarios.ejs", { comentarios: comentarios })
+                  }
+               });
+            });
+      
+            request1.on('error', (error) => {
+               console.error(error);
+            });
+      
+            request1.write(codigoActividadComentario);
+            request1.end();
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
       });
    });
 
@@ -1255,27 +1301,29 @@ app.post("/generarExcel", urlParser, upload.any(), (req, res) => {
 
    const request = http.request(options, response => {
       console.log(`statusCode: ${response.statusCode}`);
-      
+
       let responseData = '';
-   
+
       response.on('data', (chunk) => {
          responseData += chunk;
-         });
+      });
 
       response.on('data', d => {
          process.stdout.write(d)
       });
-      
+
       response.on('end', () => {
          if (response.statusCode == 200) {
             const estudiantes = JSON.parse(responseData)
             console.log(estudiantes)
-            res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
-               arreglo: estudiantes})
+            res.render("gestion.ejs", {
+               clave: 1, tUsuario: tipoUsuario,
+               arreglo: estudiantes
+            })
          }
       });
    });
-    
+
    request.on('error', error => {
       console.error(error);
    });
@@ -1298,8 +1346,10 @@ app.post("/cargarExcel", urlParser, upload.single("btnImpExcel"), (req, res) => 
    console.log(datos)
    xlsx.writeFile(workbook, nuevaRuta);
 
-   const data = { user: usuario.user,
-                  path: original};
+   const data = {
+      user: usuario.user,
+      path: original
+   };
    const postData = JSON.stringify(data);
 
    const options = {
@@ -1315,23 +1365,25 @@ app.post("/cargarExcel", urlParser, upload.single("btnImpExcel"), (req, res) => 
 
    const request = http.request(options, response => {
       console.log(`statusCode: ${response.statusCode}`);
-      
+
       let responseData = '';
-   
+
       response.on('data', (chunk) => {
          responseData += chunk;
-         });
-      
+      });
+
       response.on('end', () => {
          if (response.statusCode == 200) {
             const estudiantes = JSON.parse(responseData)
             console.log(estudiantes)
-            res.render("gestion.ejs", {clave: 1, tUsuario: tipoUsuario,
-               arreglo: estudiantes})
+            res.render("gestion.ejs", {
+               clave: 1, tUsuario: tipoUsuario,
+               arreglo: estudiantes
+            })
          }
       });
    });
-    
+
    request.on('error', error => {
       console.error(error);
    });
@@ -1343,87 +1395,89 @@ app.post("/cargarExcel", urlParser, upload.single("btnImpExcel"), (req, res) => 
 var server = app.listen(3000, function () {
    var host = server.address().address
    var port = server.address().port
-   
+
    console.log("Example app listening at http://%s:%s", host, port)
 })
 
 app.post("/defCoord", urlParser, upload.any(), (req, res) => {
-      console.log("AQUI1")
-      const codigo = JSON.stringify({
-         user: usuario.user,
-         codigo: req.body.elementosTabla
+   console.log("AQUI1")
+   const codigo = JSON.stringify({
+      user: usuario.user,
+      codigo: req.body.elementosTabla
+   });
+   console.log(codigo)
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/profesor/defCoord',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(codigo),
+      }
+   };
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
       });
-      console.log(codigo)
-   
-      const options = {
-         hostname: 'localhost',
-         port: 8080,
-         path: '/profesor/defCoord',
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(codigo),
-         }
-      };
-   
-      const request = http.request(options, (response) => {
-         let responseData = '';
 
-         response.on('data', (chunk) => {
-            responseData += chunk;
-         });
+      response.on('end', () => {
+         if (response.statusCode === 200) {
 
-         response.on('end', () => {
-            if (response.statusCode === 200) {
-               
-               const user = { user: usuario.user };
-               postUser = JSON.stringify(user);
+            const user = { user: usuario.user };
+            postUser = JSON.stringify(user);
 
-               const innerOptions = {
-                  hostname: 'localhost',
-                  port: 8080,
-                  path: '/profesor/gestionarProfGuia',
-                  method: 'POST',
-                  headers: {
-                     'Content-Type': 'application/json',
-                     'Content-Length': Buffer.byteLength(postUser),
+            const innerOptions = {
+               hostname: 'localhost',
+               port: 8080,
+               path: '/profesor/gestionarProfGuia',
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+                  'Content-Length': Buffer.byteLength(postUser),
+               }
+            };
+
+            const innerRequest = http.request(innerOptions, (innerResponse) => {
+               let innerResponseData = '';
+
+               innerResponse.on('data', (innerChunk) => {
+                  innerResponseData += innerChunk;
+               });
+
+               innerResponse.on('end', () => {
+                  if (innerResponse.statusCode === 200) {
+                     const innerProfesores = JSON.parse(innerResponseData);
+                     res.render("gestion.ejs", {
+                        clave: 3, tUsuario: tipoUsuario,
+                        arreglo: innerProfesores
+                     });
+                  } else {
+                     console.log("ERROR: Inner ResponseData - " + innerResponseData);
                   }
-               };
-
-               const innerRequest = http.request(innerOptions, (innerResponse) => {
-                  let innerResponseData = '';
-
-                  innerResponse.on('data', (innerChunk) => {
-                     innerResponseData += innerChunk;
-                  });
-
-                  innerResponse.on('end', () => {
-                     if (innerResponse.statusCode === 200) {
-                        const innerProfesores = JSON.parse(innerResponseData);
-                        res.render("gestion.ejs", { clave: 3, tUsuario: tipoUsuario,
-                           arreglo: innerProfesores });
-                     } else {
-                        console.log("ERROR: Inner ResponseData - " + innerResponseData);
-                     }
-                  });
                });
+            });
 
-               innerRequest.on('error', (innerError) => {
-                  console.error(innerError);
-               });
+            innerRequest.on('error', (innerError) => {
+               console.error(innerError);
+            });
 
-               innerRequest.write(postUser);
-               innerRequest.end();
-            } else {
-               console.log("ERROR: ResponseData - " + responseData);
-            }
-         });
+            innerRequest.write(postUser);
+            innerRequest.end();
+         } else {
+            console.log("ERROR: ResponseData - " + responseData);
+         }
       });
+   });
 
-      request.on('error', (error) => {
+   request.on('error', (error) => {
       console.error(error);
-      });
+   });
 
-      request.write(codigo);
-      request.end();
-   })
+   request.write(codigo);
+   request.end();
+})

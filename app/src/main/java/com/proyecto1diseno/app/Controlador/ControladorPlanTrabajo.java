@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,7 +87,30 @@ public class ControladorPlanTrabajo {
         return ResponseEntity.ok().body(comentarios);
     }
 
-    
+    @PostMapping("/agregarComentario")
+    public ResponseEntity<String> agregarComentario(@RequestBody Map<String, Object> requestBody) throws SQLException {
+        String user = (String) requestBody.get("user");
+        String mensaje = (String) requestBody.get("mensaje");
+        String reply = (String) requestBody.get("reply");
+        int codigoComent = 0;
 
-            
+        if (reply != "" && reply != null){
+            String pattern = "(\\d+)";
+            Pattern regex = Pattern.compile(pattern);
+            Matcher matcher = regex.matcher(reply);
+
+            if (matcher.find()) {
+                String firstNumber = matcher.group(1);
+                codigoComent = Integer.parseInt(firstNumber);
+            }
+        }
+
+        String respuestaComentar = planTrabajoService.agregarComentario(user, codigoComent, mensaje);
+        if (respuestaComentar.startsWith("Error: ")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaComentar);
+        } else {
+            return ResponseEntity.ok().body(respuestaComentar);
+        }
+    
+    }          
 }

@@ -36,4 +36,8 @@ public class PlanTrabajoService {
     public List<Map<String, Object>> obtenerComentarios(String nombreAct) {
         return planTrabajoDAO.obtenerComentarios(nombreAct);
     }
+
+    public String agregarComentario(String user, int codigoComent, String mensaje) throws SQLException {
+        return planTrabajoDAO.agregarComentario(user, codigoComent, mensaje);
+    }
 }

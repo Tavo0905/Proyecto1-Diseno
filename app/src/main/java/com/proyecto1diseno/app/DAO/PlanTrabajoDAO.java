@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -195,6 +195,8 @@ public class PlanTrabajoDAO {
         return "";
     }
 
+    int idActividadComent = 0;
+
     public List<Map<String, Object>> obtenerComentarios(String nombreAct) {
         List<Map<String, Object>> comentarios = new ArrayList<>();
     
@@ -205,7 +207,7 @@ public class PlanTrabajoDAO {
             ResultSet idResultSet = selectIdStatement.executeQuery();
     
             if (idResultSet.next()) {
-                int idActividad = idResultSet.getInt("idActividad");
+                idActividadComent = idResultSet.getInt("idActividad");
     
                 // Obtener los comentarios de la tabla Comentarios para el idActividad correspondiente
                 String selectComentariosQuery = "SELECT c.comentario, CONCAT(c.idComentario, ' - ', p.nombre) AS nombreProfesor, c.idComentarioOriginal " +
@@ -213,7 +215,7 @@ public class PlanTrabajoDAO {
                                                 "INNER JOIN Profesores p ON c.idProfesor = p.idProfesor " +
                                                 "WHERE c.idActividad = ?";
                 PreparedStatement selectComentariosStatement = connection.prepareStatement(selectComentariosQuery);
-                selectComentariosStatement.setInt(1, idActividad);
+                selectComentariosStatement.setInt(1, idActividadComent);
                 ResultSet comentariosResultSet = selectComentariosStatement.executeQuery();
     
                 while (comentariosResultSet.next()) {
@@ -239,6 +241,43 @@ public class PlanTrabajoDAO {
         }
     
         return comentarios;
+    }
+
+    public String agregarComentario(String user, int codigoComent, String mensaje) throws SQLException {
+        int idProfesor = 0;
+        String sql = "SELECT idProfesor FROM Profesores WHERE correo = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, user);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    idProfesor = resultSet.getInt("idProfesor");
+                }else{
+                    return ("Error: No tiene permisos para publicar comentarios.");
+                }
+            }
+            log.info(Integer.toString(idProfesor));
+            LocalDateTime fechaActual = LocalDateTime.now();
+            Timestamp timestamp = Timestamp.valueOf(fechaActual);
+            String sqlInsert = "INSERT INTO Comentarios (idActividad, idProfesor, fecha, idComentarioOriginal, comentario) " +
+                    "VALUES (?, ?, ?, ?, ?)";
+
+            try (PreparedStatement statementInsert = connection.prepareStatement(sqlInsert)) {
+                statementInsert.setInt(1, idActividadComent);
+                statementInsert.setInt(2, idProfesor);
+                statementInsert.setTimestamp(3, timestamp);
+
+                if (codigoComent != 0) {
+                    statementInsert.setInt(4, codigoComent);
+                } else {
+                    statementInsert.setNull(4, java.sql.Types.INTEGER);
+                }
+
+                statementInsert.setString(5, mensaje);
+                statementInsert.executeUpdate();
+
+                return "Comentario agregado";
+            }
+        }
     }
 }
 
