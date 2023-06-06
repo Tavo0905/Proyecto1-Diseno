@@ -1,4 +1,6 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/3afcf554-80cb-48fb-bc49-37c142eff344/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/Proyecto3",
+    "appService.deploySubpath": "."
 }

@@ -196,7 +196,7 @@ app.post('/gestionarGuias', urlParser, (req, res) => {
    request.write(postUser);
 
    request.end()
-   //res.render("gestion.ejs", {clave: 3, arreglo: []})
+
 })
 
 app.post('/salirGestion', urlParser, upload.any(), (req, res) => {
@@ -319,7 +319,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                            const profesores = JSON.parse(responseData2);
                            res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario, arreglo: profesores });
                         } else {
-                           console.log("ERROR: ResponseData - " + responseData2);
+                           console.log("ERROR: ResponseData2 - " + responseData2);
                         }
                      });
                   });
@@ -331,7 +331,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                   request2.write(postUser);
                   request2.end();
                } else {
-                  console.log("ERROR: ResponseData - " + responseData);
+                  console.log("ERROR: ResponseData1 - " + responseData);
                }
 
             });
@@ -358,6 +358,8 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
          };
 
          const profeJson = JSON.stringify(profe);
+
+         console.log(profeJson);
 
          const options1 = {
             hostname: 'localhost',
@@ -405,7 +407,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                            const profesores = JSON.parse(responseData2);
                            res.render("gestion.ejs", { clave: 2, tUsuario: tipoUsuario, arreglo: profesores });
                         } else {
-                           console.log("ERROR: ResponseData - " + responseData2);
+                           console.log("ERROR: ResponseData2 - " + responseData2);
                         }
                      });
                   });
@@ -417,7 +419,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                   request2.write(postUser);
                   request2.end();
                } else {
-                  console.log("ERROR: ResponseData - " + responseData);
+                  console.log("ERROR: ResponseData1 - " + responseData);
                }
 
             });

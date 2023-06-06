@@ -36,6 +36,7 @@ public class ControladorProfesor {
 
     @PostMapping("/agregarProf")
     public ResponseEntity<String> agregarProfesor(@RequestBody Map<String, Object> profesorData) throws SQLException {
+        log.info("ENTRO 1");
         String user = (String) profesorData.get("user");
         Profesor profesor = new Profesor();
         profesor.setNombre((String) profesorData.get("nombre"));
@@ -44,6 +45,7 @@ public class ControladorProfesor {
         profesor.setTelOficina(Integer.parseInt(profesorData.get("tel").toString()));
         profesor.setCelular(Integer.parseInt(profesorData.get("cel").toString()));
         String respuestaAgregar = profesorService.agregarProfesor(profesor, user);
+        log.info(respuestaAgregar.toString());
         if (respuestaAgregar.startsWith("Error: ")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuestaAgregar);
         } else {
