@@ -54,6 +54,9 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
             } else if (tipoUsuario === "Asistente") {
                claveSelMod = 2
                res.render('selModulo.ejs', { clave: claveSelMod })
+            }else if (tipoUsuario === "Estudiante") {
+               claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
+               res.render('selModulo.ejs', { clave: claveSelMod })
             }
          }
       });
