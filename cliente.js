@@ -12,6 +12,7 @@ const upload = multer({ dest: 'descargas/' });
 var usuario = { user: "", password: "" }
 let tipoUsuario = ''
 let claveSelMod = 0
+const port = process.env.PORT || 3000
 
 app.use(express.static('views'))
 
@@ -1399,7 +1400,7 @@ app.post("/cargarExcel", urlParser, upload.single("btnImpExcel"), (req, res) => 
    request.end();
 })
 
-var server = app.listen(3000, function () {
+var server = app.listen(port, function () {
    var host = server.address().address
    var port = server.address().port
 
