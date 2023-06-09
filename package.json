@@ -2,7 +2,7 @@
   "name": "proyecto2",
   "main": "index.js",
   "scripts": {
-    "start": "npm start index.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
