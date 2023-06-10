@@ -1,4 +1,5 @@
 const http = require('http');
+const https = require('https');
 var express = require('express')
 var bodyParser = require('body-parser');
 const { stringify } = require('querystring');
@@ -28,8 +29,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
    const data = JSON.stringify(usuario);
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: 'proyecto3-backend.purplepebble-582093b9.centralus.azurecontainerapps.io',
       path: '/validarDatos',
       method: 'POST',
       headers: {
