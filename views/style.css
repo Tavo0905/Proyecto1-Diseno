@@ -560,3 +560,53 @@ tr {
     background-color: #fff;
     border-radius: 5px;
 }
+
+.botonesEst {
+    position: absolute;
+    background-color: #4b96b0;
+    height: 75px;
+    width: 250px;
+    border-radius: 10px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 5px #999;
+    margin-top: 100px;
+}
+
+.botonesEst:hover {
+    background-color: #005A7F;
+}
+
+#verPerfilEst {
+    margin-top: 10%;
+    margin-left: 25%;
+}
+
+#verActEst {
+    margin-top: 10%;
+    margin-left: 60%;
+}
+
+#modCelular {
+    margin-top: 20%;
+    margin-left: 25%;
+}
+
+#buzNotEst {
+    margin-top: 20%;
+    margin-left: 60%;
+}
+
+.containerDatosEstudiantes {
+    display: block;
+    position: center;
+    background-color: rgb(219, 239, 255);
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #999;
+    padding: 20px;
+    width: 600px;
+    height: 450px;
+    margin: 0 auto;
+    margin-top: 50px;
+}

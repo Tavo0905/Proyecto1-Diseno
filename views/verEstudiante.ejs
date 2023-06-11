@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel = "stylesheet" href = "style.css">
+</head>
+<body class = "datosProfBd">
+    <h1>Perfil de Estudiante</h1>
+    <div class = "containerDatosEstudiantes">
+        <form action = "" method = "post">
+            
+            <div>
+                <label class = "textoDatos" id = "textoId" name = "textoId" for = "entryId">
+                    Carnet:
+                </label>
+                <input class = "entryDatos" type = "text" id = "entryId" name = "entryId" value = "<%= est.carnet %>" readonly = "true">
+            </div>
+            <div>
+                <label class = "textoDatos" id = "textoName" name = "textoName" for = "entryName">
+                    Nombre:
+                </label>
+                <input class = "entryDatos" type = "text" id = "entryName" name = "entryName" value = "<%= est.nombre %>" readonly = "true">
+            </div>
+            <div>
+                <label class = "textoDatos" id = "textoApellido1" name = "textoApellido1" for = "entryApellido1">
+                    Primer apellido:
+                </label>
+                <input class = "entryDatos" type = "text" id = "entryApellido1" name = "entryApellido1" value = "<%= est.apellido1 %>" readonly = "true">
+            </div>
+            <div>
+                <label class = "textoDatos" id = "textoApellido2" name = "textoApellido2" for = "entryApellido2">
+                    Segundo apellido:
+                </label>
+                <input class = "entryDatos" type = "text" id = "entryApellido2" name = "entryApellido2" value = "<%= est.apellido2 %>" readonly = "true">
+            </div>
+            <div>
+                <label class = "textoDatos" id = "textoCE" name = "textoCE" for = "entryCE">
+                    Correo Electronico:
+                </label>
+                <input class = "entryDatos" type = "text" id = "entryCE" name = "entryCE" value = "<%= est.correo %>" readonly = "true">
+            </div>
+            <div>
+                <label class = "textoDatos" id = "textoCel" name = "textoCel" for = "entryCel">
+                    Numero Celular:
+                </label>
+                <input class = "entryDatos" type = "text" id = "entryCel" name = "entryCel" value = "<%= est.celular %>" readonly = "true">    
+            </div>
+            <div>
+                <button class = "btnSalir1" id = "salirVerEst" name = "salirVerEst" formaction="">Salir</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
