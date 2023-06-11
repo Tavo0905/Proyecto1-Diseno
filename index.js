@@ -1489,3 +1489,19 @@ app.post("/defCoord", urlParser, upload.any(), (req, res) => {
    request.write(codigo);
    request.end();
 })
+
+app.post("/perfilEst", urlParser, (req, res) => {
+   res.render("verEstudiantes.ejs", {est: {}})
+})
+
+app.post("/actEst", urlParser, (req, res) => {
+   //res.render("verEstudiantes.ejs", {est: {}})
+})
+
+app.post("/modCelEst", urlParser, (req, res) => {
+   //res.render("verEstudiantes.ejs", {est: {}})
+})
+
+app.post("/buzonEst", urlParser, (req, res) => {
+   //res.render("verEstudiantes.ejs", {est: {}})
+})
