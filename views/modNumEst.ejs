@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cambio de número de teléfono</title>
+  <link rel="stylesheet" type="text/css" href="modNumEstStyle.css">
+</head>
+<body>
+    <form action = "" method = "POST">
+        <button class = "salir" id = "btnSalir" name = "btnSalir" formaction = "salirModNum">
+            Salir
+        </button>
+    </form>
+    <h1>Cambio de número de teléfono</h1>
+    
+    <p>El número de teléfono actual es: <strong><%= numEst %></strong></p>
+    
+    <form action="/cambiarNumEst" method="POST">
+        <label for="nuevoTelefono">Nuevo número de teléfono:</label>
+        <input type="text" id="nuevoTelefono" name="nuevoTelefono" required>
+        <button type="submit">Cambiar</button>
+    </form>
+</body>
+</html>

@@ -50,6 +50,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
       });
 
       response.on('end', () => {
+         /*
          if (response.statusCode === 200) {
             if (tipoUsuario === "Profesor") {
                claveSelMod = 1
@@ -61,7 +62,8 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
                claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
                res.render('estudiantes.ejs')
             }
-         }
+         }*/
+         res.render("chat.ejs", {mensajes: []})
       });
    });
 
@@ -1545,7 +1547,7 @@ app.post("/actEst", urlParser, (req, res) => {
 })
 
 app.post("/modCelEst", urlParser, (req, res) => {
-   //res.render("verEstudiante.ejs", {est: {}})
+   res.render("modNumEst.ejs", {numEst: 88888888})
 })
 
 app.post("/buzonEst", urlParser, (req, res) => {
@@ -1553,5 +1555,18 @@ app.post("/buzonEst", urlParser, (req, res) => {
 })
 
 app.post("/salirEst", urlParser, (req, res) => {
+   res.render("estudiantes.ejs")
+})
+
+app.post("/salirChat", urlParser, (req, res) => {
+   res.render("estudiantes.ejs")
+})
+
+app.post("/salirModNum", urlParser, (req, res) => {
+   res.render("estudiantes.ejs")
+})
+
+app.post("/cambiarNumEst", urlParser, (req, res) => {
+   // CAMBIO DE NUMERO
    res.render("estudiantes.ejs")
 })
