@@ -276,3 +276,24 @@ VALUES (1, 1, GETDATE(), NULL, 'Estoy muy emocionada'),
 select * from dbo.Comentarios
 */
 GO
+
+-- EstadosNotificaciones
+/*
+INSERT INTO dbo.EstadosNotificaciones (estado)
+VALUES ('NO_LEIDA'),
+('LEIDA')
+
+select * from dbo.EstadosNotificaciones
+*/
+GO
+
+
+-- TiposEmisores
+/*
+INSERT INTO dbo.TiposEmisores (tipo)
+VALUES ('Profesor'),
+('Estudiante')
+
+select * from dbo.TiposEmisores
+*/
+GO
