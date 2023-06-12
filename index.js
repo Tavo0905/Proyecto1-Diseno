@@ -30,7 +30,9 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
    const data = JSON.stringify(usuario);
 
    const options = {
-      hostname: 'proyecto3-backend.purplepebble-582093b9.centralus.azurecontainerapps.io',
+      hostname: 'localhost',
+      port: 8080,
+      //hostname: 'proyecto3-backend.purplepebble-582093b9.centralus.azurecontainerapps.io',
       path: '/validarDatos',
       method: 'POST',
       headers: {
@@ -57,7 +59,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
                res.render('selModulo.ejs', { clave: claveSelMod })
             }else if (tipoUsuario === "Estudiante") {
                claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
-               res.render('selModulo.ejs', { clave: claveSelMod })
+               res.render('estudiante.ejs', { clave: claveSelMod })
             }
          }
       });
