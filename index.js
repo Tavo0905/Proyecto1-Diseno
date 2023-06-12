@@ -59,7 +59,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
                res.render('selModulo.ejs', { clave: claveSelMod })
             }else if (tipoUsuario === "Estudiante") {
                claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
-               res.render('estudiante.ejs', { clave: claveSelMod })
+               res.render('estudiantes.ejs')
             }
          }
       });
@@ -1493,7 +1493,51 @@ app.post("/defCoord", urlParser, upload.any(), (req, res) => {
 })
 
 app.post("/perfilEst", urlParser, (req, res) => {
-   res.render("verEstudiante.ejs", {est: {}})
+   //res.render("verEstudiante.ejs", {est: {}})
+   const user = { user: usuario.user };
+   postUser = JSON.stringify(user);
+   console.log("USUARIO")
+   console.log(postUser)
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/estudiante/perfilEst',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(postUser),
+      }
+   };
+
+   console.log("AQUI1")
+   console.log(options)
+
+   //options.headers['Content-Length'] = codigo.length;
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+      console.log("AQUI2")
+      console.log(responseData)
+      response.on('end', () => {
+      console.log("AQUI3")
+      const estudiante = JSON.parse(responseData);
+      console.log("AQUI4")
+      console.log(estudiante)
+      res.render("verEstudiante.ejs", { est: estudiante });
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error('Error al realizar la solicitud:', error);
+      res.status(500).send('Error interno del servidor');
+   });
+
+   request.write(postUser);
+   request.end();
 })
 
 app.post("/actEst", urlParser, (req, res) => {
