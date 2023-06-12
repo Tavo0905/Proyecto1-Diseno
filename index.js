@@ -1491,17 +1491,21 @@ app.post("/defCoord", urlParser, upload.any(), (req, res) => {
 })
 
 app.post("/perfilEst", urlParser, (req, res) => {
-   res.render("verEstudiantes.ejs", {est: {}})
+   res.render("verEstudiante.ejs", {est: {}})
 })
 
 app.post("/actEst", urlParser, (req, res) => {
-   //res.render("verEstudiantes.ejs", {est: {}})
+   //res.render("verEstudiante.ejs", {est: {}})
 })
 
 app.post("/modCelEst", urlParser, (req, res) => {
-   //res.render("verEstudiantes.ejs", {est: {}})
+   //res.render("verEstudiante.ejs", {est: {}})
 })
 
 app.post("/buzonEst", urlParser, (req, res) => {
-   //res.render("verEstudiantes.ejs", {est: {}})
+   //res.render("verEstudiante.ejs", {est: {}})
+})
+
+app.post("/salirEst", urlParser, (req, res) => {
+   res.render("estudiantes.ejs")
 })
