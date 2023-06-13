@@ -1591,57 +1591,7 @@ app.post("/modCelEst", urlParser, (req, res) => {
 
    request.write(postUser);
    request.end();
-//------------------------------------------------------------------------
-      /*const entryCel = req.body.entryCel;
-      const est = {
-               cel: entryCel,
-               user: usuario.user
-            };
 
-      const estJson = JSON.stringify(est);
-
-      const options2 = {
-         hostname: 'localhost',
-         port: 8080,
-         path: '/estudiante/modCelEst',
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': estJson.length
-         }
-      };
-   console.log("AQUI12")
-   console.log(options2)
-
-   //options.headers['Content-Length'] = codigo.length;
-
-   const request2 = http.request(options2, (response) => {
-      let responseData = '';
-      console.log("AQUI1.1")
-      response.on('data', (chunk) => {
-         responseData += chunk;
-      });
-      console.log("AQUI2")
-      console.log(responseData)
-      response.on('end', () => {
-      console.log("AQUI3")
-      const estudiante = JSON.parse(responseData);
-      console.log("AQUI4")
-      console.log(estudiante)
-      res.render("modNumEst.ejs", {numEst: estudiante });
-      });
-   });
-
-   request2.on('error', (error) => {
-      console.error('Error al realizar la solicitud:', error);
-      res.status(500).send('Error interno del servidor');
-   });
-
-   request2.write(postUser);
-   request2.end();
-
-
-   //res.render("modNumEst.ejs", {numEst: 12345678})*/
 })
 
 app.post("/buzonEst", urlParser, (req, res) => {
@@ -1661,6 +1611,53 @@ app.post("/salirModNum", urlParser, (req, res) => {
 })
 
 app.post("/cambiarNumEst", urlParser, (req, res) => {
-   // CAMBIO DE NUMERO
-   res.render("estudiantes.ejs")
-})
+   const entryCel = req.body.nuevoTelefono;
+   console.log("CELULAR")
+   console.log(entryCel)
+      const est = {
+               cel: entryCel,
+               user: usuario.user
+            };
+
+      const estJson = JSON.stringify(est);
+      console.log("DATOS")
+      console.log(estJson)
+      console.log(Buffer.byteLength(estJson))
+      const options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/cambiarNumEst',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': estJson.length
+         }
+      };
+   console.log("AQUI12")
+   console.log(options)
+
+   //options.headers['Content-Length'] = codigo.length;
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+      console.log("AQUI1.1")
+      response.on('data', (chunk) => {
+         responseData += chunk;
+
+      });
+      response.on('end', () => {
+         res.render("estudiantes.ejs")
+      });
+      });
+ 
+   request.on('error', (error) => {
+      console.error('Error al realizar la solicitud:', error);
+      res.status(500).send('Error interno del servidor');
+   });
+
+   request.write(estJson);
+   request.end();
+});
+
+   
+
