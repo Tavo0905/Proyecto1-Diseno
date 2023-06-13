@@ -50,7 +50,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
       });
 
       response.on('end', () => {
-         /*
+      
          if (response.statusCode === 200) {
             if (tipoUsuario === "Profesor") {
                claveSelMod = 1
@@ -62,8 +62,8 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
                claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
                res.render('estudiantes.ejs')
             }
-         }*/
-         res.render("chat.ejs", {mensajes: []})
+         }
+         //res.render("chat.ejs", {mensajes: []})
       });
    });
 
@@ -1547,7 +1547,101 @@ app.post("/actEst", urlParser, (req, res) => {
 })
 
 app.post("/modCelEst", urlParser, (req, res) => {
-   res.render("modNumEst.ejs", {numEst: 88888888})
+   const user = { user: usuario.user };
+   postUser = JSON.stringify(user);
+   console.log("USUARIO")
+   console.log(postUser)
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/estudiante/mostCel',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(postUser),
+      }
+   };
+
+   console.log("AQUI1")
+   console.log(options)
+
+   //options.headers['Content-Length'] = codigo.length;
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+      console.log("AQUI1.1")
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+      console.log("AQUI2")
+      console.log(responseData)
+      response.on('end', () => {
+      console.log("AQUI3")
+      const estudiante = JSON.parse(responseData);
+      console.log("AQUI4")
+      console.log(estudiante)
+      res.render("modNumEst.ejs", {numEst: estudiante });
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error('Error al realizar la solicitud:', error);
+      res.status(500).send('Error interno del servidor');
+   });
+
+   request.write(postUser);
+   request.end();
+//------------------------------------------------------------------------
+      /*const entryCel = req.body.entryCel;
+      const est = {
+               cel: entryCel,
+               user: usuario.user
+            };
+
+      const estJson = JSON.stringify(est);
+
+      const options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/modCelEst',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': estJson.length
+         }
+      };
+   console.log("AQUI12")
+   console.log(options2)
+
+   //options.headers['Content-Length'] = codigo.length;
+
+   const request2 = http.request(options2, (response) => {
+      let responseData = '';
+      console.log("AQUI1.1")
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+      console.log("AQUI2")
+      console.log(responseData)
+      response.on('end', () => {
+      console.log("AQUI3")
+      const estudiante = JSON.parse(responseData);
+      console.log("AQUI4")
+      console.log(estudiante)
+      res.render("modNumEst.ejs", {numEst: estudiante });
+      });
+   });
+
+   request2.on('error', (error) => {
+      console.error('Error al realizar la solicitud:', error);
+      res.status(500).send('Error interno del servidor');
+   });
+
+   request2.write(postUser);
+   request2.end();
+
+
+   //res.render("modNumEst.ejs", {numEst: 12345678})*/
 })
 
 app.post("/buzonEst", urlParser, (req, res) => {
