@@ -59,11 +59,10 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
                claveSelMod = 2
                res.render('selModulo.ejs', { clave: claveSelMod })
             }else if (tipoUsuario === "Estudiante") {
-               claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
+               // claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
                res.render('estudiantes.ejs')
             }
          }
-         //res.render("chat.ejs", {mensajes: []})
       });
    });
 
@@ -1595,7 +1594,21 @@ app.post("/modCelEst", urlParser, (req, res) => {
 })
 
 app.post("/buzonEst", urlParser, (req, res) => {
-   //res.render("verEstudiante.ejs", {est: {}})
+   res.render("notificaciones.ejs", {
+      notificaciones: [
+         {id: 1,
+         mensaje: "Esta es la prueba 1",
+         leido: false},
+         {id: 2,
+         mensaje: "Segunda prueba",
+         leido: false},
+         {id: 3,
+         mensaje: "Prueba 3, con diferentes signos -'.'.][-",
+         leido: false},
+         {id: 4,
+         mensaje: "Esta es por pura abaricia",
+         leido: false},
+      ]})
 })
 
 app.post("/salirEst", urlParser, (req, res) => {
@@ -1659,5 +1672,42 @@ app.post("/cambiarNumEst", urlParser, (req, res) => {
    request.end();
 });
 
-   
+app.post("/salirNotifEst", urlParser, (req, res) => {
+   res.render("estudiantes.ejs")
+});   
 
+app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las notificaciones de todo tipo
+   res.render("notificaciones.ejs", {
+      notificaciones: [
+         {id: 1,
+         mensaje: "Esta es la prueba 1",
+         leido: false},
+         {id: 2,
+         mensaje: "Segunda prueba",
+         leido: false},
+         {id: 3,
+         mensaje: "Prueba 3, con diferentes signos -'.'.][-",
+         leido: false},
+         {id: 4,
+         mensaje: "Esta es por pura abaricia",
+         leido: false},
+      ]})
+})
+
+app.post("/delNotif", urlParser, (req, res) => {
+   res.render("notificaciones.ejs", {
+      notificaciones: [
+         {id: 1,
+         mensaje: "Esta es la prueba 1",
+         leido: false},
+         {id: 2,
+         mensaje: "Segunda prueba",
+         leido: false},
+         {id: 3,
+         mensaje: "Prueba 3, con diferentes signos -'.'.][-",
+         leido: false},
+         {id: 4,
+         mensaje: "Esta es por pura abaricia",
+         leido: false},
+      ]})
+})
