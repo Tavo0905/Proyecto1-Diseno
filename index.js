@@ -54,13 +54,13 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
          if (response.statusCode === 200) {
             if (tipoUsuario === "Profesor") {
                claveSelMod = 1
-               res.render('selModulo.ejs', { clave: claveSelMod })
+               res.render('selModulo.ejs', { clave: claveSelMod, suscripcion: false })
             } else if (tipoUsuario === "Asistente") {
                claveSelMod = 2
-               res.render('selModulo.ejs', { clave: claveSelMod })
+               res.render('selModulo.ejs', { clave: claveSelMod, suscripcion: false  })
             }else if (tipoUsuario === "Estudiante") {
                // claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
-               res.render('estudiantes.ejs')
+               res.render('estudiantes.ejs', {suscripcion: false })
             }
             
            /*
@@ -1753,11 +1753,12 @@ app.post("/salirActEst", urlParser, (req, res) => {
 app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las notificaciones de todo tipo
    const data = JSON.stringify({
       user: usuario.user,
-      codigo: req.body.id,
+      codigo: req.body.btnLeido,
    });
 
-   console.log(data);
-   
+   const user = { user: usuario.user };
+   const postUser = JSON.stringify(user);
+
    let options; 
    let options2;
 
@@ -1769,7 +1770,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(postUser),
+            'Content-Length': Buffer.byteLength(data),
          }
       };
 
@@ -1792,7 +1793,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(postUser),
+            'Content-Length': Buffer.byteLength(data),
          }
       };
 
@@ -1815,7 +1816,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(postUser),
+            'Content-Length': Buffer.byteLength(data),
          }
       };
 
@@ -1840,9 +1841,6 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
 
       response.on('end', () => {
          if (response.statusCode === 200) {
-            const user = { user: usuario.user };
-            postUser = JSON.stringify(user);
-
             const request2 = http.request(options2, (response2) => {
                let responseData2 = '';
 
@@ -1852,7 +1850,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
 
                response2.on('end', () => {
                   if (response2.statusCode === 200) {
-                     const notificaciones = JSON.parse(responseData);
+                     const notificaciones = JSON.parse(responseData2);
                      //notificaciones.forEach((notificacion) => {
                         //const fechaHoraOriginal = new Date(notificacion.fecha);
                         //const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
@@ -1863,7 +1861,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
                      console.log("ERROR: ResponseData - " + responseData);
                   }
                });
-               });
+            });
 
             request2.on('error', (error) => {
                console.error(error);
@@ -2020,21 +2018,136 @@ app.post("/delNotif", urlParser, (req, res) => {
 })
 
 app.post("/marcarNoLeido", urlParser, (req, res) => {
-   res.render("notificaciones.ejs", {
-      notificaciones: [
-         {id: 1,
-         mensaje: "Esta es la prueba 1",
-         leido: false},
-         {id: 2,
-         mensaje: "Segunda prueba",
-         leido: false},
-         {id: 3,
-         mensaje: "Prueba 3, con diferentes signos -'.'.][-",
-         leido: false},
-         {id: 4,
-         mensaje: "Esta es por pura abaricia",
-         leido: false},
-      ]})
+   const data = JSON.stringify({
+      user: usuario.user,
+      codigo: req.body.btnLeido,
+   });
+
+   const user = { user: usuario.user };
+   const postUser = JSON.stringify(user);
+
+   let options; 
+   let options2;
+
+   if (tipoUsuario == "Profesor"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/marcarNotifNoLeida',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(data),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Estudiante"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/marcarNotifNoLeida',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(data),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Asistente"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/marcarNotifNoLeida',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(data),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+   }
+   
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const request2 = http.request(options2, (response2) => {
+               let responseData2 = '';
+
+               response2.on('data', (chunk) => {
+                  responseData2 += chunk;
+               });
+
+               response2.on('end', () => {
+                  if (response2.statusCode === 200) {
+                     const notificaciones = JSON.parse(responseData2);
+                     //notificaciones.forEach((notificacion) => {
+                        //const fechaHoraOriginal = new Date(notificacion.fecha);
+                        //const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+                        //notificacion.fecha = fechaHoraFormateada;
+                     //});
+                     res.render("notificaciones.ejs", { notificaciones: notificaciones})
+                  } else {
+                     console.log("ERROR: ResponseData - " + responseData);
+                  }
+               });
+            });
+
+            request2.on('error', (error) => {
+               console.error(error);
+            });
+
+            request2.write(postUser);
+            request2.end(); 
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(data);
+   request.end();
 })
 
 app.post("/eliminarTodasNotif", urlParser, (req, res) => {
