@@ -28,24 +28,16 @@
 		</div>
 		<div class = "contenedorSuscripcion">
 			<p class = "subsTxt">
-				Estado de suscripción:
-				<strong>
-					<% if (suscripcion) { %>
-						Suscrito
-					<% } if (!suscripcion) { %>
-						Desuscrito
-					<% } %>
-				</strong>
+				Seleccione una opción según su preferencia.
 			</p>
-			<% if (suscripcion) { %>
-				<button class = "suscripcion" id = "btnDesubs" name = "btnDesubs" formaction = "btnDesubs">
+			<form action = "" method = "post">
+				<button class = "suscripcion" id = "btnDesubs" name = "btnDesubs" formaction = "btnDesubsEst">
 					Desuscribirse
 				</button>
-			<% } if (!suscripcion) { %>
-				<button class = "suscripcion" id = "btnSubs" name = "btnSubs" formaction = "btnSubs">
+				<button class = "suscripcion" id = "btnSubs" name = "btnSubs" formaction = "btnSubsEst">
 					Suscribirse
 				</button>
-			<% } %>
+			</form>
 		</div>
 	</form>
 </body>

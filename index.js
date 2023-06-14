@@ -50,36 +50,18 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
       });
 
       response.on('end', () => {
-         
          if (response.statusCode === 200) {
             if (tipoUsuario === "Profesor") {
                claveSelMod = 1
-               res.render('selModulo.ejs', { clave: claveSelMod })
+               res.render('selModulo.ejs', { clave: claveSelMod, suscripcion: false })
             } else if (tipoUsuario === "Asistente") {
                claveSelMod = 2
-               res.render('selModulo.ejs', { clave: claveSelMod })
-            }else if (tipoUsuario === "Estudiante") {
+               res.render('selModulo.ejs', { clave: claveSelMod, suscripcion: false })
+            } else if (tipoUsuario === "Estudiante") {
                // claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
-               res.render('estudiantes.ejs')
-            }
-            
-           /*
-            res.render("notificaciones.ejs", {
-               notificaciones: [
-                  {id: 1,
-                  mensaje: "Esta es la prueba 1",
-                  leido: false},
-                  {id: 2,
-                  mensaje: "Segunda prueba",
-                  leido: false},
-                  {id: 3,
-                  mensaje: "Prueba 3, con diferentes signos -'.'.][-",
-                  leido: false},
-                  {id: 4,
-                  mensaje: "Esta es por pura abaricia",
-                  leido: false},
-               ]})*/
-         }});
+               res.render('estudiantes.ejs', {suscripcion: false})
+            }}
+      });
    });
 
    request.on('error', error => {
@@ -1679,7 +1661,7 @@ app.post("/buzonEst", urlParser, (req, res) => {
 
    request.write(postUser);
    request.end(); 
-})
+});
 
 app.post("/salirEst", urlParser, (req, res) => {
    res.render("estudiantes.ejs")
@@ -1742,8 +1724,14 @@ app.post("/cambiarNumEst", urlParser, (req, res) => {
    request.end();
 });
 
-app.post("/salirNotifEst", urlParser, (req, res) => {
-   res.render("estudiantes.ejs")
+app.post("/salirNotif", urlParser, (req, res) => {
+   if (tipoUsuario == "Estudiante") {
+      res.render("estudiantes.ejs", {suscripcion: true})
+   } else if (tipoUsuario == "Profesor") {
+      res.render("selModulo.ejs", {clave: claveSelMod, suscripcion: true})
+   } else if (tipoUsuario == "Asistente") {
+      res.render("selModulo.ejs", {clave: claveSelMod, suscripcion: true})
+   }
 });   
 
 app.post("/salirActEst", urlParser, (req, res) => {
@@ -2039,4 +2027,58 @@ app.post("/marcarNoLeido", urlParser, (req, res) => {
 
 app.post("/eliminarTodasNotif", urlParser, (req, res) => {
    res.render("notificaciones.ejs", {notificaciones: []})
+})
+
+app.post("/btnSubsEst", urlParser, (req, res) => {
+   res.render("estudiantes.ejs")
+}); 
+
+app.post("/btnDesubsEst", urlParser, (req, res) => {
+   res.render("estudiantes.ejs")
+}); 
+
+app.post("/btnDesubsSelMod", urlParser, (req, res) => {
+   if (tipoUsuario == "Profesor") {
+      //codigo para profesor
+      pass;  
+   } else if (tipoUsuario == "Asistente") {
+      //codigo para asistente
+      pass;  
+   }
+   res.render('selModulo.ejs', { clave: claveSelMod })
+})
+
+app.post("/btnSubsSelMod", urlParser, (req, res) => {
+   if (tipoUsuario == "Profesor") {
+      //codigo para profesor
+      pass;  
+   } else if (tipoUsuario == "Asistente") {
+      //codigo para asistente
+      pass;  
+   }
+   res.render('selModulo.ejs', { clave: claveSelMod })
+})
+
+app.post("/agrNotif", urlParser, (req, res) => {
+   res.render('agrNotificacion.ejs')
+})
+
+app.post("/salirAgrNotif", urlParser, (req, res) => {
+   if (tipoUsuario == "Estudiante") {
+      res.render("estudiantes.ejs")
+   } else if (tipoUsuario == "Profesor") {
+      res.render('selModulo.ejs', { clave: claveSelMod })
+   } else if (tipoUsuario == "Asistente") {
+      res.render('selModulo.ejs', { clave: claveSelMod })
+   }
+})
+
+app.post("/enviarNotif", urlParser, (req, res) => {
+   if (tipoUsuario == "Estudiante") {
+      res.render("estudiantes.ejs")
+   } else if (tipoUsuario == "Profesor") {
+      res.render('selModulo.ejs', { clave: claveSelMod })
+   } else if (tipoUsuario == "Asistente") {
+      res.render('selModulo.ejs', { clave: claveSelMod })
+   }
 })
