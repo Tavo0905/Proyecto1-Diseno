@@ -50,7 +50,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
       });
 
       response.on('end', () => {
-      
+         /*
          if (response.statusCode === 200) {
             if (tipoUsuario === "Profesor") {
                claveSelMod = 1
@@ -62,7 +62,8 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
                // claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
                res.render('estudiantes.ejs')
             }
-         }
+            */
+            res.render("actividadEst.ejs", {arreglo: []})
       });
    });
 
@@ -1542,7 +1543,7 @@ app.post("/perfilEst", urlParser, (req, res) => {
 })
 
 app.post("/actEst", urlParser, (req, res) => {
-   //res.render("verEstudiante.ejs", {est: {}})
+   res.render("actividadEst.ejs", {arreglo: []})
 })
 
 app.post("/modCelEst", urlParser, (req, res) => {
@@ -1675,6 +1676,10 @@ app.post("/cambiarNumEst", urlParser, (req, res) => {
 app.post("/salirNotifEst", urlParser, (req, res) => {
    res.render("estudiantes.ejs")
 });   
+
+app.post("/salirActEst", urlParser, (req, res) => {
+   res.render("estudiantes.ejs")
+});  
 
 app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las notificaciones de todo tipo
    res.render("notificaciones.ejs", {
