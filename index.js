@@ -53,13 +53,13 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
          if (response.statusCode === 200) {
             if (tipoUsuario === "Profesor") {
                claveSelMod = 1
-               res.render('selModulo.ejs', { clave: claveSelMod, suscripcion: false })
+               res.render('selModulo.ejs', { clave: claveSelMod })
             } else if (tipoUsuario === "Asistente") {
                claveSelMod = 2
-               res.render('selModulo.ejs', { clave: claveSelMod, suscripcion: false })
+               res.render('selModulo.ejs', { clave: claveSelMod })
             } else if (tipoUsuario === "Estudiante") {
                // claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
-               res.render('estudiantes.ejs', {suscripcion: false})
+               res.render('estudiantes.ejs')
             }}
       });
    });
@@ -1726,11 +1726,11 @@ app.post("/cambiarNumEst", urlParser, (req, res) => {
 
 app.post("/salirNotif", urlParser, (req, res) => {
    if (tipoUsuario == "Estudiante") {
-      res.render("estudiantes.ejs", {suscripcion: true})
+      res.render("estudiantes.ejs")
    } else if (tipoUsuario == "Profesor") {
-      res.render("selModulo.ejs", {clave: claveSelMod, suscripcion: true})
+      res.render("selModulo.ejs", {clave: claveSelMod })
    } else if (tipoUsuario == "Asistente") {
-      res.render("selModulo.ejs", {clave: claveSelMod, suscripcion: true})
+      res.render("selModulo.ejs", {clave: claveSelMod })
    }
 });   
 
