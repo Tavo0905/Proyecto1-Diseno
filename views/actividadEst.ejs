@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel = "stylesheet" href = "style.css">
+</head>
+<body class = "gestionBd">
+    <form class = "formGestionPT" method = "post">
+        <div>
+            <label class = "tituloGestion">Actividades</label>
+            <button class = "btnSalir1" id = "btnSalir1" name = "btnSalir1" formaction = "salirActEst">
+                Salir
+            </button>
+        </div>
+        <div class = "columna1">
+            <div class = "estudLB" id = "actividadesLB" name = "actividadesLB">
+                <table class = "tablaHeader">
+                    <tr>
+                        <th>Semana</th>
+                        <th>Nombre</th>
+                        <th>Tipo de Actividad</th>
+                        <th>Fecha y hora</th>
+                    </tr>
+                </table>
+                <div class = "divInfo">
+                    <table>
+                        <% for (elemento of arreglo) { %>
+                        <tr>
+                            <td><%= elemento["semana"] %></td>
+                            <td><%= elemento["nombre"] %></td>
+                            <td><%= elemento["tipoAct"] %></td>
+                            <td><%= elemento["FechaHora"] %></td>
+                            <td>
+                                <input type = "radio" id = "elementosTabla" name = "elementosTabla" value = "<%= elemento['nombre'] %>">
+                            </td>
+                        </tr>
+                        <% } %>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
