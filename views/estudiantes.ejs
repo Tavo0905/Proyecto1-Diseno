@@ -5,7 +5,11 @@
 </head>
 
 <form class = "formSalirALoginEst" method = post>
-	<div>
+	<div class = "contenedorTop">
+		<button class = "btnAgregarNotif" id = "agrNotif" name = "agrNotif" 
+		formaction = "agrNotif">
+			Agregar notificacion
+		</button>
 		<button class = "btnSalir1" id = "salirLoginEst" name = "salirLoginEst" 
 		formaction = "salirLogin">
 			Salir
@@ -20,7 +24,28 @@
 			<button class = "botonesEst" id = "verPerfilEst" formaction = "perfilEst">Ver perfil</button>
 			<button class = "botonesEst" id = "verActEst" formaction = "actEst">Ver actividades</button>
 			<button class = "botonesEst" id = "modCelular" formaction = "modCelEst">Modificar celular</button>
-			<button class = "botonesEst" id = "buzNotEst" formaction = "buzonEst">Buzón de notificaciones</button>
+			<button class = "botonesEst" id = "buzNotEst" formaction = "buzon">Buzón de notificaciones</button>
+		</div>
+		<div class = "contenedorSuscripcion">
+			<p class = "subsTxt">
+				Estado de suscripción:
+				<strong>
+					<% if (suscripcion) { %>
+						Suscrito
+					<% } if (!suscripcion) { %>
+						Desuscrito
+					<% } %>
+				</strong>
+			</p>
+			<% if (suscripcion) { %>
+				<button class = "suscripcion" id = "btnDesubs" name = "btnDesubs" formaction = "btnDesubs">
+					Desuscribirse
+				</button>
+			<% } if (!suscripcion) { %>
+				<button class = "suscripcion" id = "btnSubs" name = "btnSubs" formaction = "btnSubs">
+					Suscribirse
+				</button>
+			<% } %>
 		</div>
 	</form>
 </body>

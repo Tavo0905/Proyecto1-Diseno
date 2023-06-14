@@ -92,6 +92,11 @@ input[type="submit"]:hover {
     margin-left: 25%;
 }
 
+#btnBuzon {
+    margin-top: 15%;
+    margin-left: 42%;
+}
+
 .botonConfGrGuia {
     background-color: #4b96b0;
     height: 30px;
@@ -609,4 +614,51 @@ tr {
     height: 450px;
     margin: 0 auto;
     margin-top: 50px;
+}
+
+.contenedorSuscripcion {
+    position: absolute;
+    border-radius: 10px;
+    background-color: rgb(230, 243, 253);
+    box-shadow: 0px 0px 10px #999 ;
+    width: 450px;
+    height: 125px;
+    margin-top: 500px;
+    margin-left: 675px;
+}
+
+.suscripcion {
+    position: absolute;
+    background-color: #4b96b0;
+    height: 50px;
+    width: 150px;
+    border-radius: 10px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 5px #999;
+    margin-left: 275px;
+}
+
+.suscripcion:hover {
+    background-color: #005A7F;
+}
+
+.subsTxt {
+    margin-left: 20px;
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.btnAgregarNotif {
+    position: absolute;
+    background-color: #4b96b0;
+    height: 50px;
+    width: 200px;
+    border-radius: 10px;
+    transition: background-color 0.5s ease;
+    font-size: large;
+    color: white;
+    box-shadow: 0px 0px 5px #999;
+    margin-left: 20px;
 }

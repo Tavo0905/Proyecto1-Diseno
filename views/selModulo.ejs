@@ -6,6 +6,10 @@
 <body>
     <form class = "formSalirALogin" method = post>
         <div>
+            <button class = "btnAgregarNotif" id = "agrNotif" name = "agrNotif" 
+            formaction = "agrNotif">
+                Agregar notificacion
+            </button>
             <button class = "btnSalir1" id = "salirSelMod" name = "salirSelMod" 
             formaction = "salirLogin">
                 Salir
@@ -24,6 +28,34 @@
             <button class = "botonesMod" id = "btnPlanTrabajo" name = "btnPlanTrabajo" formaction = "gestionPlanTrabajo">
                 Gestion de plan de trabajo
             </button>
+        </form>
+    </div>
+    <div>
+        <form action = "" method = "post">
+            <button class = "botonesMod" id = "btnBuzon" formaction = "buzon">Ver notificaciones</button>
+        </form>
+    </div>
+    <div class = "contenedorSuscripcion">
+        <p class = "subsTxt">
+            Estado de suscripción:
+            <strong>
+                <% if (suscripcion) { %>
+                    Suscrito
+                <% } if (!suscripcion) { %>
+                    Desuscrito
+                <% } %>
+            </strong>
+        </p>
+        <form action = "" method = "post">
+            <% if (suscripcion) { %>
+                <button class = "suscripcion" id = "btnDesubs" name = "btnDesubs" formaction = "btnDesubsSelMod">
+                    Desuscribirse
+                </button>
+            <% } if (!suscripcion) { %>
+                <button class = "suscripcion" id = "btnSubs" name = "btnSubs" formaction = "btnSubsSelMod">
+                    Suscribirse
+                </button>
+            <% } %>
         </form>
     </div>
     <div>
