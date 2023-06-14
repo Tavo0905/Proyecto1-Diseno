@@ -1540,7 +1540,46 @@ app.post("/perfilEst", urlParser, (req, res) => {
 })
 
 app.post("/actEst", urlParser, (req, res) => {
-   res.render("actividadEst.ejs", {arreglo: []})
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/plantrabajo/obtenerActividades',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+      }
+   };
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const actividades = JSON.parse(responseData);
+            actividades.forEach((actividad) => {
+               const fechaHoraOriginal = new Date(actividad.FechaHora);
+               const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+               actividad.FechaHora = fechaHoraFormateada;
+            });
+            res.render("actividadEst.ejs", {arreglo: actividades})
+            //res.render("gestionPlanTrabajo.ejs", { arreglo: actividades })
+         } else {
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.end()
+
+   //res.render("actividadEst.ejs", {arreglo: []})
 })
 
 app.post("/modCelEst", urlParser, (req, res) => {
