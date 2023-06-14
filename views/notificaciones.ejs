@@ -9,7 +9,7 @@
 
 <body>
     <form action = "" method = "POST">
-        <button class = "salir" id = "btnSalir" name = "btnSalir" formaction = "salirNotifEst">
+        <button class = "salir" id = "btnSalir" name = "btnSalir" formaction = "salirNotif">
             Salir
         </button>
         <button class = "btnElimNotif" id = "btnElimNotif" name = "btnElimNotif" formaction = "eliminarTodasNotif">
@@ -25,11 +25,17 @@
                         <form action = "" method = "POST">
                             <div class = "containerBtns">
                                 <% if (!notificacion.leido) { %>
-                                    <button class = "notifBtn" formaction = "marcarLeido">Marcar como leída</button>
+                                    <button class = "notifBtn" name = "btnLeido" value = "<%= notificacion.id %>" formaction = "marcarLeido">
+                                        Marcar como leída
+                                    </button>
                                 <% } if (notificacion.leido) { %>
-                                    <button class = "notifBtn" formaction = "marcarNoLeido">Marcar como no leída</button>
+                                    <button class = "notifBtn" formaction = "marcarNoLeido">
+                                        Marcar como no leída
+                                    </button>
                                 <% } %>
-                                    <button class = "notifBtn" formaction = "delNotif">Eliminar</button>
+                                    <button class = "notifBtn" formaction = "delNotif">
+                                        Eliminar
+                                    </button>
                             </div>
                         </form>
                 </li>
