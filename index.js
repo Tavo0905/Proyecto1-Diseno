@@ -50,7 +50,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
       });
 
       response.on('end', () => {
-         /*
+         
          if (response.statusCode === 200) {
             if (tipoUsuario === "Profesor") {
                claveSelMod = 1
@@ -62,7 +62,8 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
                // claveSelMod = 1 //CAMBIAR POR PANTALLA DE ESTUDIANTES
                res.render('estudiantes.ejs')
             }
-            */
+            
+           /*
             res.render("notificaciones.ejs", {
                notificaciones: [
                   {id: 1,
@@ -77,8 +78,8 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
                   {id: 4,
                   mensaje: "Esta es por pura abaricia",
                   leido: false},
-               ]})
-      });
+               ]})*/
+         }});
    });
 
    request.on('error', error => {
