@@ -1609,21 +1609,49 @@ app.post("/modCelEst", urlParser, (req, res) => {
 })
 
 app.post("/buzonEst", urlParser, (req, res) => {
-   res.render("notificaciones.ejs", {
-      notificaciones: [
-         {id: 1,
-         mensaje: "Esta es la prueba 1",
-         leido: false},
-         {id: 2,
-         mensaje: "Segunda prueba",
-         leido: false},
-         {id: 3,
-         mensaje: "Prueba 3, con diferentes signos -'.'.][-",
-         leido: false},
-         {id: 4,
-         mensaje: "Esta es por pura abaricia",
-         leido: false},
-      ]})
+   const user = { user: usuario.user };
+   postUser = JSON.stringify(user);
+
+   const options = {
+      hostname: 'localhost',
+      port: 8080,
+      path: '/estudiante/gestionarBuzon',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+         'Content-Length': Buffer.byteLength(postUser),
+      }
+   };
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const notificaciones = JSON.parse(responseData);
+            //notificaciones.forEach((notificacion) => {
+               //const fechaHoraOriginal = new Date(notificacion.fecha);
+               //const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+               //notificacion.fecha = fechaHoraFormateada;
+            //});
+            res.render("notificaciones.ejs", { notificaciones: notificaciones})
+         } else {
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(postUser);
+   request.end();
+   
 })
 
 app.post("/salirEst", urlParser, (req, res) => {
