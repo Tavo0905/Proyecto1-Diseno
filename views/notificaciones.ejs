@@ -12,17 +12,22 @@
         <button class = "salir" id = "btnSalir" name = "btnSalir" formaction = "salirNotifEst">
             Salir
         </button>
+        <button class = "btnElimNotif" id = "btnElimNotif" name = "btnElimNotif" formaction = "eliminarTodasNotif">
+            Eliminar notificaciones
+        </button>
     </form>
     <div class="container">
         <h1>Notificaciones</h1>
         <ul>
             <% notificaciones.forEach(function(notificacion) { %>
-                <li <% if (notificacion.read) { %>class = "leido"<% } %>>
+                <li <% if (notificacion.leido) { %>class = "leido"<% } %>>
                     <%= notificacion.mensaje %>
                         <form action = "" method = "POST">
                             <div class = "containerBtns">
                                 <% if (!notificacion.leido) { %>
                                     <button class = "notifBtn" formaction = "marcarLeido">Marcar como leída</button>
+                                <% } if (notificacion.leido) { %>
+                                    <button class = "notifBtn" formaction = "marcarNoLeido">Marcar como no leída</button>
                                 <% } %>
                                     <button class = "notifBtn" formaction = "delNotif">Eliminar</button>
                             </div>

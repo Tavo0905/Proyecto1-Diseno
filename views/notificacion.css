@@ -7,77 +7,95 @@ body {
 }
 
 .container {
-    max-width: 700px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #e2f8fb;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    opacity: 0.9;
-  }
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #e2f8fb;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  opacity: 0.9;
+}
+
+h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #edf7ff;
+}
   
-  h1 {
-    font-size: 30px;
-    margin-bottom: 10px;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  li {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #edf7ff;
-  }
-  
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 16px;
-    color: #999;
-    cursor: pointer;
-  }
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+}
 
 .containerBtns {
-    display: flex;
-    margin-top: 15px;
-    justify-content: right;
+  display: flex;
+  margin-top: 15px;
+  justify-content: right;
 }
 
 .salir {
-    width: 75px;
-    background-color: #4b96b0;
-    border-radius: 10px;
-    height: 40px;
-    transition: background-color 0.5s ease;
-    font-size: large;
-    padding: 10px 20px;
-    color: white;
-    border: none;
-    cursor: pointer;
+  width: 75px;
+  background-color: #4b96b0;
+  border-radius: 10px;
+  height: 40px;
+  transition: background-color 0.5s ease;
+  font-size: large;
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 .salir:hover {
-    background-color: #005A7F;
+  background-color: #005A7F;
 }
 
 .notifBtn {
-    border: 0px;
-    border-radius: 5px;
-    background-color: #4b96b0;
-    color: white;
-    padding: 5px;
-    margin-left: 10px;
-    cursor: pointer;
+  border: 0px;
+  border-radius: 5px;
+  background-color: #4b96b0;
+  color: white;
+  padding: 5px;
+  margin-left: 10px;
+  cursor: pointer;
 }
 
 .notifBtn:hover {
     background-color: #005A7F;
+}
+
+.btnElimNotif {
+  width: 200px;
+  background-color: #4b96b0;
+  border-radius: 10px;
+  height: 40px;
+  transition: background-color 0.5s ease;
+  font-size: large;
+  padding: 10px 10px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  justify-content: right;
+}
+
+.btnElimNotif:hover {
+  background-color: #005A7F;
 }

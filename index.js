@@ -63,7 +63,21 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
                res.render('estudiantes.ejs')
             }
             */
-            res.render("actividadEst.ejs", {arreglo: []})
+            res.render("notificaciones.ejs", {
+               notificaciones: [
+                  {id: 1,
+                  mensaje: "Esta es la prueba 1",
+                  leido: false},
+                  {id: 2,
+                  mensaje: "Segunda prueba",
+                  leido: false},
+                  {id: 3,
+                  mensaje: "Prueba 3, con diferentes signos -'.'.][-",
+                  leido: false},
+                  {id: 4,
+                  mensaje: "Esta es por pura abaricia",
+                  leido: false},
+               ]})
       });
    });
 
@@ -1715,4 +1729,26 @@ app.post("/delNotif", urlParser, (req, res) => {
          mensaje: "Esta es por pura abaricia",
          leido: false},
       ]})
+})
+
+app.post("/marcarNoLeido", urlParser, (req, res) => {
+   res.render("notificaciones.ejs", {
+      notificaciones: [
+         {id: 1,
+         mensaje: "Esta es la prueba 1",
+         leido: false},
+         {id: 2,
+         mensaje: "Segunda prueba",
+         leido: false},
+         {id: 3,
+         mensaje: "Prueba 3, con diferentes signos -'.'.][-",
+         leido: false},
+         {id: 4,
+         mensaje: "Esta es por pura abaricia",
+         leido: false},
+      ]})
+})
+
+app.post("/eliminarTodasNotif", urlParser, (req, res) => {
+   res.render("notificaciones.ejs", {notificaciones: []})
 })
