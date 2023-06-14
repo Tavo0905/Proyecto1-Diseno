@@ -1612,17 +1612,44 @@ app.post("/modCelEst", urlParser, (req, res) => {
 app.post("/buzonEst", urlParser, (req, res) => {
    const user = { user: usuario.user };
    postUser = JSON.stringify(user);
+   let options; 
 
-   const options = {
-      hostname: 'localhost',
-      port: 8080,
-      path: '/estudiante/gestionarBuzon',
-      method: 'POST',
-      headers: {
-         'Content-Type': 'application/json',
-         'Content-Length': Buffer.byteLength(postUser),
-      }
-   };
+   if (tipoUsuario == "Profesor"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Estudiante"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Asistente"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+   }
 
    const request = http.request(options, (response) => {
       let responseData = '';
@@ -1651,8 +1678,7 @@ app.post("/buzonEst", urlParser, (req, res) => {
    });
 
    request.write(postUser);
-   request.end();
-   
+   request.end(); 
 })
 
 app.post("/salirEst", urlParser, (req, res) => {
@@ -1725,39 +1751,272 @@ app.post("/salirActEst", urlParser, (req, res) => {
 });  
 
 app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las notificaciones de todo tipo
-   res.render("notificaciones.ejs", {
-      notificaciones: [
-         {id: 1,
-         mensaje: "Esta es la prueba 1",
-         leido: false},
-         {id: 2,
-         mensaje: "Segunda prueba",
-         leido: false},
-         {id: 3,
-         mensaje: "Prueba 3, con diferentes signos -'.'.][-",
-         leido: false},
-         {id: 4,
-         mensaje: "Esta es por pura abaricia",
-         leido: false},
-      ]})
+   const data = JSON.stringify({
+      user: usuario.user,
+      codigo: req.body.id,
+   });
+
+   console.log(data);
+   
+   let options; 
+   let options2;
+
+   if (tipoUsuario == "Profesor"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/marcarNotifLeida',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Estudiante"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/marcarNotifLeida',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Asistente"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/marcarNotifLeida',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+   }
+   
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const user = { user: usuario.user };
+            postUser = JSON.stringify(user);
+
+            const request2 = http.request(options2, (response2) => {
+               let responseData2 = '';
+
+               response2.on('data', (chunk) => {
+                  responseData2 += chunk;
+               });
+
+               response2.on('end', () => {
+                  if (response2.statusCode === 200) {
+                     const notificaciones = JSON.parse(responseData);
+                     //notificaciones.forEach((notificacion) => {
+                        //const fechaHoraOriginal = new Date(notificacion.fecha);
+                        //const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+                        //notificacion.fecha = fechaHoraFormateada;
+                     //});
+                     res.render("notificaciones.ejs", { notificaciones: notificaciones})
+                  } else {
+                     console.log("ERROR: ResponseData - " + responseData);
+                  }
+               });
+               });
+
+            request2.on('error', (error) => {
+               console.error(error);
+            });
+
+            request2.write(postUser);
+            request2.end(); 
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(data);
+   request.end();
 })
+   
+
 
 app.post("/delNotif", urlParser, (req, res) => {
-   res.render("notificaciones.ejs", {
-      notificaciones: [
-         {id: 1,
-         mensaje: "Esta es la prueba 1",
-         leido: false},
-         {id: 2,
-         mensaje: "Segunda prueba",
-         leido: false},
-         {id: 3,
-         mensaje: "Prueba 3, con diferentes signos -'.'.][-",
-         leido: false},
-         {id: 4,
-         mensaje: "Esta es por pura abaricia",
-         leido: false},
-      ]})
+   const data = JSON.stringify({
+      user: usuario.user,
+      codigo: req.body.id,
+   });
+   let options; 
+   let options2;
+
+   if (tipoUsuario == "Profesor"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/delNotif',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Estudiante"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/delNotif',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Asistente"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/delNotif',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+   }
+   
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const user = { user: usuario.user };
+            postUser = JSON.stringify(user);
+
+            const request2 = http.request(options2, (response2) => {
+               let responseData2 = '';
+
+               response2.on('data', (chunk) => {
+                  responseData2 += chunk;
+               });
+
+               response2.on('end', () => {
+                  if (response2.statusCode === 200) {
+                     const notificaciones = JSON.parse(responseData);
+                     //notificaciones.forEach((notificacion) => {
+                        //const fechaHoraOriginal = new Date(notificacion.fecha);
+                        //const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+                        //notificacion.fecha = fechaHoraFormateada;
+                     //});
+                     res.render("notificaciones.ejs", { notificaciones: notificaciones})
+                  } else {
+                     console.log("ERROR: ResponseData - " + responseData);
+                  }
+               });
+               });
+
+            request2.on('error', (error) => {
+               console.error(error);
+            });
+
+            request2.write(postUser);
+            request2.end(); 
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(data);
+   request.end();
 })
 
 app.post("/marcarNoLeido", urlParser, (req, res) => {
