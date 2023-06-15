@@ -14,6 +14,7 @@ var usuario = { user: "", password: "" }
 let tipoUsuario = ''
 let claveSelMod = 0
 const port = process.env.PORT || 3000
+const backendUrl = 'proyecto3-backend.purplepebble-582093b9.centralus.azurecontainerapps.io'
 
 app.use(express.static('views'))
 
@@ -30,9 +31,7 @@ app.post('/validarDatos', urlParser, (req, res) => { // Validar datos del login
    const data = JSON.stringify(usuario);
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
-      //hostname: 'proyecto3-backend.purplepebble-582093b9.centralus.azurecontainerapps.io',
+      hostname: backendUrl,
       path: '/validarDatos',
       method: 'POST',
       headers: {
@@ -77,8 +76,7 @@ app.post('/gestionarEst', urlParser, (req, res) => {
    postUser = JSON.stringify(user);
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/estudiante/gestionarEst',
       method: 'POST',
       headers: {
@@ -119,8 +117,7 @@ app.post('/gestionarProf', urlParser, (req, res) => {
    postUser = JSON.stringify(user);
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/profesor/gestionarProf',
       method: 'POST',
       headers: {
@@ -163,8 +160,7 @@ app.post('/gestionarGuias', urlParser, (req, res) => {
    postUser = JSON.stringify(user);
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/profesor/gestionarProfGuia',
       method: 'POST',
       headers: {
@@ -218,8 +214,7 @@ app.post("/modProf", urlParser, upload.any(), (req, res) => {
    });
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/profesor/modProf',
       method: 'POST',
       headers: {
@@ -279,8 +274,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
          const profeJson = JSON.stringify(profe);
 
          const options1 = {
-            hostname: 'localhost',
-            port: 8080,
+            hostname: backendUrl,
             path: '/profesor/datosProfesRes',
             method: 'POST',
             headers: {
@@ -302,8 +296,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                   const postUser = JSON.stringify(user);
 
                   const options2 = {
-                     hostname: 'localhost',
-                     port: 8080,
+                     hostname: backendUrl,
                      path: '/profesor/gestionarProf',
                      method: 'POST',
                      headers: {
@@ -367,8 +360,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
          console.log(profeJson);
 
          const options1 = {
-            hostname: 'localhost',
-            port: 8080,
+            hostname: backendUrl,
             path: '/profesor/agregarProf',
             method: 'POST',
             headers: {
@@ -390,8 +382,7 @@ app.post("/datosProfesRes", urlParser, (req, res) => {
                   const postUser = JSON.stringify(user);
 
                   const options2 = {
-                     hostname: 'localhost',
-                     port: 8080,
+                     hostname: backendUrl,
                      path: '/profesor/gestionarProf',
                      method: 'POST',
                      headers: {
@@ -450,8 +441,7 @@ app.post("/bajaProf", urlParser, upload.any(), (req, res) => {
       });
 
       const options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/bajaProf',
          method: 'POST',
          headers: {
@@ -475,8 +465,7 @@ app.post("/bajaProf", urlParser, upload.any(), (req, res) => {
                postUser = JSON.stringify(user);
 
                const innerOptions = {
-                  hostname: 'localhost',
-                  port: 8080,
+                  hostname: backendUrl,
                   path: '/profesor/gestionarProf',
                   method: 'POST',
                   headers: {
@@ -533,8 +522,7 @@ app.post("/defGuia", urlParser, upload.any(), (req, res) => {
       });
 
       const options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/defGuia',
          method: 'POST',
          headers: {
@@ -557,8 +545,7 @@ app.post("/defGuia", urlParser, upload.any(), (req, res) => {
                postUser = JSON.stringify(user);
 
                const innerOptions = {
-                  hostname: 'localhost',
-                  port: 8080,
+                  hostname: backendUrl,
                   path: '/profesor/gestionarProf',
                   method: 'POST',
                   headers: {
@@ -617,8 +604,7 @@ app.post("/modEst", urlParser, upload.any(), (req, res) => {
    });
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/estudiante/modEst',
       method: 'POST',
       headers: {
@@ -682,8 +668,7 @@ app.post("/datosEstRes", urlParser, (req, res) => {
       const estJson = JSON.stringify(est);
 
       const options1 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/datosEstRes',
          method: 'POST',
          headers: {
@@ -705,8 +690,7 @@ app.post("/datosEstRes", urlParser, (req, res) => {
                const postUser = JSON.stringify(user);
 
                const options2 = {
-                  hostname: 'localhost',
-                  port: 8080,
+                  hostname: backendUrl,
                   path: '/estudiante/gestionarEst',
                   method: 'POST',
                   headers: {
@@ -765,8 +749,7 @@ app.post("/agrActividad", urlParser, (req, res) => {
 
 app.post("/gestionPlanTrabajo", urlParser, (req, res) => {
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/plantrabajo/obtenerActividades',
       method: 'POST',
       headers: {
@@ -855,8 +838,7 @@ app.post("/datosActRes", urlParser, (req, res) => {
       const actividadJson = JSON.stringify(actividad);
 
       const options1 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/plantrabajo/agregarAct',
          method: 'POST',
          headers: {
@@ -875,8 +857,7 @@ app.post("/datosActRes", urlParser, (req, res) => {
          response1.on('end', () => {
             if (response1.statusCode === 200) {
                const options2 = {
-                  hostname: 'localhost',
-                  port: 8080,
+                  hostname: backendUrl,
                   path: '/plantrabajo/obtenerActividades',
                   method: 'POST',
                   headers: {
@@ -936,8 +917,7 @@ app.post("/marcarActRealizada", urlParser, (req, res) => {
       });
 
       const options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/plantrabajo/marcarActividad',
          method: 'POST',
          headers: {
@@ -956,8 +936,7 @@ app.post("/marcarActRealizada", urlParser, (req, res) => {
          response.on('end', () => {
             if (response.statusCode === 200) {
                const options2 = {
-                  hostname: 'localhost',
-                  port: 8080,
+                  hostname: backendUrl,
                   path: '/plantrabajo/obtenerActividades',
                   method: 'POST',
                   headers: {
@@ -1015,8 +994,7 @@ app.post("/marcarActCancelada", urlParser, (req, res) => {
       });
 
       const options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/plantrabajo/marcarActividad',
          method: 'POST',
          headers: {
@@ -1035,8 +1013,7 @@ app.post("/marcarActCancelada", urlParser, (req, res) => {
          response.on('end', () => {
             if (response.statusCode === 200) {
                const options2 = {
-                  hostname: 'localhost',
-                  port: 8080,
+                  hostname: backendUrl,
                   path: '/plantrabajo/obtenerActividades',
                   method: 'POST',
                   headers: {
@@ -1094,8 +1071,7 @@ app.post("/marcarActPublicada", urlParser, (req, res) => {
       });
 
       const options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/plantrabajo/marcarActividad',
          method: 'POST',
          headers: {
@@ -1114,8 +1090,7 @@ app.post("/marcarActPublicada", urlParser, (req, res) => {
          response.on('end', () => {
             if (response.statusCode === 200) {
                const options2 = {
-                  hostname: 'localhost',
-                  port: 8080,
+                  hostname: backendUrl,
                   path: '/plantrabajo/obtenerActividades',
                   method: 'POST',
                   headers: {
@@ -1174,8 +1149,7 @@ app.post("/comentario", urlParser, (req, res) => {
       });
 
       const options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/plantrabajo/obtenerComentarios',
          method: 'POST',
          headers: {
@@ -1218,8 +1192,7 @@ app.post("/comentarios", urlParser, upload.any(), (req, res) => {
    console.log(codigo)
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/plantrabajo/agregarComentario',
       method: 'POST',
       headers: {
@@ -1238,8 +1211,7 @@ app.post("/comentarios", urlParser, upload.any(), (req, res) => {
       response.on('end', () => {
          if (response.statusCode === 200) {
             const options1 = {
-               hostname: 'localhost',
-               port: 8080,
+               hostname: backendUrl,
                path: '/plantrabajo/obtenerComentarios',
                method: 'POST',
                headers: {
@@ -1298,8 +1270,7 @@ app.post("/generarExcel", urlParser, upload.any(), (req, res) => {
    postUser = JSON.stringify(user);
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/estudiante/generarExcel',
       method: 'POST',
       headers: {
@@ -1362,8 +1333,7 @@ app.post("/cargarExcel", urlParser, upload.single("btnImpExcel"), (req, res) => 
    const postData = JSON.stringify(data);
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/estudiante/cargarExcel',
       method: 'POST',
       headers: {
@@ -1417,8 +1387,7 @@ app.post("/defCoord", urlParser, upload.any(), (req, res) => {
    console.log(codigo)
 
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/profesor/defCoord',
       method: 'POST',
       headers: {
@@ -1441,8 +1410,7 @@ app.post("/defCoord", urlParser, upload.any(), (req, res) => {
             postUser = JSON.stringify(user);
 
             const innerOptions = {
-               hostname: 'localhost',
-               port: 8080,
+               hostname: backendUrl,
                path: '/profesor/gestionarProfGuia',
                method: 'POST',
                headers: {
@@ -1498,8 +1466,7 @@ app.post("/perfilEst", urlParser, (req, res) => {
    console.log("USUARIO")
    console.log(postUser)
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/estudiante/perfilEst',
       method: 'POST',
       headers: {
@@ -1540,7 +1507,45 @@ app.post("/perfilEst", urlParser, (req, res) => {
 })
 
 app.post("/actEst", urlParser, (req, res) => {
-   res.render("actividadEst.ejs", {arreglo: []})
+   const options = {
+      hostname: backendUrl,
+      path: '/plantrabajo/obtenerActividades',
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+      }
+   };
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const actividades = JSON.parse(responseData);
+            actividades.forEach((actividad) => {
+               const fechaHoraOriginal = new Date(actividad.FechaHora);
+               const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+               actividad.FechaHora = fechaHoraFormateada;
+            });
+            res.render("actividadEst.ejs", {arreglo: actividades})
+            //res.render("gestionPlanTrabajo.ejs", { arreglo: actividades })
+         } else {
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.end()
+
+   //res.render("actividadEst.ejs", {arreglo: []})
 })
 
 app.post("/modCelEst", urlParser, (req, res) => {
@@ -1549,8 +1554,7 @@ app.post("/modCelEst", urlParser, (req, res) => {
    console.log("USUARIO")
    console.log(postUser)
    const options = {
-      hostname: 'localhost',
-      port: 8080,
+      hostname: backendUrl,
       path: '/estudiante/mostCel',
       method: 'POST',
       headers: {
@@ -1598,8 +1602,7 @@ app.post("/buzonEst", urlParser, (req, res) => {
 
    if (tipoUsuario == "Profesor"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -1610,8 +1613,7 @@ app.post("/buzonEst", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Estudiante"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -1622,8 +1624,7 @@ app.post("/buzonEst", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Asistente"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -1689,8 +1690,7 @@ app.post("/cambiarNumEst", urlParser, (req, res) => {
       console.log(estJson)
       console.log(Buffer.byteLength(estJson))
       const options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/cambiarNumEst',
          method: 'POST',
          headers: {
@@ -1752,8 +1752,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
 
    if (tipoUsuario == "Profesor"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/marcarNotifLeida',
          method: 'POST',
          headers: {
@@ -1763,8 +1762,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -1775,8 +1773,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
 
    } else if (tipoUsuario == "Estudiante"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/marcarNotifLeida',
          method: 'POST',
          headers: {
@@ -1786,8 +1783,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -1798,8 +1794,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
 
    } else if (tipoUsuario == "Asistente"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/marcarNotifLeida',
          method: 'POST',
          headers: {
@@ -1809,8 +1804,7 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -1887,8 +1881,7 @@ app.post("/delNotif", urlParser, (req, res) => {
 
    if (tipoUsuario == "Profesor"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/delNotif',
          method: 'POST',
          headers: {
@@ -1898,8 +1891,7 @@ app.post("/delNotif", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -1910,8 +1902,7 @@ app.post("/delNotif", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Estudiante"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/delNotif',
          method: 'POST',
          headers: {
@@ -1921,8 +1912,7 @@ app.post("/delNotif", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -1933,8 +1923,7 @@ app.post("/delNotif", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Asistente"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/delNotif',
          method: 'POST',
          headers: {
@@ -1944,8 +1933,7 @@ app.post("/delNotif", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -2023,8 +2011,7 @@ app.post("/marcarNoLeido", urlParser, (req, res) => {
 
    if (tipoUsuario == "Profesor"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/marcarNotifNoLeida',
          method: 'POST',
          headers: {
@@ -2034,8 +2021,7 @@ app.post("/marcarNoLeido", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -2046,8 +2032,7 @@ app.post("/marcarNoLeido", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Estudiante"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/marcarNotifNoLeida',
          method: 'POST',
          headers: {
@@ -2057,8 +2042,7 @@ app.post("/marcarNoLeido", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -2069,8 +2053,7 @@ app.post("/marcarNoLeido", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Asistente"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/marcarNotifNoLeida',
          method: 'POST',
          headers: {
@@ -2080,8 +2063,7 @@ app.post("/marcarNoLeido", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/gestionarBuzon',
          method: 'POST',
          headers: {
