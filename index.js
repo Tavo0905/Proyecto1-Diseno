@@ -2133,8 +2133,7 @@ app.post("/eliminarTodasNotif", urlParser, (req, res) => {
 
    if (tipoUsuario == "Profesor"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/delNotifs',
          method: 'POST',
          headers: {
@@ -2144,8 +2143,7 @@ app.post("/eliminarTodasNotif", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -2156,8 +2154,7 @@ app.post("/eliminarTodasNotif", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Estudiante"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/delNotifs',
          method: 'POST',
          headers: {
@@ -2167,8 +2164,7 @@ app.post("/eliminarTodasNotif", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -2179,8 +2175,7 @@ app.post("/eliminarTodasNotif", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Asistente"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/delNotifs',
          method: 'POST',
          headers: {
@@ -2190,8 +2185,7 @@ app.post("/eliminarTodasNotif", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -2261,8 +2255,7 @@ app.post("/btnSubsEst", urlParser, (req, res) => {
 
    if (tipoUsuario == "Profesor"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/subscribirObservador',
          method: 'POST',
          headers: {
@@ -2273,8 +2266,7 @@ app.post("/btnSubsEst", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Estudiante"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/subscribirObservador',
          method: 'POST',
          headers: {
@@ -2285,8 +2277,7 @@ app.post("/btnSubsEst", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Asistente"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/subscribirObservador',
          method: 'POST',
          headers: {
@@ -2329,8 +2320,7 @@ app.post("/btnDesubsEst", urlParser, (req, res) => {
 
    if (tipoUsuario == "Estudiante"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/desubscribirObservador',
          method: 'POST',
          headers: {
@@ -2366,10 +2356,12 @@ app.post("/btnDesubsEst", urlParser, (req, res) => {
 }); 
 
 app.post("/btnDesubsSelMod", urlParser, (req, res) => {
+   const user = { user: usuario.user };
+   const postUser = JSON.stringify(user);
+   
    if (tipoUsuario == "Profesor") {
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/desubscribirObservador',
          method: 'POST',
          headers: {
@@ -2379,8 +2371,7 @@ app.post("/btnDesubsSelMod", urlParser, (req, res) => {
       };
    } else if (tipoUsuario == "Asistente") {
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/desubscribirObservador',
          method: 'POST',
          headers: {
@@ -2416,10 +2407,12 @@ app.post("/btnDesubsSelMod", urlParser, (req, res) => {
 })
 
 app.post("/btnSubsSelMod", urlParser, (req, res) => {
+   const user = { user: usuario.user };
+   const postUser = JSON.stringify(user);
+
    if (tipoUsuario == "Profesor") {
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/subscribirObservador',
          method: 'POST',
          headers: {
@@ -2429,8 +2422,7 @@ app.post("/btnSubsSelMod", urlParser, (req, res) => {
       };
    } else if (tipoUsuario == "Asistente") {
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/desubscribirObservador',
          method: 'POST',
          headers: {
@@ -2493,8 +2485,7 @@ app.post("/enviarNotif", urlParser, (req, res) => {
 
    if (tipoUsuario == "Profesor"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/agregarNotif',
          method: 'POST',
          headers: {
@@ -2504,8 +2495,7 @@ app.post("/enviarNotif", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/profesor/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -2516,8 +2506,7 @@ app.post("/enviarNotif", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Estudiante"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/agregarNotif',
          method: 'POST',
          headers: {
@@ -2527,8 +2516,7 @@ app.post("/enviarNotif", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/estudiante/gestionarBuzon',
          method: 'POST',
          headers: {
@@ -2539,8 +2527,7 @@ app.post("/enviarNotif", urlParser, (req, res) => {
 
    } else if (tipoUsuario == "Asistente"){
       options = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/agregarNotif',
          method: 'POST',
          headers: {
@@ -2550,8 +2537,7 @@ app.post("/enviarNotif", urlParser, (req, res) => {
       };
 
       options2 = {
-         hostname: 'localhost',
-         port: 8080,
+         hostname: backendUrl,
          path: '/asistente/gestionarBuzon',
          method: 'POST',
          headers: {
