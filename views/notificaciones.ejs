@@ -29,11 +29,11 @@
                                         Marcar como leída
                                     </button>
                                 <% } if (notificacion.leido) { %>
-                                    <button class = "notifBtn" formaction = "marcarNoLeido">
+                                    <button class = "notifBtn" name = "btnNoLeido" value = "<%= notificacion.id %>" formaction = "marcarNoLeido">
                                         Marcar como no leída
                                     </button>
                                 <% } %>
-                                    <button class = "notifBtn" formaction = "delNotif">
+                                    <button class = "notifBtn" name = "btnEliminar" value = "<%= notificacion.id %>" formaction = "delNotif">
                                         Eliminar
                                     </button>
                             </div>

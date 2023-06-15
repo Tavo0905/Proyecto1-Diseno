@@ -1876,8 +1876,12 @@ app.post("/marcarLeido", urlParser, (req, res) => { // Marca como leida las noti
 app.post("/delNotif", urlParser, (req, res) => {
    const data = JSON.stringify({
       user: usuario.user,
-      codigo: req.body.id,
+      codigo: req.body.btnEliminar,
    });
+
+   const user = { user: usuario.user };
+   const postUser = JSON.stringify(user);
+
    let options; 
    let options2;
 
@@ -1889,7 +1893,7 @@ app.post("/delNotif", urlParser, (req, res) => {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(postUser),
+            'Content-Length': Buffer.byteLength(data),
          }
       };
 
@@ -1912,7 +1916,7 @@ app.post("/delNotif", urlParser, (req, res) => {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(postUser),
+            'Content-Length': Buffer.byteLength(data),
          }
       };
 
@@ -1935,7 +1939,7 @@ app.post("/delNotif", urlParser, (req, res) => {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(postUser),
+            'Content-Length': Buffer.byteLength(data),
          }
       };
 
@@ -1960,8 +1964,6 @@ app.post("/delNotif", urlParser, (req, res) => {
 
       response.on('end', () => {
          if (response.statusCode === 200) {
-            const user = { user: usuario.user };
-            postUser = JSON.stringify(user);
 
             const request2 = http.request(options2, (response2) => {
                let responseData2 = '';
@@ -1972,7 +1974,7 @@ app.post("/delNotif", urlParser, (req, res) => {
 
                response2.on('end', () => {
                   if (response2.statusCode === 200) {
-                     const notificaciones = JSON.parse(responseData);
+                     const notificaciones = JSON.parse(responseData2);
                      //notificaciones.forEach((notificacion) => {
                         //const fechaHoraOriginal = new Date(notificacion.fecha);
                         //const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
@@ -1980,7 +1982,7 @@ app.post("/delNotif", urlParser, (req, res) => {
                      //});
                      res.render("notificaciones.ejs", { notificaciones: notificaciones})
                   } else {
-                     console.log("ERROR: ResponseData - " + responseData);
+                     console.log("ERROR: ResponseData - " + responseData2);
                   }
                });
                });
@@ -2008,8 +2010,10 @@ app.post("/delNotif", urlParser, (req, res) => {
 app.post("/marcarNoLeido", urlParser, (req, res) => {
    const data = JSON.stringify({
       user: usuario.user,
-      codigo: req.body.btnLeido,
+      codigo: req.body.btnNoLeido,
    });
+
+   console.log(data);
 
    const user = { user: usuario.user };
    const postUser = JSON.stringify(user);
@@ -2113,7 +2117,7 @@ app.post("/marcarNoLeido", urlParser, (req, res) => {
                      //});
                      res.render("notificaciones.ejs", { notificaciones: notificaciones})
                   } else {
-                     console.log("ERROR: ResponseData - " + responseData);
+                     console.log("ERROR: ResponseData - " + responseData2);
                   }
                });
             });
@@ -2139,37 +2143,344 @@ app.post("/marcarNoLeido", urlParser, (req, res) => {
 })
 
 app.post("/eliminarTodasNotif", urlParser, (req, res) => {
-   res.render("notificaciones.ejs", {notificaciones: []})
+   const user = { user: usuario.user };
+   const postUser = JSON.stringify(user);
+
+   let options; 
+   let options2;
+
+   if (tipoUsuario == "Profesor"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/delNotifs',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Estudiante"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/delNotifs',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Asistente"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/delNotifs',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+   }
+   
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+
+            const request2 = http.request(options2, (response2) => {
+               let responseData2 = '';
+
+               response2.on('data', (chunk) => {
+                  responseData2 += chunk;
+               });
+
+               response2.on('end', () => {
+                  if (response2.statusCode === 200) {
+                     const notificaciones = JSON.parse(responseData2);
+                     //notificaciones.forEach((notificacion) => {
+                        //const fechaHoraOriginal = new Date(notificacion.fecha);
+                        //const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+                        //notificacion.fecha = fechaHoraFormateada;
+                     //});
+                     res.render("notificaciones.ejs", { notificaciones: notificaciones})
+                  } else {
+                     console.log("ERROR: ResponseData - " + responseData2);
+                  }
+               });
+               });
+
+            request2.on('error', (error) => {
+               console.error(error);
+            });
+
+            request2.write(postUser);
+            request2.end(); 
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(postUser);
+   request.end();
 })
 
 app.post("/btnSubsEst", urlParser, (req, res) => {
-   res.render("estudiantes.ejs")
+   const user = { user: usuario.user };
+   const postUser = JSON.stringify(user);
+
+   let options; 
+
+   if (tipoUsuario == "Profesor"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/subscribirObservador',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Estudiante"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/subscribirObservador',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Asistente"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/subscribirObservador',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+   }
+   
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200){
+            console.log(user.user + " se ha suscrito del sistema de notificaciones.");
+            res.render("estudiantes.ejs");
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(postUser);
+   request.end();
 }); 
 
 app.post("/btnDesubsEst", urlParser, (req, res) => {
-   res.render("estudiantes.ejs")
+   const user = { user: usuario.user };
+   const postUser = JSON.stringify(user);
+
+   let options; 
+
+   if (tipoUsuario == "Estudiante"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/desubscribirObservador',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+   }
+   
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200){
+            console.log(user.user + " se ha desuscrito del sistema de notificaciones.");
+            res.render("estudiantes.ejs");
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(postUser);
+   request.end();
 }); 
 
 app.post("/btnDesubsSelMod", urlParser, (req, res) => {
    if (tipoUsuario == "Profesor") {
-      //codigo para profesor
-      pass;  
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/desubscribirObservador',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
    } else if (tipoUsuario == "Asistente") {
-      //codigo para asistente
-      pass;  
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/desubscribirObservador',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      }; 
    }
-   res.render('selModulo.ejs', { clave: claveSelMod })
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200){
+            console.log(user.user + " se ha desuscrito del sistema de notificaciones.");
+            res.render('selModulo.ejs', { clave: claveSelMod })
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(postUser);
+   request.end();
 })
 
 app.post("/btnSubsSelMod", urlParser, (req, res) => {
    if (tipoUsuario == "Profesor") {
-      //codigo para profesor
-      pass;  
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/subscribirObservador',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
    } else if (tipoUsuario == "Asistente") {
-      //codigo para asistente
-      pass;  
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/desubscribirObservador',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      }; 
    }
-   res.render('selModulo.ejs', { clave: claveSelMod })
+
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200){
+            console.log(user.user + " se ha suscrito del sistema de notificaciones.");
+            res.render('selModulo.ejs', { clave: claveSelMod });
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(postUser);
+   request.end();
 })
 
 app.post("/agrNotif", urlParser, (req, res) => {
@@ -2187,11 +2498,134 @@ app.post("/salirAgrNotif", urlParser, (req, res) => {
 })
 
 app.post("/enviarNotif", urlParser, (req, res) => {
-   if (tipoUsuario == "Estudiante") {
-      res.render("estudiantes.ejs")
-   } else if (tipoUsuario == "Profesor") {
-      res.render('selModulo.ejs', { clave: claveSelMod })
-   } else if (tipoUsuario == "Asistente") {
-      res.render('selModulo.ejs', { clave: claveSelMod })
+   const data = JSON.stringify({
+      user: usuario.user,
+      contenido: req.body.texto,
+   });
+
+   const user = { user: usuario.user };
+   const postUser = JSON.stringify(user);
+
+   let options; 
+   let options2;
+
+   if (tipoUsuario == "Profesor"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/agregarNotif',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(data),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/profesor/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Estudiante"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/agregarNotif',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(data),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/estudiante/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
+
+   } else if (tipoUsuario == "Asistente"){
+      options = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/agregarNotif',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(data),
+         }
+      };
+
+      options2 = {
+         hostname: 'localhost',
+         port: 8080,
+         path: '/asistente/gestionarBuzon',
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postUser),
+         }
+      };
    }
+   
+   const request = http.request(options, (response) => {
+      let responseData = '';
+
+      response.on('data', (chunk) => {
+         responseData += chunk;
+      });
+
+      response.on('end', () => {
+         if (response.statusCode === 200) {
+            const request2 = http.request(options2, (response2) => {
+               let responseData2 = '';
+
+               response2.on('data', (chunk) => {
+                  responseData2 += chunk;
+               });
+
+               response2.on('end', () => {
+                  if (response2.statusCode === 200) {
+                     const notificaciones = JSON.parse(responseData2);
+                     //notificaciones.forEach((notificacion) => {
+                        //const fechaHoraOriginal = new Date(notificacion.fecha);
+                        //const fechaHoraFormateada = fechaHoraOriginal.toLocaleString();
+                        //notificacion.fecha = fechaHoraFormateada;
+                     //});
+                     res.render("notificaciones.ejs", { notificaciones: notificaciones})
+                  } else {
+                     console.log("ERROR: ResponseData - " + responseData2);
+                  }
+               });
+            });
+
+            request2.on('error', (error) => {
+               console.error(error);
+            });
+
+            request2.write(postUser);
+            request2.end(); 
+         }else{
+            console.log("ERROR: ResponseData - " + responseData);
+         }
+      });
+   });
+
+   request.on('error', (error) => {
+      console.error(error);
+   });
+
+   request.write(data);
+   request.end();
 })
